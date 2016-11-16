@@ -1,0 +1,18 @@
+/*
+ * hal_usciB1.h
+ *
+ *  Created on: 07.11.2016
+ *      Author: Sebo
+ */
+
+#ifndef HAL_HAL_USCIB1_H_
+#define HAL_HAL_USCIB1_H_
+
+#define SCLK_diver 2500000/100000
+
+void HAL_USCIB1_Init(void);
+
+
+
+
+#endif /* HAL_HAL_USCIB1_H_ */

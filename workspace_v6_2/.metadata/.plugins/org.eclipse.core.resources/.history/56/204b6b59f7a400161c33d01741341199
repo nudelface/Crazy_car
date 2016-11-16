@@ -1,0 +1,24 @@
+/*
+ * hal_usciB1.c
+ *
+ *  Created on: 07.11.2016
+ *      Author: Sebo
+ */
+
+#include <msp430.h>
+#include "hal_usciB1.h"
+
+extern USCIB1_SPICom SpiCcom;
+
+
+
+void HAL_USCIB1_Init(void)
+{
+	UCB1CTL0=UCCKPL+UCMSB+UCMST+UCSYNC;
+	UCB1CTL1=UCSSEL__SMCLK+UCSWRST;
+	UCB1BR0=SCLK_diver;   /// Divider = 25
+	UCB1IE=UCRXIE;
+
+}
+
+
