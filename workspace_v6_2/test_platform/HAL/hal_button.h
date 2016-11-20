@@ -9,7 +9,7 @@
 #define HAL_HAL_BUTTON_H_
 
 
-
+int Buttonstate(void);
 
 
 #endif /* HAL_HAL_BUTTON_H_ */

@@ -40,7 +40,8 @@ __interrupt void PORT1_ISR (void)
 		lock_B = 1;
 		timebase = 0;
 	}
-
+	P1IFG &= ~START_Button;
+	P1IFG &= ~STOP_Button;
 }
 
 #pragma vector=TIMER0_B0_VECTOR

@@ -24,7 +24,6 @@ void HAL_GPIO_Init(void)
 	P1SEL=0x0;  //0=I/0 Funct  1=Peripheral module function selected
 	P1IE=START_Button+STOP_Button;
 	P1IES=START_Button+STOP_Button;
-	P1IFG=0x0;
 
 
 

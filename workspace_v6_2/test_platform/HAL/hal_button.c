@@ -12,14 +12,14 @@
 extern int timebase;
 extern ButtonCom Buttons;
 extern int lock_hold;
-
+extern int pressed;
 
 int Buttonstate(void)
 {
   static int bt_state = 0;
   switch(bt_state)
   {
-  case 0: {
+  case 0:
 				if(Buttons.button==1&&Buttons.active==1)
 				{
 					bt_state = 1;
@@ -29,22 +29,40 @@ int Buttonstate(void)
 					bt_state = 2;
 				}
 
-  	  	  }
+
   break;
-  case 1:{
-	  	  	  if(pressed>=20)
+  case 1:{                            //Button 1 wurde gedrückt
+	  	  	  if(pressed>=20)         //Button 1 wird gehalten
 	  	  	  {
 	  	  		  bt_state = 3;
 	  	  		  lock_hold = 1;
+
 	  	  	  }
-	  	  	  return 1;
+	  	  	  else
+	  	  	  {
+
+	  	  	  }
   	  	  }
   break;
-  case 2:
+
+  case 2:{   							/// Button 2 wurde gedrückt
+	  	  	  if(pressed>=20)     ///Button 2 wird gehalten
+	  	  	  {
+	  	  		  bt_state = 4;
+	  	  		  lock_hold=1;
+
+	  	  	  }
+	  	  	  else
+	  	  	  {
+
+	  	  	  }
+
+  	  	  }
   break;
-  case 3:
+  case 3:						// Button 1 wird gehalten
 	  break;
-
+  case 4:						// Button 2 wird gehalten
+  	  break;
   }
-
+return bt_state;
 }

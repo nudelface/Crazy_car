@@ -8,6 +8,7 @@
 #include "HAL\hal_timerB0.h"
 #include "Driver\driver_general.h"
 #include "HAL\hal_usciB1.h"
+#include "HAL\hal_button.h"
 
 
 /*
@@ -34,7 +35,14 @@ void main(void)
 	while(1)
 	{
 
-
+		if (Buttonstate()==1)
+		{
+			LCD_BL_ON;
+		}
+		else if (Buttonstate()==2)
+		{
+			LCD_BL_OFF;
+		}
 
 		if(SteeringCalibC<100)
 		{
