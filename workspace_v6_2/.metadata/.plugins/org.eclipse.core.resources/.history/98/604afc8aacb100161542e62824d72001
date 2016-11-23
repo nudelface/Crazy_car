@@ -25,7 +25,7 @@ void Driver_LCD_WriteCommand(unsigned char *data, unsigned char len)
 		data++;
 	}
 
-	SpiCom.TxData.len = len;   				//test niki
+	SpiCom.TxData.len = len;
 	if(SpiCom.Status.B.TXSuc==1)
 	{
 		HAL_USCIB1_Transmit();
