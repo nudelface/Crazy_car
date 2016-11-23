@@ -16,4 +16,6 @@ void Driver_Init(void)
 
 	Driver_SetSteering(0);  // -560 bis 560 kann übergeben werden
     Driver_ESCInit();
+    void Driver_LCD_Init();
+
 }

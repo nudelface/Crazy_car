@@ -22,7 +22,7 @@ void HAL_USCIB1_Init(void)
 	UCB1BR0=SCLK_diver;   // Divider = 25
 	UCB1IE|=0x1;
 	UCB1CTL1&=UCSSEL__SMCLK+UCSWRST*0;
-	UCB1STE
+	//UCB1STE
 	UCB1IE|=0x1;
 
 }

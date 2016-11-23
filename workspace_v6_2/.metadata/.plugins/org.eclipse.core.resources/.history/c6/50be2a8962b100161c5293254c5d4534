@@ -1,0 +1,25 @@
+/*
+ * driver_lcd.c
+ *
+ *  Created on: 14.11.2016
+ *      Author: Sebo
+ */
+#include "driver_lcd.h"
+#include "HAL\hal_gpio.h"
+#include "HAL\hal_usciB1.h"
+
+unsigned char cmdArr[9] ;
+extern USCIB1_SPICom SpiCom;
+
+
+void Driver_LCD_WriteCommand(unsigned char *data, unsigned char len)
+{
+	int i = 0;
+	command;
+
+	for(i = 0; i <= len; i++)
+	{
+		SpiCom.TxData.Data[i] = *data;
+		data++;
+	}
+}

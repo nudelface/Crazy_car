@@ -14,6 +14,7 @@ main.obj: ../HAL/hal_timerB0.h
 main.obj: ../Driver/driver_general.h
 main.obj: ../Driver/driver_aktorik.h
 main.obj: ../HAL/hal_usciB1.h
+main.obj: ../Driver/driver_lcd.h
 
 ../main.c: 
 ../HAL/hal_general.h: 
@@ -29,3 +30,4 @@ C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/intrinsics_legacy_undefs.h
 ../Driver/driver_general.h: 
 ../Driver/driver_aktorik.h: 
 ../HAL/hal_usciB1.h: 
+../Driver/driver_lcd.h: 

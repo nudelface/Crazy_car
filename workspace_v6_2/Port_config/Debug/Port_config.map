@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v15.12.3                    
 ******************************************************************************
->> Linked Mon Nov 14 15:46:28 2016
+>> Linked Wed Nov 23 11:36:24 2016
 
 OUTPUT FILE NAME:   <Port_config.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 000080ac
+ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 0000807e
 
 
 MEMORY CONFIGURATION
@@ -18,8 +18,8 @@ MEMORY CONFIGURATION
   INFOC                 00001880   00000080  00000000  00000080  RWIX
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
-  RAM                   00001c00   00004800  000002aa  00004556  RWIX
-  FLASH                 00008000   00007f80  0000010a  00007e76  RWIX
+  RAM                   00001c00   00004800  000002b4  0000454c  RWIX
+  FLASH                 00008000   00007f80  000000fa  00007e86  RWIX
   INT00                 0000ff80   00000002  00000000  00000002  RWIX
   INT01                 0000ff82   00000002  00000000  00000002  RWIX
   INT02                 0000ff84   00000002  00000000  00000002  RWIX
@@ -84,7 +84,7 @@ MEMORY CONFIGURATION
   INT61                 0000fffa   00000002  00000002  00000000  RWIX
   INT62                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FLASH2                00010000   00038000  000006d0  00037930  RWIX
+  FLASH2                00010000   00038000  0000071a  000378e6  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -96,29 +96,30 @@ section   page    origin      length       input sections
                   00001c00    00000204     (.common:SpiCom)
                   00001e04    00000002     (.common:Buttons)
 
-.data      0    00001e06    00000004     UNINITIALIZED
-                  00001e06    00000004     Interrupts.obj (.data)
+.data      0    00001e06    0000000e     UNINITIALIZED
+                  00001e06    00000009     main.obj (.data:cmdArr)
+                  00001e0f    00000001     --HOLE--
+                  00001e10    00000004     Interrupts.obj (.data)
 
 .stack     0    00006360    000000a0     UNINITIALIZED
                   00006360    00000004     rts430x_lc_rd_eabi.lib : boot.obj (.stack)
                   00006364    0000009c     --HOLE--
 
 .text:_isr 
-*          0    00008000    000000dc     
+*          0    00008000    000000c4     
                   00008000    00000046     Interrupts.obj (.text:_isr:USCB_ISR)
                   00008046    00000038     Interrupts.obj (.text:_isr:PORT1_ISR)
-                  0000807e    0000002e     Interrupts.obj (.text:_isr:TIMERB_ISR)
-                  000080ac    0000001a     rts430x_lc_rd_eabi.lib : boot_special.obj (.text:_isr:_c_int00_noargs_noexit)
-                  000080c6    0000000e     Interrupts.obj (.text:_isr:TIMERA_ISR)
-                  000080d4    00000008     rts430x_lc_rd_eabi.lib : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
+                  0000807e    0000001a     rts430x_lc_rd_eabi.lib : boot_special.obj (.text:_isr:_c_int00_noargs_noexit)
+                  00008098    00000016     Interrupts.obj (.text:_isr:TIMERB_ISR)
+                  000080ae    0000000e     Interrupts.obj (.text:_isr:TIMERA_ISR)
+                  000080bc    00000008     rts430x_lc_rd_eabi.lib : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
 
-.cinit     0    000080dc    0000002e     
-                  000080dc    0000000b     (.cinit..bss.load) [load image, compression = rle]
-                  000080e7    00000001     --HOLE-- [fill = 0]
-                  000080e8    00000009     (.cinit..data.load) [load image, compression = rle]
-                  000080f1    00000001     --HOLE-- [fill = 0]
-                  000080f2    00000008     (__TI_handler_table)
-                  000080fa    00000010     (__TI_cinit_table)
+.cinit     0    000080c4    00000036     
+                  000080c4    00000012     (.cinit..data.load) [load image, compression = rle]
+                  000080d6    0000000b     (.cinit..bss.load) [load image, compression = rle]
+                  000080e1    00000001     --HOLE-- [fill = 0]
+                  000080e2    00000008     (__TI_handler_table)
+                  000080ea    00000010     (__TI_cinit_table)
 
 .binit     0    00008000    00000000     
 
@@ -208,62 +209,64 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.obj (.reset)
 
-.text      0    00010000    000006d0     
+.text      0    00010000    0000071a     
                   00010000    000000e6     hal_pmm.obj (.text:HAL_PMM_SetVCoreUp)
                   000100e6    000000e2     hal_gpio.obj (.text:HAL_GPIO_Init)
                   000101c8    000000b4     hal_pmm.obj (.text:HAL_PMM_SetVCoreDown)
                   0001027c    00000082     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
-                  000102fe    00000076     main.obj (.text:main)
-                  00010374    0000006a     hal_pmm.obj (.text:HAL_PMM_SetVCore)
-                  000103de    00000068     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
-                  00010446    00000066                            : cpy_tbl.obj (.text:copy_in)
-                  000104ac    00000048     driver_aktorik.obj (.text:Driver_ESCInit)
-                  000104f4    0000003a     hal_timerA1.obj (.text:HAL_TimerA1_Init)
-                  0001052e    00000036     hal_usc.obj (.text:HAL_UCS_Init)
-                  00010564    00000034     driver_aktorik.obj (.text:Driver_SetSteering)
-                  00010598    00000034     hal_general.obj (.text:HAL_Init)
-                  000105cc    0000002c     hal_usciB1.obj (.text:HAL_USCIB1_Init)
-                  000105f8    0000002a     driver_aktorik.obj (.text:Driver_PWMInit)
-                  00010622    00000028     hal_timerB0.obj (.text:HAL_TimerB0_Init)
-                  0001064a    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.obj (.text)
-                  00010662    00000014                            : memcpy.obj (.text:memcpy)
-                  00010676    00000012     hal_pmm.obj (.text:HAL_PMM_Init)
-                  00010688    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  0001069a    00000010     hal_usciB1.obj (.text:HAL_USCIB1_Transmit)
-                  000106aa    0000000c     driver_general.obj (.text:Driver_Init)
-                  000106b6    00000008     hal_wdt.obj (.text:HAL_Wdt_Init)
-                  000106be    00000006     rts430x_lc_rd_eabi.lib : exit.obj (.text:abort)
-                  000106c4    00000006                            : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
-                  000106ca    00000004                            : pre_init.obj (.text:_system_pre_init)
-                  000106ce    00000002                            : startup.obj (.text:_system_post_cinit)
+                  000102fe    00000074     main.obj (.text:main)
+                  00010372    0000006a     hal_pmm.obj (.text:HAL_PMM_SetVCore)
+                  000103dc    00000068     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
+                  00010444    00000066                            : cpy_tbl.obj (.text:copy_in)
+                  000104aa    0000005e     driver_lcd.obj (.text:Driver_LCD_WriteCommand)
+                  00010508    00000048     driver_aktorik.obj (.text:Driver_ESCInit)
+                  00010550    0000003a     hal_timerA1.obj (.text:HAL_TimerA1_Init)
+                  0001058a    00000036     hal_usc.obj (.text:HAL_UCS_Init)
+                  000105c0    00000034     driver_aktorik.obj (.text:Driver_SetSteering)
+                  000105f4    0000002c     hal_usciB1.obj (.text:HAL_USCIB1_Init)
+                  00010620    0000002a     driver_aktorik.obj (.text:Driver_PWMInit)
+                  0001064a    00000028     hal_timerB0.obj (.text:HAL_TimerB0_Init)
+                  00010672    00000022     hal_general.obj (.text:HAL_Init)
+                  00010694    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.obj (.text)
+                  000106ac    00000014                            : memcpy.obj (.text:memcpy)
+                  000106c0    00000012     hal_pmm.obj (.text:HAL_PMM_Init)
+                  000106d2    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  000106e4    00000010     hal_usciB1.obj (.text:HAL_USCIB1_Transmit)
+                  000106f4    0000000c     driver_general.obj (.text:Driver_Init)
+                  00010700    00000008     hal_wdt.obj (.text:HAL_Wdt_Init)
+                  00010708    00000006     rts430x_lc_rd_eabi.lib : exit.obj (.text:abort)
+                  0001070e    00000006                            : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
+                  00010714    00000004                            : pre_init.obj (.text:_system_pre_init)
+                  00010718    00000002                            : startup.obj (.text:_system_post_cinit)
 
 MODULE SUMMARY
 
        Module                     code   ro data   rw data
        ------                     ----   -------   -------
     .\
-       main.obj                   118    0         0      
+       main.obj                   116    0         9      
     +--+--------------------------+------+---------+---------+
-       Total:                     118    0         0      
+       Total:                     116    0         9      
                                                           
     .\Driver\
        driver_aktorik.obj         166    0         0      
+       driver_lcd.obj             94     0         0      
        driver_general.obj         12     0         0      
     +--+--------------------------+------+---------+---------+
-       Total:                     178    0         0      
+       Total:                     272    0         0      
                                                           
     .\HAL\
-       hal_general.obj            52     0         516    
+       hal_general.obj            34     0         516    
        hal_pmm.obj                534    0         0      
        hal_gpio.obj               226    0         0      
-       Interrupts.obj             186    8         6      
+       Interrupts.obj             162    8         6      
        hal_usciB1.obj             60     0         0      
        hal_timerA1.obj            58     0         0      
        hal_usc.obj                54     0         0      
        hal_timerB0.obj            40     0         0      
        hal_wdt.obj                8      0         0      
     +--+--------------------------+------+---------+---------+
-       Total:                     1218   8         522    
+       Total:                     1176   8         522    
                                                           
     C:\ti\ccsv6\tools\compiler\msp430_15.12.3.LTS\lib\rts430x_lc_rd_eabi.lib
        autoinit_wdt.obj           130    0         0      
@@ -302,21 +305,21 @@ MODULE SUMMARY
        Total:                     450    42        0      
                                                           
        Stack:                     0      0         160    
-       Linker Generated:          0      44        0      
+       Linker Generated:          0      53        0      
     +--+--------------------------+------+---------+---------+
-       Grand Total:               1964   94        682    
+       Grand Total:               2014   103       691    
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 000080fa records: 2, size/record: 8, table size: 16
-	.bss: load addr=000080dc, load size=0000000b bytes, run addr=00001c00, run size=00000206 bytes, compression=rle
-	.data: load addr=000080e8, load size=00000009 bytes, run addr=00001e06, run size=00000004 bytes, compression=rle
+__TI_cinit_table @ 000080ea records: 2, size/record: 8, table size: 16
+	.data: load addr=000080c4, load size=00000012 bytes, run addr=00001e06, run size=0000000e bytes, compression=rle
+	.bss: load addr=000080d6, load size=0000000b bytes, run addr=00001c00, run size=00000206 bytes, compression=rle
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 000080f2 records: 2, size/record: 4, table size: 8
+__TI_handler_table @ 000080e2 records: 2, size/record: 4, table size: 8
 	index: 0, handler: __TI_decompress_rle24
 	index: 1, handler: __TI_decompress_none
 
@@ -428,7 +431,7 @@ address   name
 000004be  BCD2BIN                 
 000004bc  BIN2BCD                 
 00001e04  Buttons                 
-000106be  C$$EXIT                 
+00010708  C$$EXIT                 
 000008c0  CBCTL0                  
 000008c1  CBCTL0_H                
 000008c0  CBCTL0_L                
@@ -535,10 +538,11 @@ address   name
 0000050e  DMAIV                   
 0000050f  DMAIV_H                 
 0000050e  DMAIV_L                 
-000104ac  Driver_ESCInit          
-000106aa  Driver_Init             
-000105f8  Driver_PWMInit          
-00010564  Driver_SetSteering      
+00010508  Driver_ESCInit          
+000106f4  Driver_Init             
+000104aa  Driver_LCD_WriteCommand 
+00010620  Driver_PWMInit          
+000105c0  Driver_SetSteering      
 00000140  FCTL1                   
 00000141  FCTL1_H                 
 00000140  FCTL1_L                 
@@ -549,17 +553,17 @@ address   name
 00000147  FCTL4_H                 
 00000146  FCTL4_L                 
 000100e6  HAL_GPIO_Init           
-00010598  HAL_Init                
-00010676  HAL_PMM_Init            
-00010374  HAL_PMM_SetVCore        
+00010672  HAL_Init                
+000106c0  HAL_PMM_Init            
+00010372  HAL_PMM_SetVCore        
 000101c8  HAL_PMM_SetVCoreDown    
 00010000  HAL_PMM_SetVCoreUp      
-000104f4  HAL_TimerA1_Init        
-00010622  HAL_TimerB0_Init        
-0001052e  HAL_UCS_Init            
-000105cc  HAL_USCIB1_Init         
-0001069a  HAL_USCIB1_Transmit     
-000106b6  HAL_Wdt_Init            
+00010550  HAL_TimerA1_Init        
+0001064a  HAL_TimerB0_Init        
+0001058a  HAL_UCS_Init            
+000105f4  HAL_USCIB1_Init         
+000106e4  HAL_USCIB1_Transmit     
+00010700  HAL_Wdt_Init            
 00000900  LDOKEYPID               
 00000901  LDOKEYPID_H             
 00000900  LDOKEYPID_L             
@@ -891,7 +895,7 @@ address   name
 0000019b  SYSUNIV_H               
 0000019a  SYSUNIV_L               
 00001c00  SpiCom                  
-00001e06  SteeringCalibC          
+00001e10  SteeringCalibC          
 00000352  TA0CCR0                 
 00000354  TA0CCR1                 
 00000356  TA0CCR2                 
@@ -944,8 +948,8 @@ address   name
 000003e0  TB0EX0                  
 000003ee  TB0IV                   
 000003d0  TB0R                    
-000080c6  TIMERA_ISR              
-0000807e  TIMERB_ISR              
+000080ae  TIMERA_ISR              
+00008098  TIMERB_ISR              
 000005d0  UCA0ABCTL               
 000005c6  UCA0BRW                 
 000005c7  UCA0BRW_H               
@@ -1055,15 +1059,15 @@ address   name
 000000a0  __STACK_SIZE            
 UNDEFED   __TI_BINIT_Base         
 UNDEFED   __TI_BINIT_Limit        
-000080fa  __TI_CINIT_Base         
-0000810a  __TI_CINIT_Limit        
-000080f2  __TI_Handler_Table_Base 
-000080fa  __TI_Handler_Table_Limit
+000080ea  __TI_CINIT_Base         
+000080fa  __TI_CINIT_Limit        
+000080e2  __TI_Handler_Table_Base 
+000080ea  __TI_Handler_Table_Limit
 UNDEFED   __TI_INITARRAY_Base     
 UNDEFED   __TI_INITARRAY_Limit    
-000080d4  __TI_ISR_TRAP           
-00010688  __TI_decompress_none    
-000106c4  __TI_decompress_rle24   
+000080bc  __TI_ISR_TRAP           
+000106d2  __TI_decompress_none    
+0001070e  __TI_decompress_rle24   
 0000ffca  __TI_int37              
 0000ffcc  __TI_int38              
 0000ffce  __TI_int39              
@@ -1092,18 +1096,19 @@ ffffffff  __TI_pprof_out_hndl
 ffffffff  __TI_prof_data_size     
 ffffffff  __TI_prof_data_start    
 ffffffff  __c_args__              
-0001064a  __mspabi_mpyi_f5hw      
+00010694  __mspabi_mpyi_f5hw      
 0001027c  _auto_init_hold_wdt     
-000080ac  _c_int00_noargs_noexit  
+0000807e  _c_int00_noargs_noexit  
 0000fffe  _reset_vector           
 00006360  _stack                  
-000106ce  _system_post_cinit      
-000106ca  _system_pre_init        
-000106be  abort                   
-00010446  copy_in                 
-00001e08  initcounter             
+00010718  _system_post_cinit      
+00010714  _system_pre_init        
+00010708  abort                   
+00001e06  cmdArr                  
+00010444  copy_in                 
+00001e12  initcounter             
 000102fe  main                    
-00010662  memcpy                  
+000106ac  memcpy                  
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -1815,20 +1820,21 @@ address   name
 00000909  LDOPWRCTL_H             
 00001c00  SpiCom                  
 00001e04  Buttons                 
-00001e06  SteeringCalibC          
-00001e08  initcounter             
+00001e06  cmdArr                  
+00001e10  SteeringCalibC          
+00001e12  initcounter             
 00006360  _stack                  
 00006400  __STACK_END             
 00008000  USCB_ISR                
 00008046  PORT1_ISR               
-0000807e  TIMERB_ISR              
-000080ac  _c_int00_noargs_noexit  
-000080c6  TIMERA_ISR              
-000080d4  __TI_ISR_TRAP           
-000080f2  __TI_Handler_Table_Base 
-000080fa  __TI_CINIT_Base         
-000080fa  __TI_Handler_Table_Limit
-0000810a  __TI_CINIT_Limit        
+0000807e  _c_int00_noargs_noexit  
+00008098  TIMERB_ISR              
+000080ae  TIMERA_ISR              
+000080bc  __TI_ISR_TRAP           
+000080e2  __TI_Handler_Table_Base 
+000080ea  __TI_CINIT_Base         
+000080ea  __TI_Handler_Table_Limit
+000080fa  __TI_CINIT_Limit        
 0000ffca  __TI_int37              
 0000ffcc  __TI_int38              
 0000ffce  __TI_int39              
@@ -1859,28 +1865,29 @@ address   name
 000101c8  HAL_PMM_SetVCoreDown    
 0001027c  _auto_init_hold_wdt     
 000102fe  main                    
-00010374  HAL_PMM_SetVCore        
-00010446  copy_in                 
-000104ac  Driver_ESCInit          
-000104f4  HAL_TimerA1_Init        
-0001052e  HAL_UCS_Init            
-00010564  Driver_SetSteering      
-00010598  HAL_Init                
-000105cc  HAL_USCIB1_Init         
-000105f8  Driver_PWMInit          
-00010622  HAL_TimerB0_Init        
-0001064a  __mspabi_mpyi_f5hw      
-00010662  memcpy                  
-00010676  HAL_PMM_Init            
-00010688  __TI_decompress_none    
-0001069a  HAL_USCIB1_Transmit     
-000106aa  Driver_Init             
-000106b6  HAL_Wdt_Init            
-000106be  C$$EXIT                 
-000106be  abort                   
-000106c4  __TI_decompress_rle24   
-000106ca  _system_pre_init        
-000106ce  _system_post_cinit      
+00010372  HAL_PMM_SetVCore        
+00010444  copy_in                 
+000104aa  Driver_LCD_WriteCommand 
+00010508  Driver_ESCInit          
+00010550  HAL_TimerA1_Init        
+0001058a  HAL_UCS_Init            
+000105c0  Driver_SetSteering      
+000105f4  HAL_USCIB1_Init         
+00010620  Driver_PWMInit          
+0001064a  HAL_TimerB0_Init        
+00010672  HAL_Init                
+00010694  __mspabi_mpyi_f5hw      
+000106ac  memcpy                  
+000106c0  HAL_PMM_Init            
+000106d2  __TI_decompress_none    
+000106e4  HAL_USCIB1_Transmit     
+000106f4  Driver_Init             
+00010700  HAL_Wdt_Init            
+00010708  C$$EXIT                 
+00010708  abort                   
+0001070e  __TI_decompress_rle24   
+00010714  _system_pre_init        
+00010718  _system_post_cinit      
 ffffffff  __TI_pprof_out_hndl     
 ffffffff  __TI_prof_data_size     
 ffffffff  __TI_prof_data_start    
@@ -1890,4 +1897,4 @@ UNDEFED   __TI_BINIT_Limit
 UNDEFED   __TI_INITARRAY_Base     
 UNDEFED   __TI_INITARRAY_Limit    
 
-[779 symbols]
+[781 symbols]

@@ -18,6 +18,18 @@
 #define POWER_CONT 0x2F
 #define DISPLAY_ON 0xAF
 
+void Driver_LCD_WriteCommand(unsigned char *, unsigned char);
+void Driver_LCD_Init(void);
+void Driver_LCD_Clear(void);
+void Driver_LCD_SetPosition(unsigned char, unsigned char);
+
+#define command (P8OUT &= ~LCD_DATACMD)
+#define LCD_data (P8OUT |= LCD_DATACMD)
+
+#define LCD_RESET_L (P9OUT &= ~LCD_RESET)
+#define LCD_RESET_H (P9OUT |= LCD_RESET)
+
+
 
 
 #endif /* DRIVER_DRIVER_LCD_H_ */

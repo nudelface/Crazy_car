@@ -8,7 +8,7 @@
 #include "Driver\driver_general.h"
 #include "Driver\driver_aktorik.h"
 #include "HAL\hal_usciB1.h"
-
+#include "Driver\driver_lcd.h"
 
 /*
  * main.c
@@ -21,7 +21,7 @@ extern USCIB1_SPICom SpiCom;
 
 
 
-
+unsigned char cmdArr[9]= {LCD_RESET, LCD_BIAS, ADC_SEL_NORMAL, COMMON_REVERSE, RES_RATIO, ELEC_VOL_MODE, ELEC_VOL_VALUE, POWER_CONT, DISPLAY_ON};
 
 void main(void)
 {
@@ -36,6 +36,8 @@ void main(void)
 
 		if(Buttons.button==1&&Buttons.active==1)
 		{
+			Driver_LCD_WriteCommand(&cmdArr[0], 5);
+
 			LCD_BL_ON;
 			Buttons.button=0;
 			Buttons.active=0;
@@ -55,10 +57,7 @@ void main(void)
 		{
 			Driver_SetSteering(0);
 		}
-		if(SpiCom.Status.B.TXSuc==1)
-		{
-		HAL_USCIB1_Transmit();
-		}
+
 //	LCD_BL_OFF;
 //	z=a+b;
 //LCD_BL_ON;

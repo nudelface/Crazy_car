@@ -39,10 +39,7 @@ __interrupt void TIMERB_ISR (void)
 {
 	SteeringCalibC+=20;
 
-	if ((P8OUT&LCD_BL) == 1){
-		LCD_BL_OFF;}
-	else{
-		LCD_BL_ON;}
+
 	TBCTL |= TBCLR;
 	TBEX0 |= TBIDEX__5;										// divide/5
 	TBCTL |= MC__UP;

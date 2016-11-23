@@ -28,10 +28,6 @@ void HAL_Init(void)
 	HAL_TimerB0_Init();
     HAL_TimerA1_Init();
     HAL_USCIB1_Init();
-    SpiCom.TxData.len=3;
-    SpiCom.TxData.Data[0]=1;
-    SpiCom.TxData.Data[1]=2;
-    SpiCom.TxData.Data[2]=4;
     HAL_USCIB1_Transmit();
 
 }
