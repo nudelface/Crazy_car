@@ -44,7 +44,7 @@ void Driver_LCD_Init(void)
 	//LCD Clear
 }
 
-void Driver_LCD_Clear(void)  //test Sebo
+void Driver_LCD_Clear(void)
 {
 	unsigned char column = 0;
 	unsigned char column_Lsb;
