@@ -82,7 +82,7 @@ void HAL_GPIO_Init(void)
 	//P1IN=;     //0=low 1=high
 	P8REN=0x0;//LCD_SPI_CLK;  //0=pull disapled  1=pull enabled
 	P8DS=0x0;  // 0=limited 1=full drive strength
-	P8SEL=LCD_SPI_CS+LCD_SPI_CLK+LCD_SPI_MOSI+LCD_SPI_MISO;  //0=I/0 Funct  1=Peripheral module function selected
+	P8SEL=LCD_SPI_CLK+LCD_SPI_MOSI+LCD_SPI_MISO;  //0=I/0 Funct  1=Peripheral module function selected
 
 
     ///////Port9

@@ -16,7 +16,7 @@ void Driver_SetSteering (int SteeringAngle)
 {
 	if (SteeringAngle<-560)
 	{
-		TA1CCR2=-560;
+		TA1CCR2=3590-560;
 	}
 	else if (SteeringAngle>560)
 	{

@@ -8,7 +8,7 @@
 #ifndef DRIVER_DRIVER_LCD_H_
 #define DRIVER_DRIVER_LCD_H_
 
-#define LCD_RESET 0xD2
+#define LCD_RESET_c 0xD2
 #define LCD_BIAS 0xA3
 #define ADC_SEL_NORMAL 0xA0
 #define COMMON_REVERSE 0xC8
@@ -17,6 +17,12 @@
 #define ELEC_VOL_VALUE 0x0F
 #define POWER_CONT 0x2F
 #define DISPLAY_ON 0xAF
+#define DISPLAY_line_start 0x40
+#define DISPLAY_col_msb 0x10
+#define DISPLAY_col_lsb 0x0
+#define DISPLAY_Page 0xB0
+#define DISPLAY_ALL 0xA5
+
 
 void Driver_LCD_WriteCommand(unsigned char *, unsigned char);
 void Driver_LCD_Init(void);

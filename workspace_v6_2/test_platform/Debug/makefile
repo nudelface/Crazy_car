@@ -15,6 +15,7 @@ ORDERED_OBJS += \
 "./Driver/driver_general.obj" \
 "./Driver/driver_lcd.obj" \
 "./HAL/Interrupts.obj" \
+"./HAL/hal_button.obj" \
 "./HAL/hal_general.obj" \
 "./HAL/hal_gpio.obj" \
 "./HAL/hal_pmm.obj" \
@@ -169,8 +170,8 @@ test_platform.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.d" "Driver\driver_aktorik.d" "Driver\driver_general.d" "Driver\driver_lcd.d" "HAL\Interrupts.d" "HAL\hal_general.d" "HAL\hal_gpio.d" "HAL\hal_pmm.d" "HAL\hal_timerA1.d" "HAL\hal_timerB0.d" "HAL\hal_usc.d" "HAL\hal_usciB1.d" "HAL\hal_wdt.d" 
-	-$(RM) "main.obj" "Driver\driver_aktorik.obj" "Driver\driver_general.obj" "Driver\driver_lcd.obj" "HAL\Interrupts.obj" "HAL\hal_general.obj" "HAL\hal_gpio.obj" "HAL\hal_pmm.obj" "HAL\hal_timerA1.obj" "HAL\hal_timerB0.obj" "HAL\hal_usc.obj" "HAL\hal_usciB1.obj" "HAL\hal_wdt.obj" 
+	-$(RM) "main.d" "Driver\driver_aktorik.d" "Driver\driver_general.d" "Driver\driver_lcd.d" "HAL\Interrupts.d" "HAL\hal_button.d" "HAL\hal_general.d" "HAL\hal_gpio.d" "HAL\hal_pmm.d" "HAL\hal_timerA1.d" "HAL\hal_timerB0.d" "HAL\hal_usc.d" "HAL\hal_usciB1.d" "HAL\hal_wdt.d" 
+	-$(RM) "main.obj" "Driver\driver_aktorik.obj" "Driver\driver_general.obj" "Driver\driver_lcd.obj" "HAL\Interrupts.obj" "HAL\hal_button.obj" "HAL\hal_general.obj" "HAL\hal_gpio.obj" "HAL\hal_pmm.obj" "HAL\hal_timerA1.obj" "HAL\hal_timerB0.obj" "HAL\hal_usc.obj" "HAL\hal_usciB1.obj" "HAL\hal_wdt.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

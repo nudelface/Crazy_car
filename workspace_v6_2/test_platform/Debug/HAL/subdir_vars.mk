@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../HAL/Interrupts.c \
+../HAL/hal_button.c \
 ../HAL/hal_general.c \
 ../HAL/hal_gpio.c \
 ../HAL/hal_pmm.c \
@@ -16,6 +17,7 @@ C_SRCS += \
 
 OBJS += \
 ./HAL/Interrupts.obj \
+./HAL/hal_button.obj \
 ./HAL/hal_general.obj \
 ./HAL/hal_gpio.obj \
 ./HAL/hal_pmm.obj \
@@ -27,6 +29,7 @@ OBJS += \
 
 C_DEPS += \
 ./HAL/Interrupts.d \
+./HAL/hal_button.d \
 ./HAL/hal_general.d \
 ./HAL/hal_gpio.d \
 ./HAL/hal_pmm.d \
@@ -38,6 +41,7 @@ C_DEPS += \
 
 C_DEPS__QUOTED += \
 "HAL\Interrupts.d" \
+"HAL\hal_button.d" \
 "HAL\hal_general.d" \
 "HAL\hal_gpio.d" \
 "HAL\hal_pmm.d" \
@@ -49,6 +53,7 @@ C_DEPS__QUOTED += \
 
 OBJS__QUOTED += \
 "HAL\Interrupts.obj" \
+"HAL\hal_button.obj" \
 "HAL\hal_general.obj" \
 "HAL\hal_gpio.obj" \
 "HAL\hal_pmm.obj" \
@@ -60,6 +65,7 @@ OBJS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../HAL/Interrupts.c" \
+"../HAL/hal_button.c" \
 "../HAL/hal_general.c" \
 "../HAL/hal_gpio.c" \
 "../HAL/hal_pmm.c" \
