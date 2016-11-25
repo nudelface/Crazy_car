@@ -21,7 +21,7 @@ void HAL_USCIB1_Init(void)
 	UCB1STAT|=UCLISTEN;
 	UCB1BR0=SCLK_diver;   // Divider = 25
 	UCB1IE|=0x1;
-	UCB1CTL1&=UCSSEL__SMCLK+UCSWRST*0;
+	UCB1CTL1 &= UCSSEL__SMCLK+UCSWRST*0;
 	//UCB1STE
 	UCB1IE|=0x1;
 
@@ -30,9 +30,12 @@ void HAL_USCIB1_Init(void)
 
 void HAL_USCIB1_Transmit(void)
 {
+	UCB1CTL1 &= ~UCSWRST;
+	UCB1IE |= UCRXIE;
 	SpiCom.TxData.cnt=0;
 	SpiCom.Status.B.TXSuc=0;
 	UCB1TXBUF=SpiCom.TxData.Data[0];
+	while(SpiCom.Status.B.TXSuc==0);
 
 
 }

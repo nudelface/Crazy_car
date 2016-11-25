@@ -69,7 +69,7 @@ if((UCB1IFG&UCRXIFG)==1)
 	{
 
 		UCB1TXBUF=SpiCom.TxData.Data[SpiCom.TxData.cnt];
-		SpiCom.TxData.Data[SpiCom.TxData.cnt] = 0;
+		SpiCom.TxData.Data[SpiCom.TxData.cnt] = 0x0;
 		SpiCom.RXData.len=SpiCom.TxData.cnt;
 	}
 	else
