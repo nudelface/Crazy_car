@@ -68,20 +68,20 @@ void Driver_LCD_Clear(void)  //test Sebo
 	P8OUT|=LCD_SPI_CS;
 	while (c_p <= 7)
 	{
-			if(SpiCom.Status.B.TXSuc==1)
-			{
-				c_p++;
-				clearArr[1]=DISPLAY_Page+c_p;
-				Driver_LCD_WriteCommand(&clearArr[1],3);
-				P8OUT&=~LCD_SPI_CS;
-				LCD_data;
-				SpiCom.TxData.Data[3]=0xFF;
-				SpiCom.TxData.Data[4]=0x0F;
-				SpiCom.TxData.Data[5]=0x00;
-				SpiCom.TxData.len=0x83;
-				HAL_USCIB1_Transmit();
-				P8OUT|=LCD_SPI_CS;
-			}
+		if(SpiCom.Status.B.TXSuc==1)
+		{
+			clearArr[1]=DISPLAY_Page+c_p;
+			Driver_LCD_WriteCommand(&clearArr[1],3);
+			P8OUT&=~LCD_SPI_CS;
+			LCD_data;
+			//SpiCom.TxData.Data[3]=0xFF;
+			//SpiCom.TxData.Data[4]=0xFF;
+			//SpiCom.TxData.Data[5]=0x10;
+			SpiCom.TxData.len=0x83;
+			HAL_USCIB1_Transmit();
+			P8OUT|=LCD_SPI_CS;
+			c_p++;
+		}
 
 	}
 
@@ -91,5 +91,11 @@ void Driver_LCD_Clear(void)  //test Sebo
 
 void Driver_LCD_SetPosition(unsigned char page, unsigned char col)
 {
+	unsigned char setCursorArr[3] = {set_line ,set_page, set_col};
+	int i = 0;
 
+
+		Driver_LCD_WriteCommand(&setCursorArr[0],3);
+		P8OUT|=LCD_SPI_CS;
 }
+

@@ -23,6 +23,9 @@
 #define DISPLAY_Page 0xB0
 #define DISPLAY_ALL 0xA5
 
+#define set_line 0x41 			//(DISPLAY_line_start |= 0x1)
+#define set_page 0xB1			//(DISPLAY_Page |= 0x1)
+#define set_col 0x1				//(DISPLAY_col_lsb |= 0x1)
 
 void Driver_LCD_WriteCommand(unsigned char *, unsigned char);
 void Driver_LCD_Init(void);

@@ -47,7 +47,7 @@ void HAL_GPIO_Init(void)
 
 
 	////////////Port4
-	P4DIR=OPEN0+OPEN1+OPEN2;//0=in 1=out
+	P4DIR=OPEN0+OPEN1+OPEN;//0=in 1=out
 	P4OUT=0x0;  //0=low 1=high oder 0=Pulldown 1=Pullup
 	//P1IN=;     //0=low 1=high
 	P4REN=0x0;  //0=pull disapled  1=pull enabled
