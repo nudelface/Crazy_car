@@ -22,18 +22,24 @@
 #define DISPLAY_col_lsb 0x0
 #define DISPLAY_Page 0xB0
 #define DISPLAY_ALL 0xA5
+#define CHAR_WIDTH 6
 
 
 void Driver_LCD_WriteCommand(unsigned char *, unsigned char);
 void Driver_LCD_Init(void);
 void Driver_LCD_Clear(void);
 void Driver_LCD_SetPosition(unsigned char, unsigned char);
+void Driver_LCD_WriteString(unsigned char *, unsigned char, unsigned char, unsigned char);
+void Driver_LCD_WriteUInt( int, unsigned char, unsigned char);
+void itoa(unsigned int , char* , unsigned char);
+
 
 #define command (P8OUT &= ~LCD_DATACMD)
 #define LCD_data (P8OUT |= LCD_DATACMD)
 
 #define LCD_RESET_L (P9OUT &= ~LCD_RESET)
 #define LCD_RESET_H (P9OUT |= LCD_RESET)
+
 
 
 

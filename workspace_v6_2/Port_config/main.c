@@ -25,6 +25,7 @@ extern USCIB1_SPICom SpiCom;
 
 void main(void)
 {
+
 	SteeringCalibC=-560;
 			HAL_Init();
 			Driver_Init();
@@ -41,22 +42,27 @@ void main(void)
 			LCD_BL_OFF;
 			Buttons.button=0;
 			Buttons.active=0;
+			Driver_LCD_WriteString("Du Penis",8,1,2);
+			//Driver_LCD_WriteUInt(255,3, 0);
 		}
 		else if (Buttons.button==2&&Buttons.active==1)
 		{
 			LCD_BL_ON;
 			Buttons.button=0;
 			Buttons.active=0;
-			Driver_LCD_Clear();
+			//Driver_LCD_WriteString("Hallo",5,0,0);
+			Driver_LCD_WriteUInt(1205,0, 10);
 		}
 
 		if(SteeringCalibC<560)
 		{
 			Driver_SetSteering(SteeringCalibC);
+
 		}
 		else if (SteeringCalibC==560)
 		{
 			Driver_SetSteering(0);
+
 		}
 
 //	LCD_BL_OFF;

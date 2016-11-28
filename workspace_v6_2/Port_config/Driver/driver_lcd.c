@@ -7,6 +7,7 @@
 #include "driver_lcd.h"
 #include "HAL\hal_gpio.h"
 #include "HAL\hal_usciB1.h"
+#include "drl_lcd_fonts.h"
 
 
 extern USCIB1_SPICom SpiCom;
@@ -56,8 +57,6 @@ void Driver_LCD_Clear(void)  //test Sebo
 	LCD_data;
 	int c_p=0;
 	unsigned char column = 0;
-	int column_Msb = column&0xF0;
-	int column_Lsb = column&0x0F;
 	unsigned char clearArr[5] = {DISPLAY_line_start,DISPLAY_Page,DISPLAY_col_msb,DISPLAY_col_lsb};
 
 	Driver_LCD_WriteCommand(&clearArr[0],4);
@@ -75,9 +74,6 @@ void Driver_LCD_Clear(void)  //test Sebo
 				Driver_LCD_WriteCommand(&clearArr[1],3);
 				P8OUT&=~LCD_SPI_CS;
 				LCD_data;
-				SpiCom.TxData.Data[3]=0xFF;
-				SpiCom.TxData.Data[4]=0x0F;
-				SpiCom.TxData.Data[5]=0x00;
 				SpiCom.TxData.len=0x83;
 				HAL_USCIB1_Transmit();
 				P8OUT|=LCD_SPI_CS;
@@ -89,7 +85,133 @@ void Driver_LCD_Clear(void)  //test Sebo
 	P8OUT|=LCD_SPI_CS;
 }
 
+
+
+void Driver_LCD_Clearpage(unsigned char page)  //test Sebo
+{
+
+	LCD_data;
+	int c_p=0;
+	unsigned char column = 0;
+	unsigned char clearArr[5] = {DISPLAY_line_start,DISPLAY_Page,DISPLAY_col_msb,DISPLAY_col_lsb};
+	clearArr[1]=DISPLAY_Page | page;
+	Driver_LCD_WriteCommand(&clearArr[0],4);
+	LCD_data;
+	P8OUT&=~LCD_SPI_CS;
+	SpiCom.TxData.len=0x83;
+	if(SpiCom.Status.B.TXSuc==1)
+	{
+
+	HAL_USCIB1_Transmit();
+	P8OUT|=LCD_SPI_CS;
+	}
+}
+
+
+
+
 void Driver_LCD_SetPosition(unsigned char page, unsigned char col)
 {
+	unsigned char set[3];
+  set[0] = DISPLAY_Page + page;
+  set[1]= DISPLAY_col_msb + (col & 0xF0);
+  set[2] = DISPLAY_col_lsb + (col);
+
+
+  Driver_LCD_WriteCommand(&set[0], 3);
+	LCD_data;
+	P8OUT|=LCD_SPI_CS;
+
+}
+
+void Driver_LCD_WriteString(unsigned char *str, unsigned char len, unsigned char page, unsigned char col)
+{
+	unsigned char i,j;
+Driver_LCD_Clearpage(page);
+Driver_LCD_SetPosition(page, col);
+LCD_data;
+
+
+SpiCom.TxData.len=len*CHAR_WIDTH;
+
+for(i= 0; i< len; i++)
+{
+	for(j=0;j<CHAR_WIDTH; j++)
+	{
+		SpiCom.TxData.Data[i*CHAR_WIDTH+j] = font [*str-32][j];
+	}
+	str++;
+}
+
+if(SpiCom.Status.B.TXSuc==1)
+{
+
+P8OUT&=~LCD_SPI_CS;
+HAL_USCIB1_Transmit();
+P8OUT|=LCD_SPI_CS;
+}
+
+
+}
+
+void Driver_LCD_WriteUInt(int num, unsigned char page, unsigned char col)
+{
+		unsigned char i=0,j,len=0;
+		char out[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+		Driver_LCD_Clearpage(page);
+		Driver_LCD_SetPosition(page, col);
+		LCD_data;
+		P8OUT &= ~ LCD_SPI_CS;
+		SpiCom.TxData.len = 0;
+		itoa(num,out,10);
+		while(out[i] != '\0')
+		{
+			len++;
+			i++;
+		}
+		SpiCom.TxData.len = len*CHAR_WIDTH;
+		for(i = 0; i < len; i++)
+		{
+			for(j = 0; j< CHAR_WIDTH; j++)
+			{
+				SpiCom.TxData.Data[i*6+j] = font[out[i]-32][j];
+			}
+		}
+
+
+		if(SpiCom.Status.B.TXSuc==1)
+		{
+
+		P8OUT&=~LCD_SPI_CS;
+		HAL_USCIB1_Transmit();
+		P8OUT|=LCD_SPI_CS;
+
+		}
+}
+
+
+void itoa(unsigned int value, char* result, unsigned char base)
+{
+  // check that the base if valid
+  if (base < 2 || base > 36) { *result = '\0';}
+
+  char* ptr = result, *ptr1 = result, tmp_char;
+  int tmp_value;
+
+  do {
+	tmp_value = value;
+	value /= base;
+	*ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz" [35 + (tmp_value - value * base)];
+  } while ( value );
+
+  // Apply negative sign
+  if (tmp_value < 0) *ptr++ = '-';
+  *ptr-- = '\0';
+  while(ptr1 < ptr) {
+	tmp_char = *ptr;
+	*ptr--= *ptr1;
+	*ptr1++ = tmp_char;
+  }
 
 }
