@@ -1,0 +1,18 @@
+/*
+ * hal_adc12.c
+ *
+ *  Created on: 29.11.2016
+ *      Author: Sebo
+ */
+
+
+#include "hal_adc12.h";
+
+
+
+void HAL_Adc_init(void)
+{
+	ADC12CTL1 |= ADC12SHP+
+	ADC12CTL0 |= ADC12MSC+ADC12REF2_5V+ADC12REFON+ADC12ON+ADC12ENC;
+}
+

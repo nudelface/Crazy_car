@@ -1,0 +1,114 @@
+/*
+ * Interrupts.c
+ *
+ *  Created on: 17.10.2016
+ *      Author: Sebastian
+ */
+#include <msp430.h>
+#include "Interrupts.h"
+#include "hal_gpio.h"
+#include "hal_general.h"
+#include "..\Driver\driver_general.h"
+#include "..\Driver\driver_aktorik.h"
+#include "hal_usciB1.h"
+#include "hal_adc12.h"
+
+
+ButtonCom Buttons;
+int SteeringCalibC=0;
+int initcounter=0;
+extern USCIB1_SPICom SpiCom;
+extern ADC12Com ADC1;
+
+int state=0;
+
+#pragma vector=PORT1_VECTOR
+__interrupt void PORT1_ISR (void)
+{
+	Buttons.active=1;
+	if (START_flag>=1)
+			{Buttons.button=1;}
+	else if (STOP_flag>=1)
+			{Buttons.button=2;}
+
+
+
+	P1IFG&=~START_Button;
+	P1IFG&=~STOP_Button;
+}
+
+#pragma vector=TIMER0_B0_VECTOR
+__interrupt void TIMERB_ISR (void)
+{
+
+	if (state==0)
+	{
+	LCD_BL_ON;
+	state=1;
+	}
+	else
+	{
+		LCD_BL_OFF;
+		state = 0;
+	}
+
+	Driver_LCD_WriteString("V_r",14,1,0);
+	Driver_LCD_WriteUInt(ADC1.Voltage_left,1, 18);
+	Driver_LCD_WriteUInt(ADC1.Voltage_right,2, 10);
+	Driver_LCD_WriteUInt(ADC1.vBat,4, 19);
+
+
+	TBCTL |= TBCLR;
+	TBEX0 |= TBIDEX__5;										// divide/5
+	TBCTL |= MC__UP;
+}
+
+#pragma vector=TIMER1_A0_VECTOR
+__interrupt void TIMERA_ISR (void)
+{
+	if(initcounter<=1000)
+	{
+
+	initcounter+=1;
+	}
+}
+
+#pragma vector=USCI_B1_VECTOR
+__interrupt void USCB_ISR (void)
+{
+
+if((UCB1IFG&UCRXIFG)==1)
+{
+	SpiCom.RXData.Data[SpiCom.TxData.cnt]=UCB1RXBUF;
+
+	SpiCom.TxData.cnt=SpiCom.TxData.cnt+1;
+
+	if(SpiCom.TxData.cnt <= SpiCom.TxData.len-1)
+	{
+
+		UCB1TXBUF=SpiCom.TxData.Data[SpiCom.TxData.cnt];
+		SpiCom.TxData.Data[SpiCom.TxData.cnt] = 0x0;
+		SpiCom.RXData.len=SpiCom.TxData.cnt;
+	}
+	else
+	{
+		SpiCom.Status.B.TXSuc=1;
+		SpiCom.TxData.cnt=0;
+	}
+}
+
+
+
+
+}
+
+#pragma vector=ADC12_VECTOR
+__interrupt void ADC_ISR (void)
+{
+
+	ADC1.Voltage_right=ADC12MEM0*Res;
+	ADC1.Voltage_left=ADC12MEM1*Res;
+	ADC1.Voltage_front=ADC12MEM2*Res;
+	ADC1.vBat=ADC12MEM3*Res;
+	ADC12IFG &= ~ ADC12IFG4;
+}

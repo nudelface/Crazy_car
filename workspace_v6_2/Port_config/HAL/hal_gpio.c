@@ -53,6 +53,8 @@ void HAL_GPIO_Init(void)
 	P4REN=0x0;  //0=pull disapled  1=pull enabled
 	P4DS=0x0;  // 0=limited 1=full drive strength
 	P4SEL=0x0;  //0=I/0 Funct  1=Peripheral module function selected
+
+
 	////////////Port5
     P5DIR=0xFF;//0=in 1=out
 	P5OUT=0x0;  //0=low 1=high oder 0=Pulldown 1=Pullup
@@ -60,13 +62,18 @@ void HAL_GPIO_Init(void)
 	P5REN=0x0;  //0=pull disapled  1=pull enabled
 	P5DS=0x0;  // 0=limited 1=full drive strength
 	P5SEL=0x0;  //0=I/0 Funct  1=Peripheral module function selected
+
+
 	///////////Port6
     P6DIR=OPEN5+OPEN6+OPEN7+Distance_Left_EN;//0=in 1=out
 	P6OUT=0x0;  //0=low 1=high oder 0=Pulldown 1=Pullup
 	//P1IN=;     //0=low 1=high
 	P6REN=0x0;  //0=pull disapled  1=pull enabled
 	P6DS=0x0;  // 0=limited 1=full drive strength
-	P6SEL=0x0;  //0=I/0 Funct  1=Peripheral module function selected
+	P6SEL=Distance_Right+Distance_Left+Distance_Front+VBAT_Measure;  //0=I/0 Funct  1=Peripheral module function selected
+
+
+
 	///////////Port7
     P7DIR|=OPEN0+OPEN1+OPEN4+OPEN5+OPEN6+OPEN7;		//+XT2OUT				//0=in 1=out
 	P7OUT=0x0;  //0=low 1=high oder 0=Pulldown 1=Pullup

@@ -74,6 +74,7 @@ void Driver_LCD_Clear(void)  //test Sebo
 				Driver_LCD_WriteCommand(&clearArr[1],3);
 				P8OUT&=~LCD_SPI_CS;
 				LCD_data;
+				//SpiCom.TxData.Data[2]=0xFF;
 				SpiCom.TxData.len=0x83;
 				HAL_USCIB1_Transmit();
 				P8OUT|=LCD_SPI_CS;
@@ -91,8 +92,6 @@ void Driver_LCD_Clearpage(unsigned char page)  //test Sebo
 {
 
 	LCD_data;
-	int c_p=0;
-	unsigned char column = 0;
 	unsigned char clearArr[5] = {DISPLAY_line_start,DISPLAY_Page,DISPLAY_col_msb,DISPLAY_col_lsb};
 	clearArr[1]=DISPLAY_Page | page;
 	Driver_LCD_WriteCommand(&clearArr[0],4);
@@ -114,7 +113,7 @@ void Driver_LCD_SetPosition(unsigned char page, unsigned char col)
 {
 	unsigned char set[3];
   set[0] = DISPLAY_Page + page;
-  set[1]= DISPLAY_col_msb + (col & 0xF0);
+  set[1]= DISPLAY_col_msb + ((col & 0xF0)>>4);
   set[2] = DISPLAY_col_lsb + (col);
 
 

@@ -11,13 +11,18 @@
 #include "..\Driver\driver_general.h"
 #include "..\Driver\driver_aktorik.h"
 #include "hal_usciB1.h"
+#include "hal_adc12.h"
+#include "..\Driver\driver_lcd.h"
 
 
 ButtonCom Buttons;
 int SteeringCalibC=0;
 int initcounter=0;
 extern USCIB1_SPICom SpiCom;
+extern ADC12Com ADC1;
+int counterz=0;
 
+int state=0;
 
 #pragma vector=PORT1_VECTOR
 __interrupt void PORT1_ISR (void)
@@ -37,7 +42,23 @@ __interrupt void PORT1_ISR (void)
 #pragma vector=TIMER0_B0_VECTOR
 __interrupt void TIMERB_ISR (void)
 {
-	SteeringCalibC+=20;
+
+	if (state==0)
+	{
+	LCD_BL_ON;
+	state=1;
+	}
+	else
+	{
+		LCD_BL_OFF;
+		state = 0;
+	}
+	counterz++;
+
+
+	ADC1.Status.B.ADCrdy=0;
+
+
 
 
 	TBCTL |= TBCLR;
@@ -82,4 +103,17 @@ if((UCB1IFG&UCRXIFG)==1)
 
 
 
+}
+
+#pragma vector=ADC12_VECTOR
+__interrupt void ADC_ISR (void)
+{
+
+	ADC1.Bit_right=ADC12MEM0;
+	ADC1.Bit_left=ADC12MEM1;
+	ADC1.Bit_front=ADC12MEM2;
+	ADC1.vBat=ADC12MEM3;
+	ADC12IFG &= ~ ADC12IFG4;
+	ADC12MCTL3 |= ADC12EOS;
+	ADC1.Status.B.ADCrdy=1;
 }

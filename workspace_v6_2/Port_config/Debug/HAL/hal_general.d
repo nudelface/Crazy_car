@@ -15,6 +15,7 @@ HAL/hal_general.obj: ../HAL/hal_timerB0.h
 HAL/hal_general.obj: ../HAL/hal_timerA1.h
 HAL/hal_general.obj: ../HAL/hal_gpio.h
 HAL/hal_general.obj: ../HAL/hal_usciB1.h
+HAL/hal_general.obj: ../HAL/hal_adc12.h
 
 ../HAL/hal_general.c: 
 ../HAL/hal_wdt.h: 
@@ -31,3 +32,4 @@ C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/intrinsics_legacy_undefs.h
 ../HAL/hal_timerA1.h: 
 ../HAL/hal_gpio.h: 
 ../HAL/hal_usciB1.h: 
+../HAL/hal_adc12.h: 

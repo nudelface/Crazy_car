@@ -12,6 +12,8 @@ HAL/Interrupts.obj: ../HAL/hal_general.h
 HAL/Interrupts.obj: ../HAL/../Driver/driver_general.h
 HAL/Interrupts.obj: ../HAL/../Driver/driver_aktorik.h
 HAL/Interrupts.obj: ../HAL/hal_usciB1.h
+HAL/Interrupts.obj: ../HAL/hal_adc12.h
+HAL/Interrupts.obj: ../HAL/../Driver/driver_lcd.h
 
 ../HAL/Interrupts.c: 
 C:/ti/ccsv6/ccs_base/msp430/include/msp430.h: 
@@ -25,3 +27,5 @@ C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/intrinsics_legacy_undefs.h
 ../HAL/../Driver/driver_general.h: 
 ../HAL/../Driver/driver_aktorik.h: 
 ../HAL/hal_usciB1.h: 
+../HAL/hal_adc12.h: 
+../HAL/../Driver/driver_lcd.h: 

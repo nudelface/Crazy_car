@@ -13,6 +13,7 @@
 #include "hal_timerA1.h"
 #include "hal_gpio.h"
 #include "hal_usciB1.h"
+#include "hal_adc12.h"
 
 USCIB1_SPICom SpiCom;
 
@@ -21,6 +22,7 @@ USCIB1_SPICom SpiCom;
 
 void HAL_Init(void)
 {
+	HAL_Adc_init();
 	HAL_Wdt_Init();
 	HAL_PMM_Init ();
 	HAL_GPIO_Init();
