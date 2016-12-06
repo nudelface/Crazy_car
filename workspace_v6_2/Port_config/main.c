@@ -72,7 +72,8 @@ void main(void)
 			Driver_LCD_WriteString("V_r",14,1,0);
 			Driver_LCD_WriteUInt(ADC1.Bit_left,1, 18);
 			Driver_LCD_WriteUInt(ADC1.Bit_right,2, 10);
-			Driver_LCD_WriteUInt(ADC1.vBat,4, 19);
+			Driver_LCD_WriteUInt(ADC1.Bit_front,4, 19);
+			Driver_LCD_WriteUInt(ADC1.Bit_front,5, 19);
 			counterz=0;
 		}
 
