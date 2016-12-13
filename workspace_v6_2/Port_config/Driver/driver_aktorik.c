@@ -92,7 +92,19 @@ void Driver_SetBrake (int Brake)    //Bremsen
 }
 
 void Driver_SetBack(int Backwards)
-{}
+{
+	state_akt = 2;
+	static int BackPWM = 0;
+
+	if((Backwards>=0) && (Backwards<=100))  	//Gasbereich begrenzen
+	{
+		BackPWM = MinRPW - res_back * Backwards; 	 // Pwm= PWM0Gas+ Throttle* (PWMMaxGas-PWM0Gas)/100
+	}
+	if((BackPWM>=MaxRPW) && (BackPWM<=MinRPW))  		//Vorsichtsmaßnahme, damit wirklich keine falsche PWM gesetzt wird
+	{
+		TA1CCR1 = BackPWM;
+	}
+}
 
 void Driver_PWMInit(int PWM, int cycle)
 {

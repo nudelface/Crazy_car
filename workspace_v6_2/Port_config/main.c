@@ -24,6 +24,8 @@ extern ADC12Com ADC1;
 extern int state;
 extern int counterz;
 
+int drivestate=1;
+
 int drive=0;
 
 
@@ -49,6 +51,7 @@ void main(void)
 			Buttons.button=0;
 			Buttons.active=0;
 			Driver_SetThrottle(0);
+			drive=0;
 
 			//Driver_LCD_WriteUInt(255,3, 0);
 		}
@@ -78,15 +81,43 @@ void main(void)
 			counterz=0;
 		}
 
-		if (drive=1 && ADC1.Bit_front>1300)
+
+		if (drive==1 &&( ADC1.Bit_front>1600 ||ADC1.Bit_right>2500 ||ADC1.Bit_left>2500) )
 		{
-			Driver_SetBrake(100);
-			drive=0;
+			Driver_SetBack(80);
+
+			if(ADC1.Bit_left>ADC1.Bit_right-40)
+			{
+			Driver_SetSteering(-560);} //rechts}
+			else if(ADC1.Bit_left<ADC1.Bit_right+40)
+			{Driver_SetSteering(560);}
+
 		}
+
+		else if(drive==1&&ADC1.Bit_front>900 )
+			{
+				Driver_SetThrottle(45);
+
+				if(ADC1.Bit_left>ADC1.Bit_right-50)
+				{
+				Driver_SetSteering(560);} //rechts}
+				else
+				{Driver_SetSteering(-560);}
+
+
+
+
 
 //	LCD_BL_OFF;
 //	z=a+b;
 //LCD_BL_ON;
+			}
+				else if (drive==1 && ADC1.Bit_front<900)
+				{
+					Driver_SetThrottle(60);
+					Driver_SetSteering(0);
+
+				}
 
 	}
 }
