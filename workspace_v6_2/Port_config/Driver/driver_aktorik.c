@@ -9,6 +9,7 @@
 #include "..\HAL\hal_timerA1.h"
 
 extern int initcounter;
+int state_akt=1;
 
 
 
@@ -54,13 +55,41 @@ void Driver_ESCInit(void)
 }
 
 
-void Driver_SetThrottle (int Throttle)  //Gasgeben
+
+void Driver_SetThrottle (int Throttle)  		//Gasgeben
 {
+
+	static int ThPWM=0;
+	state_akt=1;
+
+	if((Throttle >= 0) && (Throttle <= 100))  	//Gasbereich begrenzen
+	{
+		ThPWM = MinFPW + res_throttle * Throttle; 	 // Pwm= PWM0Gas+ Throttle* (PWMMaxGas-PWM0Gas)/100
+	}
+	if((ThPWM>=MinFPW) && (ThPWM<=MaxFPW))  		//Vorsichtsmaßnahme, damit wirklich keine falsche PWM gesetzt wird
+	{
+		TA1CCR1 = ThPWM;
+	}
 
 }
 
-void Driver_SetBrake (int Brake)
-{}
+void Driver_SetBrake (int Brake)    //Bremsen
+{
+
+	static int BrPWM = 0;
+	if((Brake >= 0) && (Brake <= 100))  	//Gasbereich begrenzen
+	{
+		if (state_akt == 1)
+		{
+			BrPWM = MinFPW - res_brk_f * Brake;
+		}// Pwm= PWM0Gas+ Throttle* (PWMMaxGas-PWM0Gas)/100
+		else if(state_akt==2)
+		{
+			BrPWM = MinRPW + res_brk_f * Brake;
+		}
+	}
+	TA1CCR1 = BrPWM;
+}
 
 void Driver_SetBack(int Backwards)
 {}
