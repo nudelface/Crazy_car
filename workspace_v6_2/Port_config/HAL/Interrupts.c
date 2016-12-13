@@ -105,6 +105,7 @@ if((UCB1IFG&UCRXIFG)==1)
 
 }
 
+/*
 #pragma vector=ADC12_VECTOR
 __interrupt void ADC_ISR (void)
 {
@@ -120,9 +121,18 @@ __interrupt void ADC_ISR (void)
 	ADC12CTL0 |= ADC12ENC;
 }
 }
-//#pragma vector=DMA_VECTOR
-//__interrupt void DMA_ISR(void)
-//{
-//	DMA0CTL&=~DMAIFG;
+*/
 
-//}
+
+#pragma vector=DMA_VECTOR
+__interrupt void DMA_ISR(void)
+{
+
+	if(DMAIV==0x02)
+	{
+	ADC1.Status.B.ADCrdy=1;
+	DMA0CTL|=DMAEN;
+	ADC12CTL0 |= ADC12ENC;
+	}
+}
+

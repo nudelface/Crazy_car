@@ -19,8 +19,8 @@ typedef struct {
 			unsigned char dummy:7;
 		}B;
 	}Status;
-	unsigned int Bit_left;
 	unsigned int Bit_right;
+	unsigned int Bit_left;
 	unsigned int Bit_front;
 	unsigned int vBat;
 
