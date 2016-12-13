@@ -107,6 +107,33 @@ void Driver_LCD_Clearpage(unsigned char page)  //test Sebo
 }
 
 
+void Driver_LCD_Clearspace(unsigned char page, unsigned char col, unsigned char length)  //test Sebo
+{
+
+	unsigned char i,j;
+
+	Driver_LCD_SetPosition(page, col);
+	LCD_data;
+
+	SpiCom.TxData.len=length;
+
+	for(i= 0; i< length; i++)
+	{
+
+			SpiCom.TxData.Data[i] = 0x0;
+	}
+
+	P8OUT&=~LCD_SPI_CS;
+	if(SpiCom.Status.B.TXSuc==1)
+	{
+
+	P8OUT&=~LCD_SPI_CS;
+	HAL_USCIB1_Transmit();
+	P8OUT|=LCD_SPI_CS;
+	}
+
+}
+
 
 
 void Driver_LCD_SetPosition(unsigned char page, unsigned char col)
@@ -114,7 +141,7 @@ void Driver_LCD_SetPosition(unsigned char page, unsigned char col)
 	unsigned char set[3];
   set[0] = DISPLAY_Page + page;
   set[1]= DISPLAY_col_msb + ((col & 0xF0)>>4);
-  set[2] = DISPLAY_col_lsb + (col);
+  set[2] = DISPLAY_col_lsb + (col & 0x0F);
 
 
   Driver_LCD_WriteCommand(&set[0], 3);
@@ -126,7 +153,7 @@ void Driver_LCD_SetPosition(unsigned char page, unsigned char col)
 void Driver_LCD_WriteString(unsigned char *str, unsigned char len, unsigned char page, unsigned char col)
 {
 	unsigned char i,j;
-Driver_LCD_Clearpage(page);
+//Driver_LCD_Clearspace(page,col,len*CHAR_WIDTH);
 Driver_LCD_SetPosition(page, col);
 LCD_data;
 
@@ -158,10 +185,7 @@ void Driver_LCD_WriteUInt(int num, unsigned char page, unsigned char col)
 		unsigned char i=0,j,len=0;
 		char out[16]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-		Driver_LCD_Clearpage(page);
-		Driver_LCD_SetPosition(page, col);
-		LCD_data;
-		P8OUT &= ~ LCD_SPI_CS;
+
 		SpiCom.TxData.len = 0;
 		itoa(num,out,10);
 		while(out[i] != '\0')
@@ -169,7 +193,11 @@ void Driver_LCD_WriteUInt(int num, unsigned char page, unsigned char col)
 			len++;
 			i++;
 		}
-		SpiCom.TxData.len = len*CHAR_WIDTH;
+	//	Driver_LCD_Clearspace(page,col,len*CHAR_WIDTH);
+		Driver_LCD_SetPosition(page, col);
+		LCD_data;
+		P8OUT &= ~ LCD_SPI_CS;
+		SpiCom.TxData.len = 5*CHAR_WIDTH;
 		for(i = 0; i < len; i++)
 		{
 			for(j = 0; j< CHAR_WIDTH; j++)

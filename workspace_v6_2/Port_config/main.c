@@ -9,6 +9,7 @@
 #include "Driver\driver_aktorik.h"
 #include "HAL\hal_usciB1.h"
 #include "HAL\hal_adc12.h"
+#include "HAL\hal_dma.h"
 #include "Driver\driver_lcd.h"
 
 /*
@@ -65,15 +66,19 @@ void main(void)
 
 		if(ADC1.Status.B.ADCrdy==1)
 		{
-			Driver_LCD_WriteString("V_r",14,1,0);
-			Driver_LCD_WriteUInt(ADC1.Bit_left,1, 18);
-			Driver_LCD_WriteUInt(ADC1.Bit_right,2, 10);
-			Driver_LCD_WriteUInt(ADC1.Bit_front,4, 19);
-			Driver_LCD_WriteUInt(ADC1.Bit_front,5, 19);
+			Driver_LCD_WriteString("V_left",6,1,0);
+			Driver_LCD_WriteUInt(ADC1.Bit_left,1, 50);
+			Driver_LCD_WriteString("V_right",7,2,0);
+			Driver_LCD_WriteUInt(ADC1.Bit_right,2, 50);
+			Driver_LCD_WriteString("V_front",7,4,0);
+			Driver_LCD_WriteUInt(ADC1.Bit_front,4, 50);
+			Driver_LCD_WriteString("V_Batt",6,5,0);
+			Driver_LCD_WriteUInt(ADC1.vBat,5, 90);
+			ADC1.Status.B.ADCrdy=0;
 			counterz=0;
 		}
 
-		if (drive=1 && ADC1.Bit_front>1500)
+		if (drive=1 && ADC1.Bit_front>1300)
 		{
 			Driver_SetBrake(100);
 			drive=0;

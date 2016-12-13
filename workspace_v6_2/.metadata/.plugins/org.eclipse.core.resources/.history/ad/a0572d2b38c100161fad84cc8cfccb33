@@ -1,0 +1,23 @@
+/*
+ * hal_dma.c
+ *
+ *  Created on: 13.12.2016
+ *      Author: Sebo
+ */
+#include "hal_dma.h"
+#include <msp430.h>
+
+extern ADC12Com ADC1;
+
+void HAL_DMA_Init(void)
+{
+	DMACTL0|=DMA0TSEL_24;
+	DMACTL4|=DMARMWDIS+ROUNDROBIN;
+	DMA0CTL |= DMADT_1+DMADSTINCR1+DMADSRCINCR1;
+	DMA0DA|=&ADC1.Bit_right;
+	DMA0DA|=&ADC12MEM0;
+	DMA0SZ|= 0x4;
+	DMA0CTL|=DMAEN
+
+
+}

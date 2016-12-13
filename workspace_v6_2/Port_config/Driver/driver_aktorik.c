@@ -39,17 +39,17 @@ void Driver_ESCInit(void)
 /// 140 Perioden Maximal Gas  2ms
 
 
-		Driver_PWMInit(2500,3);// in PWM Modus
+		Driver_PWMInit(MaxRPW,3);// in PWM Modus
 		// __delay_cycles(5000);
-		Driver_PWMInit(2500,140);// MAX rpw
+		Driver_PWMInit(MaxRPW,140);// MAX rpw
 		//__delay_cycles(5000);
-		Driver_PWMInit(3000,140);// Min Rpw
+		Driver_PWMInit(MinRPW,140);// Min Rpw
 		// __delay_cycles(5000);
-		Driver_PWMInit(4000,140);// Min FPW
+		Driver_PWMInit(MinFPW,140);// Min FPW
 		//__delay_cycles(5000);
-		Driver_PWMInit(5000,140);// Max FPW
+		Driver_PWMInit(MaxFPW,140);// Max FPW
 		//__delay_cycles(5000);
-		Driver_PWMInit(3500,1);// Max Brake
+		Driver_PWMInit(MaxBRK,1);// Max Brake
 
 
 }

@@ -17,9 +17,9 @@
 
 #define MaxRPW 2500
 #define MinRPW 3000
-#define MaxBRK 3500
-#define MinFPW 4000
-#define MaxFPW 5000
+#define MaxBRK 4000
+#define MinFPW 5000
+#define MaxFPW 6000
 #define res_throttle ((MaxFPW-MinFPW)/100)
 #define res_brk_f ((MinFPW-MaxBRK)/100)
 #define res_brk_r ((MaxBRK-MinRPW)/100)

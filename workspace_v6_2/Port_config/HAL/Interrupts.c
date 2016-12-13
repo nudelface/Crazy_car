@@ -109,11 +109,20 @@ if((UCB1IFG&UCRXIFG)==1)
 __interrupt void ADC_ISR (void)
 {
 
+	if(ADC12IV==0xC)
+{
 	ADC1.Bit_right=ADC12MEM0;
 	ADC1.Bit_left=ADC12MEM1;
 	ADC1.Bit_front=ADC12MEM2;
 	ADC1.vBat=ADC12MEM3;
-	ADC12IFG &= ~ ADC12IFG4;
-	ADC12MCTL3 |= ADC12EOS;
 	ADC1.Status.B.ADCrdy=1;
+	//ADC12IFG&=~ADC12IFG3;
+	ADC12CTL0 |= ADC12ENC;
 }
+}
+//#pragma vector=DMA_VECTOR
+//__interrupt void DMA_ISR(void)
+//{
+//	DMA0CTL&=~DMAIFG;
+
+//}

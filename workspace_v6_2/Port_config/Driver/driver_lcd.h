@@ -28,6 +28,8 @@
 void Driver_LCD_WriteCommand(unsigned char *, unsigned char);
 void Driver_LCD_Init(void);
 void Driver_LCD_Clear(void);
+void Driver_LCD_Clearpage(unsigned char);
+void Driver_LCD_Clearspace(unsigned char, unsigned char, unsigned char);
 void Driver_LCD_SetPosition(unsigned char, unsigned char);
 void Driver_LCD_WriteString(unsigned char *, unsigned char, unsigned char, unsigned char);
 void Driver_LCD_WriteUInt( int, unsigned char, unsigned char);
