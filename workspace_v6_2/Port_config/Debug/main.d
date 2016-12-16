@@ -18,6 +18,7 @@ main.obj: ../HAL/hal_adc12.h
 main.obj: ../HAL/hal_dma.h
 main.obj: ../Driver/driver_lcd.h
 main.obj: ../AL/interp.h
+main.obj: ../AL/Sensorcalib.h
 
 ../main.c: 
 ../HAL/hal_general.h: 
@@ -37,3 +38,4 @@ C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/intrinsics_legacy_undefs.h
 ../HAL/hal_dma.h: 
 ../Driver/driver_lcd.h: 
 ../AL/interp.h: 
+../AL/Sensorcalib.h: 

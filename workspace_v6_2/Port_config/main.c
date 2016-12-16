@@ -12,6 +12,7 @@
 #include "HAL\hal_dma.h"
 #include "Driver\driver_lcd.h"
 #include "AL\interp.h"
+#include "AL\Sensorcalib.h"
 
 /*
  * main.c
@@ -24,15 +25,15 @@ extern USCIB1_SPICom SpiCom;
 extern ADC12Com ADC1;
 extern int state;
 extern int counterz;
-float Abstand;
+float AbstandRechts;
+int AbstandLinks;
 
 int drivestate=1;
 
 int drive=0;
 
 
-int Values_right[21]={80,75,70,65,60,55,50,45,40,35,30,25,20,15,10,7,5,4,3,2,0};
-int Bit_right[21]={400,423,465,486,507,550,594,636,690,780,865,970,1121,1350,1674,1998,2307,2465,2658,2918,3353};
+
 
 
 
@@ -48,7 +49,7 @@ void main(void)
 			Driver_Init();
 
 
-Abstand= interp(Bit_right, Values_right, 1050, 21);
+//Abstand = interp(Bit_right, Values_right, 1050, 21);
 
 	while(1)
 	{
@@ -79,10 +80,15 @@ Abstand= interp(Bit_right, Values_right, 1050, 21);
 
 		if(ADC1.Status.B.ADCrdy==1)
 		{
+			AbstandRechts =  interp(Bit_right, Values_side, ADC1.Bit_right, 21);
+			AbstandLinks = interp(Bit_left, Values_side, ADC1.Bit_left, 21);
+
+
+
 			Driver_LCD_WriteString("V_left",6,1,0);
-			Driver_LCD_WriteUInt(ADC1.Bit_left,1, 50);
+			Driver_LCD_WriteUInt((int)AbstandLinks,1, 50);
 			Driver_LCD_WriteString("V_right",7,2,0);
-			Driver_LCD_WriteUInt(ADC1.Bit_right,2, 50);
+			Driver_LCD_WriteUInt((int)AbstandRechts,2, 50);
 			Driver_LCD_WriteString("V_front",7,4,0);
 			Driver_LCD_WriteUInt(ADC1.Bit_front,4, 50);
 			Driver_LCD_WriteString("V_Batt",6,5,0);
