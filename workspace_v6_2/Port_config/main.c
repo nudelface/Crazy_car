@@ -11,6 +11,7 @@
 #include "HAL\hal_adc12.h"
 #include "HAL\hal_dma.h"
 #include "Driver\driver_lcd.h"
+#include "AL\interp.h"
 
 /*
  * main.c
@@ -23,10 +24,17 @@ extern USCIB1_SPICom SpiCom;
 extern ADC12Com ADC1;
 extern int state;
 extern int counterz;
+float Abstand;
 
 int drivestate=1;
 
 int drive=0;
+
+
+int Values_right[21]={80,75,70,65,60,55,50,45,40,35,30,25,20,15,10,7,5,4,3,2,0};
+int Bit_right[21]={400,423,465,486,507,550,594,636,690,780,865,970,1121,1350,1674,1998,2307,2465,2658,2918,3353};
+
+
 
 
 ///unsigned char cmdArr[9]= {LCD_RESET, LCD_BIAS, ADC_SEL_NORMAL, COMMON_REVERSE, RES_RATIO, ELEC_VOL_MODE, ELEC_VOL_VALUE, POWER_CONT, DISPLAY_ON};
@@ -34,11 +42,13 @@ int drive=0;
 void main(void)
 {
 
+
 	SteeringCalibC=-560;
 			HAL_Init();
 			Driver_Init();
 
 
+Abstand= interp(Bit_right, Values_right, 1050, 21);
 
 	while(1)
 	{
@@ -112,12 +122,21 @@ void main(void)
 //	z=a+b;
 //LCD_BL_ON;
 			}
-				else if (drive==1 && ADC1.Bit_front<900)
+
+		else if(drive==1 && ADC1.Bit_front<900)
+		{
+			Driver_SetThrottle(70);
+			Driver_SetSteering(0);
+
+		}
+				else if (drive==1 && ADC1.Bit_front<700)
 				{
-					Driver_SetThrottle(60);
+					Driver_SetThrottle(80);
 					Driver_SetSteering(0);
 
 				}
 
 	}
+
+
 }
