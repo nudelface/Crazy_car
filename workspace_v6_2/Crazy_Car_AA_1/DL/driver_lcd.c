@@ -5,8 +5,9 @@
  *      Author: Sebo
  */
 #include "driver_lcd.h"
-#include "HAL\hal_gpio.h"
-#include "HAL\hal_usciB1.h"
+
+#include "..\HAL\hal_gpio.h"
+#include "..\HAL\hal_usciB1.h"
 #include "drl_lcd_fonts.h"
 
 

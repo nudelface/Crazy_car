@@ -18,6 +18,4 @@ void Driver_Init(void)
 	Driver_LCD_Init();      //LCD Initialisieren
 	Driver_SetSteering(0);  //Steering initialisieren
     Driver_ESCInit();       // ESC Initialisieren
-
-
 }

@@ -1,7 +1,7 @@
 /*
  *
  *
- */////////////FERTIG
+ *
  *
  *
  * driver_aktorik.c
