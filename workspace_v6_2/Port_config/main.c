@@ -44,7 +44,7 @@ void main(void)
 {
 
 
-	SteeringCalibC=-560;
+	SteeringCalibC=-100;
 			HAL_Init();
 			Driver_Init();
 
@@ -104,9 +104,9 @@ void main(void)
 
 			if(ADC1.Bit_left>ADC1.Bit_right-40)
 			{
-			Driver_SetSteering(-560);} //rechts}
+			Driver_SetSteering(-100);} //rechts}
 			else if(ADC1.Bit_left<ADC1.Bit_right+40)
-			{Driver_SetSteering(560);}
+			{Driver_SetSteering(100);}
 
 		}
 
@@ -116,9 +116,9 @@ void main(void)
 
 				if(ADC1.Bit_left>ADC1.Bit_right-50)
 				{
-				Driver_SetSteering(560);} //rechts}
+				Driver_SetSteering(100);} //rechts}
 				else
-				{Driver_SetSteering(-560);}
+				{Driver_SetSteering(-100);}
 
 
 

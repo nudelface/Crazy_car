@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete 6 resources" deleteContents="false" description="Delete 6 resources" element1="/Crazy_Car_AA_1/DL/driver_aktorik.c" element2="/Crazy_Car_AA_1/DL/driver_aktorik.h" element3="/Crazy_Car_AA_1/DL/driver_general.c" element4="/Crazy_Car_AA_1/DL/driver_general.h" element5="/Crazy_Car_AA_1/DL/driver_lcd.c" element6="/Crazy_Car_AA_1/DL/driver_lcd.h" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="6" stamp="1483963846019"/>
+</session>

@@ -12,7 +12,45 @@ extern int initcounter;
 int state_akt=1;
 
 
+void Driver_SetSteering (int SteeringAngle)  //Void funktion. Eingabe: -100% bis +100% Links ist minus Rechts ist plus
+{
+	static int StPWM = 0;
+							// Mittelpunktkalibrrierung ist wichtig!!!!
+	if ((SteeringAngle < 0) && (SteeringAngle >= -100) ) //Lenkunk nach link und kleiner als 100%, 100% entspricht dem linken Anschlagspunkt, über 100% kann die LEnkung zerstören
+	{
+		StPWM = StPWM_middle + (SteeringAngle * res_left); // PWM-Wrt wird berechnet. PWM=PWM_Mitte - X% * (PWM_mitte-Anschlag_links)/100
+	}
+	else if ((SteeringAngle>0) && (SteeringAngle<=100))
+	{
+		StPWM = StPWM_middle + (SteeringAngle * res_right); //PWM=PWM_Mitte + X% * (Anschlag_Rechts-PWM_mitte)/100
+	}
+	else if (SteeringAngle>100)
+	{
+		StPWM = StPWM_full_right;
+	}
+	else if (SteeringAngle<-100)
+	{
+		StPWM = StPWM_full_left;
+	}
+	else
+	{
+		StPWM = StPWM_middle;
+	}
 
+	if((StPWM>=StPWM_full_left) && (StPWM<=StPWM_full_right))
+	{
+		TA1CCR2 = StPWM;
+	}  //Beschreiben der Compare-Registers  PWM setzen
+	else
+	{
+		StPWM = StPWM_middle;
+	}
+
+
+}
+
+
+/*
 void Driver_SetSteering (int SteeringAngle)
 {
 	if (SteeringAngle<-560)
@@ -28,7 +66,7 @@ void Driver_SetSteering (int SteeringAngle)
 		TA1CCR2=3590+SteeringAngle;
 	}
 }
-
+*/
 void Driver_ESCInit(void)
 {
 ///  3 Perioden Random PWM

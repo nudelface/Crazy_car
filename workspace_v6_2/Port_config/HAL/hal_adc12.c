@@ -12,7 +12,7 @@
 
 ADC12Com ADC1;
 
-void HAL_Adc_init(void)
+void HAL_Adc_init(void)    //ADC Initialisieren
 {
 	ADC12MCTL0 |= ADC12INCH_0+ADC12SREF_4;
 	ADC12MCTL1 |= ADC12INCH_1+ADC12SREF_4;
