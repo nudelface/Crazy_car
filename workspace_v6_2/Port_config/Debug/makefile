@@ -33,7 +33,7 @@ $(GEN_CMDS__FLAG) \
 
 -include ../makefile.init
 
-RM := DEL /F
+RM := 
 RMDIR := RMDIR /S/Q
 
 # All of the sources participating in the build are defined here
@@ -161,13 +161,13 @@ all: Port_config.out
 Port_config.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MSP430 Linker'
-	"C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/bin/cl430" -vmspx --data_model=restricted -Ooff --opt_for_speed=0 --use_hw_mpy=F5 --advice:power=all -g --define=__MSP430F5335__ --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 --printf_support=minimal -z -m"Port_config.map" --stack_size=160 --heap_size=160 --cinit_hold_wdt=on -i"C:/ti/ccsv6/ccs_base/msp430/include" -i"C:/ti/ccsv6/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/lib" -i"C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="Port_config_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "Port_config.out" $(ORDERED_OBJS)
+	"" -vmspx --data_model=restricted -Ooff --opt_for_speed=0 --use_hw_mpy=F5 --advice:power=all -g --define=__MSP430F5335__ --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 --printf_support=minimal -z -m"Port_config.map" --stack_size=160 --heap_size=160 --cinit_hold_wdt=on -i"/msp430/include" -i"/msp430/lib/5xx_6xx_FRxx" -i"/lib" -i"/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="Port_config_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "Port_config.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 Port_config.hex: $(EXE_OUTPUTS)
 	@echo 'Invoking: MSP430 Hex Utility'
-	"C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/bin/hex430" --memwidth=8 --romwidth=8 -o "Port_config.hex" $(EXE_OUTPUTS__QUOTED)
+	"" --memwidth=8 --romwidth=8 -o "Port_config.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $@'
 	@echo ' '
 

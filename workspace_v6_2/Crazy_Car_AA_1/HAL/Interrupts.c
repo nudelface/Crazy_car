@@ -21,6 +21,7 @@ int initcounter=0;  // Prüfen ob Leiche
 extern USCIB1_SPICom SpiCom;
 extern ADC12Com ADC1;
 int counterz=0;
+extern int DiskretEn;
 
 int state=0;
 
@@ -33,8 +34,7 @@ __interrupt void PORT1_ISR (void)
 	else if (STOP_flag>=1)
 			{Buttons.button=2;}
 
-	P1IFG&=~START_Button;
-	P1IFG&=~STOP_Button;
+
 }
 
 
@@ -44,8 +44,8 @@ __interrupt void PORT1_ISR (void)
 #pragma vector=TIMER0_B0_VECTOR
 __interrupt void TIMERB_ISR (void)
 {
-
-	if (state==0)
+	LCD_BL_ON;
+	/*if (state==0)
 	{
 	LCD_BL_ON;
 	state=1;
@@ -54,7 +54,7 @@ __interrupt void TIMERB_ISR (void)
 	{
 		LCD_BL_OFF;
 		state = 0;
-	}
+	}*/
 	counterz++;
 
 	ADC1.Status.B.ADCrdy=0;
@@ -62,6 +62,9 @@ __interrupt void TIMERB_ISR (void)
 	TBCTL |= TBCLR;
 	TBEX0 |= TBIDEX__5;										// divide/5
 	TBCTL |= MC__UP;
+
+	P1IFG&=~START_Button;
+	P1IFG&=~STOP_Button;
 }
 
 
@@ -76,6 +79,7 @@ __interrupt void TIMERA_ISR (void)
 
 	initcounter+=1;
 	}
+
 }
 
 
@@ -123,6 +127,7 @@ __interrupt void DMA_ISR(void)
 	ADC1.Status.B.ADCrdy=1;
 	DMA0CTL|=DMAEN;
 	ADC12CTL0 |= ADC12ENC;
+	DiskretEn=1;
 	}
 }
 
