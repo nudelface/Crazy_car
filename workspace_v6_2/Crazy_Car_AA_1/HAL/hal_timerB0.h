@@ -12,7 +12,7 @@
 
 void HAL_TimerB0_Init(void);
 #define Fr_divider_B  ((SMCLK_FREQU / 8 / 5)  +1)     // Hardware dividiert SMCLK Durch 8, dann durch 5..Das ist die Timer Clock. Timer Click durch zielfrequenz ergibt zählwert //fr ergibt 4hz,bl umschalten dividiert durch 2 zu 2hz
-#define Fr_divider_B1  Fr_divider_B / 25
+#define Fr_divider_B1  Fr_divider_B / 50
 
 
 #endif /* HAL_HAL_TIMERB0_H_ */
