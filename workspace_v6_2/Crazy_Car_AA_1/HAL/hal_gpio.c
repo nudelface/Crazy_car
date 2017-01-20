@@ -21,7 +21,7 @@ void HAL_GPIO_Init(void)
 	//P1IN=;     //0=low 1=high
 	P1REN=RPM_Sensor+RPM_Sensor_DIR+START_Button+STOP_Button;  //0=pull disapled  1=pull enabled
 	P1DS=0x0;  // 0=limited 1=full drive strength
-	P1SEL=0x0;  //0=I/0 Funct  1=Peripheral module function selected
+	P1SEL=RPM_Sensor;  //0=I/0 Funct  1=Peripheral module function selected
 	P1IE=START_Button+STOP_Button;
 	P1IES=START_Button+STOP_Button;
 	P1IFG=0x0;

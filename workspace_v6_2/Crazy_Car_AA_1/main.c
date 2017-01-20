@@ -10,6 +10,7 @@
 #include "HAL\hal_usciB1.h"
 #include "HAL\hal_adc12.h"
 #include "HAL\hal_dma.h"
+#include "HAL\hal_timerA0.h"
 #include "DL\driver_lcd.h"
 #include "AL\Sensorcalib.h"
 #include "AL\sense_read.h"
@@ -23,6 +24,12 @@ float kpThrottle=0.3;
 float ThrottleCorr=0;
 int dir=0;  //1=links 2=rechts
 
+
+
+
+// 22 incremente
+
+
 //int SteeringCalibC;
 extern int SteeringCalibC;
 extern ButtonCom Buttons;
@@ -30,12 +37,31 @@ extern USCIB1_SPICom SpiCom;
 extern ADC12Com ADC1;
 extern int state;
 extern int counterz;
+extern double PeriodTime;
+extern double PeriodCount;
+extern int SpeedReady;
+extern int SpeedDir;
+
+
 int AbstandRechts;
 int AbstandLinks;
 int AbstandFront;
 int LastValueLeft=0;
 int LastValueRight=0;
 int LastValueFront=0;
+double ESpeed=0;
+double LastSpeed=0;
+double LastESpeed=0;
+int pwmOut=0;
+double KpSpeed=0.8;
+double KiSpeed=1;
+double KdSpeed=1;
+double SpeedDes=40
+		;
+double Speedf=0;
+double Speed=0; //m/s
+double LastiSpeed=0;
+double iSpeed=0;
 
 int dFront;
 int dLeft;
@@ -114,9 +140,25 @@ void main(void)
 			}
 		}
 
+		if(SpeedReady==1)
+		{
+			LastSpeed=Speed;
+
+			PeriodTime=(PeriodCount*0.016)/1000;
+			Speedf=1/PeriodTime;
+			Speed=5.06*Speedf/10;
+
+			LastESpeed=ESpeed;
+			ESpeed=SpeedDes-Speed;
+			SpeedReady=0;
+		}
+
 
 		if(ADC1.Status.B.ADCrdy==1)
 		{
+
+
+
 			LastValueLeft=AbstandLinks;
 			LastValueRight=AbstandRechts;
 			LastValueFront=AbstandFront;
@@ -129,6 +171,10 @@ void main(void)
 			dLeft=AbstandLinks-LastValueLeft;
 			dRight=AbstandRechts-LastValueRight;
 			dFront=AbstandFront-LastValueFront;
+
+			DeltaDist=line_des+(AbstandRechts-AbstandLinks);
+			LastDeltaDist=LastValueRight-LastValueLeft;
+			dDelta=DeltaDist-LastDeltaDist;
 
 
 			Driver_LCD_WriteString("dist_left",6,1,0);
@@ -148,8 +194,8 @@ void main(void)
 			Driver_LCD_WriteUInt((int)AbstandRechts,2, 50);
 			Driver_LCD_WriteString("V_front",7,4,0);
 			Driver_LCD_WriteUInt(AbstandFront,4, 50);
-			Driver_LCD_WriteString("V_Batt",6,5,0);
-			Driver_LCD_WriteUInt(ADC1.vBat,5, 90);
+			Driver_LCD_WriteString("speed",5,5,0);
+			Driver_LCD_WriteUInt((int)Speed,5, 90);
 
 
 			ADC1.Status.B.ADCrdy=0;
@@ -207,9 +253,7 @@ void main(void)
 
 
 						//LCD_BL_OFF;
-			DeltaDist=line_des+(AbstandRechts-AbstandLinks);
-			LastDeltaDist=LastValueRight-LastValueLeft;
-			dDelta=DeltaDist-LastDeltaDist;
+
 				if((DeltaDist>3)||(DeltaDist<-3))
 				{
 				Steer=DeltaDist*kpSteer+dDelta*2.1;
@@ -224,7 +268,43 @@ void main(void)
 				if(drive==1)
 				{
 
-					if(dFront<-10)
+					if(AbstandFront>183)
+					{
+						SpeedDes=50;
+					}
+					else if(AbstandFront>100)
+					{
+						SpeedDes=20;
+					}
+					else
+					{
+						SpeedDes=10;
+					}
+					iSpeed=(ESpeed*0.02)+LastiSpeed;
+					LastiSpeed=iSpeed;
+					pwmOut=KpSpeed*ESpeed+iSpeed*KiSpeed+(ESpeed-LastESpeed)*KdSpeed;
+
+					if(pwmOut>0 && pwmOut<100)
+					{
+					Driver_SetThrottle(pwmOut);
+					}
+					else if (pwmOut<=-10  &&  pwmOut>-50)    // 0=vorwärts????
+					{
+						if((dir==0) && (Speed>2))
+							{Driver_SetBack(0);}
+						else
+						{Driver_SetBack(pwmOut);}
+					}
+					else if(pwmOut<=0 && pwmOut>10)
+					{
+						Driver_SetThrottle(0);
+					}
+					else
+					{
+						Driver_SetBack(100);
+					}
+
+				/*	(if(dFront<-10)
 					{
 						Driver_SetBack(100);
 					}
@@ -251,17 +331,23 @@ void main(void)
 						Driver_SetThrottle(60);
 
 					}
-					else if((AbstandFront<=50)&&(dFront>-40)&&StartupC>100)
+					*/
+
+
+				}
+
+
+				  if((AbstandFront<=50)&&(dFront>-10)&&StartupC>100)
 					{
 						Driver_SetBrake(1);
 						statecase=Curve;
 
 					}
-					/*else if((AbstandFront<=50)&&(dFront<-8)&&StartupC>100)
+					else if((AbstandFront<=50)&&(dFront<-10)&&StartupC>100)
 					{
 						statecase=Hinderniss;
 						didit=1;
-					}*/
+					}
 					else if(AbstandFront<=20 && (AbstandLinks<15||AbstandRechts<15))
 					{
 						Driver_SetBrake(11);
@@ -269,7 +355,7 @@ void main(void)
 
 
 					}
-				}
+
 
         if (StartupC>100)
         {
@@ -366,7 +452,7 @@ void main(void)
             break;
 
 		}
-		DiskretEn=0;
+		DiskretEn=1;   ///////Achtung vllt eher doch auf 0 setzen!!!
 	}
 
 

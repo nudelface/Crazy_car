@@ -22,6 +22,12 @@ extern USCIB1_SPICom SpiCom;
 extern ADC12Com ADC1;
 int counterz=0;
 extern int DiskretEn;
+int SpeedReady=0;
+int SpeedDir=0;
+
+double PeriodTime=0;
+double PeriodCount=0;
+
 
 int state=0;
 
@@ -82,6 +88,18 @@ __interrupt void TIMERA_ISR (void)
 
 }
 
+
+#pragma vector=TIMER0_A1_VECTOR
+__interrupt void TimerA0_ISR (void)
+{
+    PeriodCount=TA0CCR2;
+    SpeedReady=1;
+    SpeedDir= DIR;
+			//TA0R=0x0;
+	TA0CCTL2&=~CCIFG;
+	TA0CTL |=TACLR;//clear
+	TA0CTL |= MC__CONTINUOUS;  //Mode Hochzählen
+}
 
 
 

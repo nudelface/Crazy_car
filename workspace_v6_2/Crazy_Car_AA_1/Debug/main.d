@@ -16,6 +16,7 @@ main.obj: ../DL/driver_aktorik.h
 main.obj: ../HAL/hal_usciB1.h
 main.obj: ../HAL/hal_adc12.h
 main.obj: ../HAL/hal_dma.h
+main.obj: ../HAL/hal_timerA0.h
 main.obj: ../DL/driver_lcd.h
 main.obj: ../AL/Sensorcalib.h
 main.obj: ../AL/sense_read.h
@@ -36,6 +37,7 @@ C:/ti/ccsv6/tools/compiler/msp430_15.12.3.LTS/include/intrinsics_legacy_undefs.h
 ../HAL/hal_usciB1.h: 
 ../HAL/hal_adc12.h: 
 ../HAL/hal_dma.h: 
+../HAL/hal_timerA0.h: 
 ../DL/driver_lcd.h: 
 ../AL/Sensorcalib.h: 
 ../AL/sense_read.h: 
