@@ -13,6 +13,7 @@
 #include "Driver\driver_lcd.h"
 #include "AL\interp.h"
 #include "AL\Sensorcalib.h"
+#include "AL\Controller"
 
 /*
  * main.c
