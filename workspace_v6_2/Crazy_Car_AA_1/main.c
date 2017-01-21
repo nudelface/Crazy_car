@@ -206,42 +206,7 @@ void main(void)
 			}
 		}
 
-/*
-		if (drive==1 &&( ADC1.Bit_front>1600 ||ADC1.Bit_right>2500 ||ADC1.Bit_left>2500) )
-		{
-			Driver_SetBack(80);
 
-			if(ADC1.Bit_left>ADC1.Bit_right-40)
-			{
-			Driver_SetSteering(-100);} //rechts}
-			else if(ADC1.Bit_left<ADC1.Bit_right+40)
-			{Driver_SetSteering(100);}
-
-		}
-
-		else if(drive==1&&ADC1.Bit_front>900 )
-			{
-				Driver_SetThrottle(45);
-
-				if(ADC1.Bit_left>ADC1.Bit_right-50)
-				{
-				Driver_SetSteering(100);} //rechts}
-				else
-				{Driver_SetSteering(-100);}
-			}
-
-		else if(drive==1 && ADC1.Bit_front<900)
-		{
-			Driver_SetThrottle(70);
-			Driver_SetSteering(0);
-
-		}
-				else if (drive==1 && ADC1.Bit_front<700)
-				{
-					Driver_SetThrottle(80);
-					Driver_SetSteering(0);
-
-				}*/
 
 	if(DiskretEn==1)
 	{
@@ -270,16 +235,17 @@ void main(void)
 
 					if(AbstandFront>183)
 					{
-						SpeedDes=50;
+						SpeedDes=100;
 					}
 					else if(AbstandFront>100)
 					{
-						SpeedDes=20;
+						SpeedDes=50;
 					}
-					else
+					else if (AbstandFront>30)
 					{
-						SpeedDes=10;
+						SpeedDes=15;
 					}
+
 					iSpeed=(ESpeed*0.02)+LastiSpeed;
 					LastiSpeed=iSpeed;
 					pwmOut=KpSpeed*ESpeed+iSpeed*KiSpeed+(ESpeed-LastESpeed)*KdSpeed;
@@ -288,62 +254,37 @@ void main(void)
 					{
 					Driver_SetThrottle(pwmOut);
 					}
-					else if (pwmOut<=-10  &&  pwmOut>-50)    // 0=vorwärts????
+					else if (pwmOut<=-20 &&  pwmOut>-50)    // 0=vorwärts????
 					{
 						if((dir==0) && (Speed>2))
 							{Driver_SetBack(0);}
 						else
 						{Driver_SetBack(pwmOut);}
 					}
-					else if(pwmOut<=0 && pwmOut>10)
+					else if(pwmOut<=0 && pwmOut>-10)
 					{
 						Driver_SetThrottle(0);
+					}
+					else if(pwmOut>100)
+					{
+						Driver_SetThrottle(100);
 					}
 					else
 					{
 						Driver_SetBack(100);
 					}
 
-				/*	(if(dFront<-10)
-					{
-						Driver_SetBack(100);
-					}
-					if((AbstandFront>=183)&&(DeltaDist>-10||DeltaDist<10))
-					{
-						Driver_SetThrottle(100);
-
-
-					}
-					else if (((AbstandFront<=183)&&AbstandFront>120)&&(dFront<-10))
-					{
-						Driver_SetBack(100);
-					}
-					else if ((AbstandFront>=150)&&(DeltaDist<=-10||DeltaDist>=10))
-					{
-						Driver_SetThrottle(55);
-
-					}
-					else if(AbstandFront>50)
-					{
-						if(((((AbstandFront-49)*0.1)+50)<=60))
-						Driver_SetThrottle((((AbstandFront-49)*0.1)+53));
-						else
-						Driver_SetThrottle(60);
-
-					}
-					*/
-
 
 				}
 
 
-				  if((AbstandFront<=50)&&(dFront>-10)&&StartupC>100)
+				  if((AbstandFront<=50)&&(dFront>-20)&&StartupC>100)
 					{
 						Driver_SetBrake(1);
 						statecase=Curve;
 
 					}
-					else if((AbstandFront<=50)&&(dFront<-10)&&StartupC>100)
+					else if((AbstandFront<=50)&&(dFront<-20)&&StartupC>100)
 					{
 						statecase=Hinderniss;
 						didit=1;
