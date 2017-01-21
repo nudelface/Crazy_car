@@ -20,8 +20,8 @@
  * main.c
  */
 
-const float kpSteer=0.5;
-const float kpThrottle=0.3;
+float kpSteer=0.5;
+float kpThrottle=0.3;
 
 int dir=0;  //1=links 2=rechts
 int icounter=0;
@@ -268,11 +268,6 @@ void main(void)
 					Driver_LCD_WriteUInt(AbstandFront,4, 50);
 					Driver_LCD_WriteString("speed",5,5,0);
 					Driver_LCD_WriteUInt((int)Speed,5, 90);
-			}
-			else
-			{
-				Driver_LCD_WriteString("State",5,5,0);
-				Driver_LCD_WriteUInt((int)statecase,5, 50);
 			}
 
 			ADC1.Status.B.ADCrdy=0;

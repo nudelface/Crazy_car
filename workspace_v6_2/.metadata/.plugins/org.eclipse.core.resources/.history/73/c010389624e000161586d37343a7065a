@@ -269,11 +269,6 @@ void main(void)
 					Driver_LCD_WriteString("speed",5,5,0);
 					Driver_LCD_WriteUInt((int)Speed,5, 90);
 			}
-			else
-			{
-				Driver_LCD_WriteString("State",5,5,0);
-				Driver_LCD_WriteUInt((int)statecase,5, 50);
-			}
 
 			ADC1.Status.B.ADCrdy=0;
 			counterz=0;
