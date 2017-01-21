@@ -23,6 +23,7 @@ float kpSteer=0.5;
 float kpThrottle=0.3;
 float ThrottleCorr=0;
 int dir=0;  //1=links 2=rechts
+int icounter=0;
 
 
 
@@ -41,6 +42,7 @@ extern double PeriodTime;
 extern double PeriodCount;
 extern int SpeedReady;
 extern int SpeedDir;
+extern int Timeout;
 
 
 int AbstandRechts;
@@ -53,11 +55,10 @@ double ESpeed=0;
 double LastSpeed=0;
 double LastESpeed=0;
 int pwmOut=0;
-double KpSpeed=0.8;
+double KpSpeed=1.5;
 double KiSpeed=1;
 double KdSpeed=1;
-double SpeedDes=40
-		;
+double SpeedDes=0;
 double Speedf=0;
 double Speed=0; //m/s
 double LastiSpeed=0;
@@ -127,7 +128,6 @@ void main(void)
 			{
 			LCD_BL_ON;
 			Driver_SetSteering(0);
-			Driver_SetThrottle(60);
 			drive=1;
 			Buttons.button=0;
 			Buttons.active=0;
@@ -140,25 +140,93 @@ void main(void)
 			}
 		}
 
-		if(SpeedReady==1)
+		if(SpeedReady==1 && drive==1)
 		{
 			LastSpeed=Speed;
 
 			PeriodTime=(PeriodCount*0.016)/1000;
 			Speedf=1/PeriodTime;
-			Speed=5.06*Speedf/10;
+			if(SpeedDir==0)
+			{Speed=5.06*Speedf/10;}
+			else
+			{Speed=-5.06*Speedf/10;}
 
 			LastESpeed=ESpeed;
 			ESpeed=SpeedDes-Speed;
 			SpeedReady=0;
-		}
 
+
+			///throttle control///
+							if(drive==1)
+							{
+
+
+								if(icounter<=500)
+								{
+								iSpeed=(ESpeed*0.02)+LastiSpeed;
+								icounter++;
+								}
+								else
+								{
+									iSpeed=ESpeed*0.02*2;
+									icounter=0;
+								}
+								LastiSpeed=iSpeed;
+								pwmOut=KpSpeed*ESpeed+iSpeed*KiSpeed+(ESpeed-LastESpeed)*KdSpeed;
+
+								//if((ESpeed<-15) && Speed >50)
+								//{
+								//	Driver_SetBack(100);
+								//}
+								if(dFront<-10)
+								{Driver_SetBack(100);
+
+								}
+								else if(pwmOut>0 && pwmOut<100)
+								{
+								Driver_SetThrottle(pwmOut);
+								}
+								else if ((pwmOut<=-2 &&  pwmOut>-200))    // 0=vorwärts????
+								{
+									//if((dir>0) && (Speed>10))
+									//	{Driver_SetBack(0);}
+									//else
+									Driver_SetBack(100);
+								}
+								else if(pwmOut<=0 && pwmOut>-10)
+								{
+									Driver_SetThrottle(0);
+								}
+								else if(pwmOut>100)
+								{
+									Driver_SetThrottle(100);
+								}
+								else
+								{
+									Driver_SetBack(100);
+								}
+
+
+							}
+
+		}
+		else if (SpeedReady==1)
+		{
+			Speed=0;
+		}
 
 		if(ADC1.Status.B.ADCrdy==1)
 		{
 
-
-
+			if (Timeout<=10)
+			{
+			Timeout++;
+			}
+			else
+			{
+				Speed=0;
+				Timeout=0;
+			}
 			LastValueLeft=AbstandLinks;
 			LastValueRight=AbstandRechts;
 			LastValueFront=AbstandFront;
@@ -179,16 +247,16 @@ void main(void)
 
 			Driver_LCD_WriteString("dist_left",6,1,0);
 			Driver_LCD_WriteUInt((int)AbstandLinks,1, 50);
-			Driver_LCD_WriteString("dLeft",5,1,70);
-			if(dFront<=0)
+			Driver_LCD_WriteString("dir",3,1,70);
+			if(SpeedDir<=0)
 				{
-				Driver_LCD_WriteString("-",1,1,100);
-				Driver_LCD_WriteUInt(-dFront,1,108);
+				//Driver_LCD_WriteString("-",1,1,100);
+				Driver_LCD_WriteUInt(SpeedDir,1,108);
 				}
 			else
 				{
 				Driver_LCD_WriteString("+",1,1,100);
-				Driver_LCD_WriteUInt(dFront,1,108);
+				Driver_LCD_WriteUInt(SpeedDir,1,108);
 			}
 			Driver_LCD_WriteString("V_right",7,2,0);
 			Driver_LCD_WriteUInt((int)AbstandRechts,2, 50);
@@ -208,14 +276,34 @@ void main(void)
 
 
 
+
+
 	if(DiskretEn==1)
 	{
 		switch(statecase)
 		{
 			case DriveStraight:
 
-						ThrottleCorr=1;
-
+				if(AbstandFront>183)
+				{
+					SpeedDes=150;
+				}
+				else if (AbstandFront> 160)
+				{
+					SpeedDes=80;
+				}
+				else if(AbstandFront>100)
+				{
+					SpeedDes=40;
+				}
+				else if (AbstandFront>30)
+				{
+					SpeedDes=40;
+				}
+				else
+				{
+					SpeedDes=40;
+				}
 
 						//LCD_BL_OFF;
 
@@ -229,53 +317,6 @@ void main(void)
 
 
 
-				///throttle control///
-				if(drive==1)
-				{
-
-					if(AbstandFront>183)
-					{
-						SpeedDes=100;
-					}
-					else if(AbstandFront>100)
-					{
-						SpeedDes=50;
-					}
-					else if (AbstandFront>30)
-					{
-						SpeedDes=15;
-					}
-
-					iSpeed=(ESpeed*0.02)+LastiSpeed;
-					LastiSpeed=iSpeed;
-					pwmOut=KpSpeed*ESpeed+iSpeed*KiSpeed+(ESpeed-LastESpeed)*KdSpeed;
-
-					if(pwmOut>0 && pwmOut<100)
-					{
-					Driver_SetThrottle(pwmOut);
-					}
-					else if (pwmOut<=-20 &&  pwmOut>-50)    // 0=vorwärts????
-					{
-						if((dir==0) && (Speed>2))
-							{Driver_SetBack(0);}
-						else
-						{Driver_SetBack(pwmOut);}
-					}
-					else if(pwmOut<=0 && pwmOut>-10)
-					{
-						Driver_SetThrottle(0);
-					}
-					else if(pwmOut>100)
-					{
-						Driver_SetThrottle(100);
-					}
-					else
-					{
-						Driver_SetBack(100);
-					}
-
-
-				}
 
 
 				  if((AbstandFront<=50)&&(dFront>-20)&&StartupC>100)
@@ -289,7 +330,7 @@ void main(void)
 						statecase=Hinderniss;
 						didit=1;
 					}
-					else if(AbstandFront<=20 && (AbstandLinks<15||AbstandRechts<15))
+					else if(AbstandFront<=8 && (AbstandLinks<3||AbstandRechts<3))
 					{
 						Driver_SetBrake(11);
 						statecase=Hinderniss;
@@ -302,18 +343,20 @@ void main(void)
         {
 
 				/// Abbruch Straight fo into curve
-				if((dLeft>20 && AbstandLinks<50) || (dLeft>10 && (AbstandLinks>=50)))
+				if((dLeft>15) || (dLeft>5 && AbstandFront>170))
 				{
-					Driver_SetBrake(1);
+					Driver_SetBack(100);
+					SpeedDes=45;
 					dir=1;   // Links
 					statecase= Curve;
 				}
 
 
 
-				else if( (dRight>20 && AbstandRechts<50) || (dRight>10 && (AbstandRechts>=50)) )
+				else if((dRight>15) || (dRight>5 && AbstandFront >170))
 				{
-					Driver_SetBrake(1);
+					Driver_SetBack(100);
+					SpeedDes=45;
 						dir=2;  // Rechts
 						statecase= Curve;
 				}
@@ -324,22 +367,34 @@ void main(void)
 
 			case Curve:
 				LCD_BL_ON;
+
+				if(AbstandLinks<=3)
+				{
+					statecase=Hinderniss;
+				}
+				else if (AbstandRechts<=3)
+				{
+					statecase=Hinderniss;
+				}
+
+
 				if(dir==1)
-				{	Driver_SetSteering(-100);
-					if((AbstandFront>AbstandLinks)&&(AbstandFront>120))
+				{
+					Driver_SetSteering(-100);
+					if((AbstandFront>AbstandLinks)&&(AbstandFront>150))
 					{statecase=DriveStraight;}
-					else if(dRight<-20)
+					else if(dRight>15)
 					{dir=2;}
-					Driver_SetThrottle((((AbstandFront-50)*0.15)+53));
+					SpeedDes=30;
 				}
 
 				else if(dir==2)
 				{	Driver_SetSteering(100);
-					if((AbstandFront>AbstandRechts)&&(AbstandFront>120))
+					if((AbstandFront>AbstandRechts)&&(AbstandFront>150))
 					{statecase=DriveStraight;}
-					else if(dLeft<-20)
+					else if(dLeft>15)
 					{dir=1;}
-						Driver_SetThrottle((((AbstandFront-50)*0.15)+53));
+					SpeedDes=30;
 				}
 
 				if(AbstandFront<=10 && (AbstandLinks<10||AbstandRechts<10))

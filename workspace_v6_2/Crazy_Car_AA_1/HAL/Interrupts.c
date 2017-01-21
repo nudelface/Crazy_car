@@ -24,6 +24,7 @@ int counterz=0;
 extern int DiskretEn;
 int SpeedReady=0;
 int SpeedDir=0;
+int Timeout=0;
 extern int drive;
 
 double PeriodTime=0;
@@ -95,9 +96,11 @@ __interrupt void TimerA0_ISR (void)
 {
 	if (drive==1)
 	{
-    PeriodCount=TA0CCR2;
+
+		PeriodCount=TA0CCR2;
     SpeedReady=1;
     SpeedDir= DIR;
+    Timeout=0;
 			//TA0R=0x0;
 	}
 	TA0CCTL2&=~CCIFG;
