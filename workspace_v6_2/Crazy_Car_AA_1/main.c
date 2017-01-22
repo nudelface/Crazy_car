@@ -142,7 +142,8 @@ void main(void)
 			if(SpeedDir==0)
 			{Speed=5.06*Speedf/10;}
 			else
-			{Speed=-5.06*Speedf/10;}
+			{
+				Speed=-5.06*Speedf/10;}
 			}
 			else
 			{
@@ -205,6 +206,10 @@ void main(void)
 
 
 							}
+							else
+							{
+								Driver_SetThrottle(0);
+							}
 
 		}
 		else if (SpeedReady==1)
@@ -213,6 +218,66 @@ void main(void)
 			LastSpeed=0;
 			ESpeed=0;
 			LastESpeed=0;
+		}
+		else if(SpeedReady==0)
+		{
+			Speed=LastSpeed;
+			if(drive==1)
+									{
+
+
+											if(icounter<=500)
+											{
+											iSpeed=(ESpeed*0.02)+LastiSpeed;
+											icounter++;
+											}
+											else
+											{
+												iSpeed=ESpeed*0.02*2;
+												icounter=0;
+											}
+											LastiSpeed=iSpeed;
+											pwmOut=KpSpeed*ESpeed+iSpeed*KiSpeed+(ESpeed-LastESpeed)*KdSpeed;
+
+											//if((ESpeed<-15) && Speed >50)
+											//{
+											//	Driver_SetBack(100);
+											//}
+											if(dFront<-10)
+											{Driver_SetBack(100);
+
+											}
+											else if(pwmOut>0 && pwmOut<100)
+											{
+											Driver_SetThrottle(pwmOut);
+											}
+											else if ((pwmOut<=-2 &&  pwmOut>-200))    // 0=vorwärts????
+											{
+												//if((dir>0) && (Speed>10))
+												//	{Driver_SetBack(0);}
+												//else
+												Driver_SetBack(100);
+											}
+											else if(pwmOut<=0 && pwmOut>-10)
+											{
+												Driver_SetThrottle(0);
+											}
+											else if(pwmOut>100)
+											{
+												Driver_SetThrottle(100);
+											}
+											else
+											{
+												Driver_SetBack(100);
+											}
+
+
+										}
+										else
+										{
+											Driver_SetThrottle(0);
+										}
+
 		}
 
 		if(ADC1.Status.B.ADCrdy==1)
@@ -269,11 +334,7 @@ void main(void)
 					Driver_LCD_WriteString("speed",5,5,0);
 					Driver_LCD_WriteUInt((int)Speed,5, 90);
 			}
-			else
-			{
-				Driver_LCD_WriteString("State",5,5,0);
-				Driver_LCD_WriteUInt((int)statecase,5, 50);
-			}
+
 
 			ADC1.Status.B.ADCrdy=0;
 			counterz=0;
@@ -296,7 +357,12 @@ void main(void)
 				if(laststate!=statecase)
 				{
 					laststate=statecase;
+					Driver_LCD_Clear();
+					Driver_LCD_WriteString("DriveStraight",13,5,0);
+
+
 				}
+				line_des=0;
 
 				if(AbstandFront>183)
 				{
@@ -319,7 +385,7 @@ void main(void)
 					SpeedDes=40;
 				}
 
-						//LCD_BL_OFF;
+
 
 				if((DeltaDist>3)||(DeltaDist<-3))
 				{
@@ -330,35 +396,47 @@ void main(void)
 				}
 
 
+				if((AbstandFront<=50)&&(dFront<-20)&&(StartupC>100))
+				{
+					statecase=Hinderniss;
+					didit=1;
+				}
+				else if(((AbstandFront<=8 )&& (AbstandLinks<3||AbstandRechts<3)))
+				{
+					statecase=Hinderniss;
+				}
 
 
 
-					 if((AbstandFront<=50)&&(dFront<-20)&&(StartupC>100))
+				 /* if((AbstandFront<=50)&&(dFront<-20)&&(StartupC>100)&&((DeltaDist<10)||(DeltaDist>-10)))
 					{
 						statecase=Hinderniss;
 						didit=1;
 					}
-					else if((AbstandFront<=100)&&((dFront>-10)||(dFront<10)))
+					else if((AbstandFront<=5)&&((dFront>-10)||(dFront<10)))
 					{
 						statecase=Hinderniss;
 						didit=1;
 					}
-					else if(AbstandFront<=8 && (AbstandLinks<3||AbstandRechts<3))
+					else if((AbstandFront<50)&&((DeltaDist>-10)||(DeltaDist<10)))
 					{
-						Driver_SetBack(100);
-						statecase=Hinderniss;
-
-
+							statecase=Hinderniss;
+							didit=1;
 					}
+					else if((AbstandFront<=8 )&& (AbstandLinks<3||AbstandRechts<3))
+					{
+						//Driver_SetBack(100);
+						statecase=Hinderniss;
+					}*/
 
 
         if (StartupC>100)
         {
 
 				/// Abbruch Straight fo into curve
-				if((dLeft>15) || (dLeft>5 && AbstandFront>170))
+				if((dLeft>20) || (dLeft>10 && AbstandFront>170))
 				{
-					Driver_SetBack(100);
+					//Driver_SetBack(100);
 					SpeedDes=45;
 					Corner=LTurn;   // Links
 					statecase= Curve;
@@ -366,9 +444,9 @@ void main(void)
 
 
 
-				else if((dRight>15) || (dRight>5 && AbstandFront >170))
+				else if((dRight>20) || (dRight>10 && AbstandFront >170))
 				{
-					Driver_SetBack(100);
+					//Driver_SetBack(100);
 					SpeedDes=45;
 						Corner=RTurn;  // Rechts
 						statecase= Curve;
@@ -387,10 +465,19 @@ void main(void)
 					if((AbstandFront>=110)&&(Corner==LTurn))
 					{
 						Corner=UTurnL;
+						Driver_LCD_Clear();
+						Driver_LCD_WriteString("UTurnL",6,5,0);
 					}
 					else if((AbstandFront>=110)&&(Corner==RTurn))
 					{
 						Corner=UTurnR;
+						Driver_LCD_Clear();
+						Driver_LCD_WriteString("UTurnR",6,5,0);
+					}
+					else
+					{
+						Driver_LCD_Clear();
+						Driver_LCD_WriteString("Corner",6,5,0);
 					}
 					//längen merken, ob große u kurve oder nicht
 					laststate=statecase;
@@ -414,6 +501,7 @@ void main(void)
 					{statecase=DriveStraight;}
 					else if(dRight>15)
 					{dir=RTurn;}
+
 					SpeedDes=30;
 				}
 
@@ -431,6 +519,7 @@ void main(void)
 					{
 						statecase=Hinderniss;
 					}
+
 					SpeedDes=30;
 				}
 				else if(Corner==UTurnL)
@@ -469,7 +558,8 @@ void main(void)
 
 			case Hinderniss:
 
-
+				Driver_LCD_Clear();
+				Driver_LCD_WriteString("Hinderniss",10,5,0);
 
 				if(laststate==DriveStraight)
 				{
@@ -488,17 +578,18 @@ void main(void)
 											{
 												line_des=0;
 												didit=0;
-												statecase=DriveStraight;
+
 												if(laststate!=statecase)
 												{
 													laststate=statecase;
 												}
+												statecase=DriveStraight;
 											}
 					}
 					else
 					{
 
-							if(AbstandFront<20)
+							if(AbstandFront<10)
 							{
 								if(AbstandLinks<AbstandRechts)
 								{
@@ -517,20 +608,22 @@ void main(void)
 							{
 								line_des=0;
 								didit=0;
-								statecase=DriveStraight;
+
 								if(laststate!=statecase)
 								{
 									laststate=statecase;
 								}
-								}
+								statecase=DriveStraight;
 							}
+						}
 
 					}
 
 
+
 				else if(laststate==Curve)
 				{
-					if(AbstandFront<20)
+					if(AbstandFront<10)
 					{
 						if(AbstandLinks<AbstandRechts)
 						{
@@ -546,27 +639,28 @@ void main(void)
 						}
 					}
 					else
-					{
+						{
 						line_des=0;
 						didit=0;
-						statecase=DriveStraight;
+
 						if(laststate!=statecase)
 						{
 							laststate=statecase;
 						}
+						statecase=DriveStraight;
 						}
 					}
 
 
 				if(AbstandFront>40)
 				{
-					statecase=DriveStraight;
+
 					if(laststate!=statecase)
 					{
 						laststate=statecase;
 					}
+					statecase=DriveStraight;
 				}
-
 
 
 
