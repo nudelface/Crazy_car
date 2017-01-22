@@ -1,1 +1,1 @@
-"./main.obj" "./DL/driver_aktorik.obj" "./DL/driver_general.obj" "./DL/driver_lcd.obj" "../lnk_msp430f5335.cmd" -llibmath.a -llibc.a 
+"./main.obj" "./AL/sense_read.obj" "./DL/driver_aktorik.obj" "./DL/driver_general.obj" "./DL/driver_lcd.obj" "./HAL/Interrupts.obj" "./HAL/hal_adc12.obj" "./HAL/hal_dma.obj" "./HAL/hal_general.obj" "./HAL/hal_gpio.obj" "./HAL/hal_pmm.obj" "./HAL/hal_timerA1.obj" "./HAL/hal_timerB0.obj" "./HAL/hal_usc.obj" "./HAL/hal_usciB1.obj" "./HAL/hal_wdt.obj" "../lnk_msp430f5335.cmd" -llibmath.a -llibc.a 

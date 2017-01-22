@@ -1,6 +1,11 @@
 #define __unsigned_chars__ 1	/* Predefined */
+<<<<<<< HEAD
 #define __DATE__ "Dec 16 2016"	/* Predefined */
 #define __TIME__ "12:09:53"	/* Predefined */
+=======
+#define __DATE__ "Jan 16 2017"	/* Predefined */
+#define __TIME__ "13:19:14"	/* Predefined */
+>>>>>>> 12c9b9825d59f5eaf858c2d56f222fb38020bc61
 #define __STDC__ 1	/* Predefined */
 #define __STDC_VERSION__ 199409L	/* Predefined */
 #define __TI_C99_COMPLEX_ENABLED__ 1	/* Predefined */
@@ -34,4 +39,3 @@
 #define __TI_STRICT_FP_MODE__ 1	/* Predefined */
 #define _OPTIMIZE_FOR_SPACE 1
 #define __MSP430F5335__ 1
-#define _INLINE 1

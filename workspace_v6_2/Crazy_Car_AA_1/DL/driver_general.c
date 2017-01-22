@@ -8,12 +8,14 @@
 #include "..\HAL\hal_timerA1.h"
 #include "..\HAL\hal_usc.h"
 #include "driver_aktorik.h"
+#include "driver_lcd.h"
+
 
 
 
 void Driver_Init(void)
 {
-
-	Driver_SetSteering(0);  // -560 bis 560 kann übergeben werden
-    Driver_ESCInit();
+	Driver_LCD_Init();      //LCD Initialisieren
+	Driver_SetSteering(0);  //Steering initialisieren
+    Driver_ESCInit();       // ESC Initialisieren
 }

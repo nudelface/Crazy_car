@@ -5,7 +5,11 @@
    <string>defaultSolution</string>
    <void method="set">
     <object idref="SolutionManager$PersistState0"/>
+<<<<<<< HEAD
     <string>C:\Users\Nikolaus Lacher\Documents\Crazy_car_new\workspace_v6_2\dvt\AnalysisSolutionsTemp\AnalysisSolution1483961841616\null</string>
+=======
+    <string>C:\ti\ccsv6\ccs_base\dvt_4.1.0.201609091143\CodeGen\solutions\CodeGenCoverage</string>
+>>>>>>> 12c9b9825d59f5eaf858c2d56f222fb38020bc61
    </void>
   </void>
  </object>
@@ -14,10 +18,14 @@
  <void id="ArrayList0" method="get">
   <object idref="SolutionManager$PersistState0"/>
   <void method="add">
-   <string>C:\ti\ccsv6\ccs_base\dvt_4.1.0.201609091143\CodeGen\solutions\CodeGenCoverage</string>
+   <string>C:\Users\Sebo\Documents\Crazy_car\workspace_v6_2\dvt\AnalysisSolutionsTemp\AnalysisSolution1484214626539\null</string>
   </void>
   <void method="add">
+<<<<<<< HEAD
    <string>C:\Users\Nikolaus Lacher\Documents\Crazy_car_new\workspace_v6_2\dvt\AnalysisSolutionsTemp\AnalysisSolution1483961841616\null</string>
+=======
+   <string>C:\ti\ccsv6\ccs_base\dvt_4.1.0.201609091143\CodeGen\solutions\CodeGenCoverage</string>
+>>>>>>> 12c9b9825d59f5eaf858c2d56f222fb38020bc61
   </void>
  </void>
 </void>

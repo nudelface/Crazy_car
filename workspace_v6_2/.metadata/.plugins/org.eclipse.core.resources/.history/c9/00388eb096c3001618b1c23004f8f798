@@ -1,0 +1,65 @@
+/*
+ * interp.c
+ *
+ *  Created on: 16.12.2016
+ *      Author: Sebo
+ */
+
+
+Values_right[21]={80,75,70,65,60,55,50,45,40,35,30,25,20,15,10,7,5,4,3,2,0};
+Bit_right[21]={400,423,465,486,507,550,594,636,690,780,865,970,1121,1350,1674,1998,2307,2465,2658,2918,3353};
+Values_left[21]={};
+
+
+
+
+float interp(int Arraybit[], int Arrayval[], int bitval,int length)
+{
+bitmin=interpsearchindex(bitval, Arraybit, sizeof(Arraybit));
+
+return Arrayval[x]+ (  (Arrayval[x+1]-Arrayval[x])  /  (Arraybit[x+1]-Arraybit[x])  )  *  (bitval-Arraybit[x]);
+
+}
+
+
+int interpsearchindex(int interp1, int Array[], int length)
+{
+ steps=0;
+ int left=0;
+ int right=length-1;
+ int found=0;
+ int x;
+ int count=0;
+
+ while(found==0)
+ {
+   steps++;
+   x =((float)(interp1-Array[left])/(float)(Array[right]-Array[left])*(float)(right-left)+(float)left);
+
+   if((left<=right)&&(count<=5))
+    {
+      if(x==left)
+       {
+         count++;
+         if(Array[x+1]==interp1)
+          {
+            found=1;
+            return x+1;
+          }
+        }
+
+       if (Array[x]>interp1)
+        right=x;
+       else if(Array[x]<interp1)
+        left=x;
+       else if(right-left<=1)
+       {
+        found=1;
+        return x;
+       }
+
+    }
+    else
+        return 0;
+ }
+}

@@ -1,3 +1,6 @@
+
+//////////////////Fertig
+
 /*
  * driver_aktorik.h
  *
@@ -13,6 +16,16 @@
 #define StPWM_middle 3590
 #define res_left ((StPWM_middle-StPWM_full_left) / 100)
 #define res_right ((StPWM_full_right-StPWM_middle) / 100)
+
+#define MaxRPW 2500
+#define MinRPW 3000
+#define MaxBRK 3500
+#define MinFPW 4000
+#define MaxFPW 5000
+#define res_throttle ((MaxFPW-MinFPW)/100)
+#define res_brk_f ((MinFPW-MaxBRK)/100)
+#define res_brk_r ((MaxBRK-MinRPW)/100)
+#define res_back ((MinRPW- MaxRPW)/100)
 
 void Driver_SetSteering (int);
 void Driver_ESCInit(void);

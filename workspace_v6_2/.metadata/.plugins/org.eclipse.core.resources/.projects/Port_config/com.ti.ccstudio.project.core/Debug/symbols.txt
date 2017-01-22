@@ -1,6 +1,10 @@
 #define __unsigned_chars__ 1	/* Predefined */
 #define __DATE__ "Jan  9 2017"	/* Predefined */
+<<<<<<< HEAD
 #define __TIME__ "12:37:30"	/* Predefined */
+=======
+#define __TIME__ "12:59:47"	/* Predefined */
+>>>>>>> 12c9b9825d59f5eaf858c2d56f222fb38020bc61
 #define __STDC__ 1	/* Predefined */
 #define __STDC_VERSION__ 199409L	/* Predefined */
 #define __TI_C99_COMPLEX_ENABLED__ 1	/* Predefined */
