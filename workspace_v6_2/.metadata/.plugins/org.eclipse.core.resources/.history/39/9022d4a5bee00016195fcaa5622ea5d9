@@ -414,7 +414,6 @@ void main(void)
 				DeltaDist=line_des-(AbstandRechts-AbstandLinks);
 				LastDeltaDist=LastValueRight-LastValueLeft;
 				dDelta=DeltaDist-LastDeltaDist;
-
 					if((DeltaDist>3)||(DeltaDist<-3))
 					{
 					Steer=DeltaDist*kpSteer+dDelta*2.1;
