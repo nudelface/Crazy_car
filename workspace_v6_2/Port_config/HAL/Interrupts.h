@@ -11,6 +11,7 @@
 
 #define START_flag (P1IFG & START_Button)
 #define STOP_flag (P1IFG & STOP_Button)
+#define DIR (P1IN&RPM_Sensor_DIR)
 #define Timer1 (TBCCTL0&CCIFG)
 #define OUT1 (TBCCTL0&OUT)
 

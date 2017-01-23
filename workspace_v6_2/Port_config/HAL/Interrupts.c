@@ -8,19 +8,34 @@
 #include "Interrupts.h"
 #include "hal_gpio.h"
 #include "hal_general.h"
-#include "..\Driver\driver_general.h"
-#include "..\Driver\driver_aktorik.h"
+#include "..\DL\driver_general.h"
+#include "..\DL\driver_aktorik.h"
 #include "hal_usciB1.h"
 #include "hal_adc12.h"
-#include "..\Driver\driver_lcd.h"
+#include "..\DL\driver_lcd.h"
 
 
 ButtonCom Buttons;
-int SteeringCalibC=0;
-int initcounter=0;
+int SteeringCalibC=0;// Prüfen ob Leiche
+int initcounter=0;  // Prüfen ob Leiche
 extern USCIB1_SPICom SpiCom;
 extern ADC12Com ADC1;
 int counterz=0;
+extern int DiskretEn;
+int SpeedReady=0;
+int SpeedDir=0;
+int Timeout=0;
+extern int drive;
+
+double PeriodTime=0;
+long PeriodSample=0;
+long DirSample=0;
+long PeriodCount=0;
+
+int SpeedSamp=4;
+
+int SampleCounter=0;
+
 
 int state=0;
 
@@ -34,16 +49,17 @@ __interrupt void PORT1_ISR (void)
 			{Buttons.button=2;}
 
 
-
-	P1IFG&=~START_Button;
-	P1IFG&=~STOP_Button;
 }
+
+
+
+
 
 #pragma vector=TIMER0_B0_VECTOR
 __interrupt void TIMERB_ISR (void)
 {
-
-	if (state==0)
+	LCD_BL_ON;
+	/*if (state==0)
 	{
 	LCD_BL_ON;
 	state=1;
@@ -52,19 +68,22 @@ __interrupt void TIMERB_ISR (void)
 	{
 		LCD_BL_OFF;
 		state = 0;
-	}
+	}*/
 	counterz++;
 
-
 	ADC1.Status.B.ADCrdy=0;
-
-
-
 
 	TBCTL |= TBCLR;
 	TBEX0 |= TBIDEX__5;										// divide/5
 	TBCTL |= MC__UP;
+
+	P1IFG&=~START_Button;
+	P1IFG&=~STOP_Button;
 }
+
+
+
+
 
 #pragma vector=TIMER1_A0_VECTOR
 __interrupt void TIMERA_ISR (void)
@@ -74,7 +93,45 @@ __interrupt void TIMERA_ISR (void)
 
 	initcounter+=1;
 	}
+
 }
+
+
+#pragma vector=TIMER0_A1_VECTOR
+__interrupt void TimerA0_ISR (void)
+{
+
+	if(SampleCounter<4)
+	{
+		PeriodSample=PeriodSample+(11111111&TA0CCR2);
+
+		SampleCounter++;
+	}
+	else
+	{
+		DirSample=DIR;
+
+		if (drive==1)
+		{
+
+		PeriodCount=PeriodSample>>2;
+		SpeedReady=1;
+		SpeedDir= DirSample;
+		Timeout=0;
+		PeriodSample=0;
+		SampleCounter=0;
+				//TA0R=0x0;
+		}
+	}
+	TA0CCTL2&=~CCIFG;
+	TA0CCTL2&=~COV;
+	TA0CTL |=TACLR;//clear
+	TA0CTL |= MC__CONTINUOUS;  //Mode Hochzählen
+}
+
+
+
+
 
 #pragma vector=USCI_B1_VECTOR
 __interrupt void USCB_ISR (void)
@@ -105,23 +162,6 @@ if((UCB1IFG&UCRXIFG)==1)
 
 }
 
-/*
-#pragma vector=ADC12_VECTOR
-__interrupt void ADC_ISR (void)
-{
-
-	if(ADC12IV==0xC)
-{
-	ADC1.Bit_right=ADC12MEM0;
-	ADC1.Bit_left=ADC12MEM1;
-	ADC1.Bit_front=ADC12MEM2;
-	ADC1.vBat=ADC12MEM3;
-	ADC1.Status.B.ADCrdy=1;
-	//ADC12IFG&=~ADC12IFG3;
-	ADC12CTL0 |= ADC12ENC;
-}
-}
-*/
 
 
 #pragma vector=DMA_VECTOR
@@ -130,9 +170,10 @@ __interrupt void DMA_ISR(void)
 
 	if(DMAIV==0x02)
 	{
-	ADC1.Status.B.ADCrdy=1;
 	DMA0CTL|=DMAEN;
 	ADC12CTL0 |= ADC12ENC;
+	ADC1.Status.B.ADCrdy=1;
+	DiskretEn=1;
 	}
 }
 
