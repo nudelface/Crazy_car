@@ -25,11 +25,14 @@ const float kpThrottle=0.3;
 
 int dir=0;  //1=links 2=rechts
 int icounter=0;
-float Excel=31625;
+float Excel=40800;
 
-float KdSpeed=0.8;
+
+float KpSpeed=1.5;
 float KiSpeed=0.2;
-float KpSpeed=0.8;
+float KdSpeed=0.4;
+
+
 
 
 // 22 incremente
@@ -43,7 +46,7 @@ extern ADC12Com ADC1;
 extern int state;
 extern int counterz;
 extern double PeriodTime;
-extern long PeriodCount;
+extern unsigned long PeriodCount;
 extern int SpeedReady;
 extern int SpeedDir;
 extern int Timeout;
@@ -191,7 +194,7 @@ void main(void)
 					dDelta=DeltaDist-LastDeltaDist;          //dDelta = e abgeleitet
 					}
 
-					if(drive==0)
+					if(drive=1)
 					{
 							Driver_LCD_WriteString("dist_left",6,1,0);
 							Driver_LCD_WriteUInt((int)AbstandLinks,1, 50);
@@ -247,7 +250,7 @@ void main(void)
 
 
 		//Calculating new Values
-		if((SpeedReady==1) && (drive==1))  //neue Werte ermittelt und in Drive
+		if((SpeedReady==1))  //neue Werte ermittelt und in Drive
 		{
 			LastSpeed=Speed;  //LastSpeed beschreiben
 			//PeriodTime=(PeriodCount*0.00016); //Periodendauer in s*10 (damit nachher cm/s anstatt mm/s
@@ -276,7 +279,8 @@ void main(void)
 
 
 		if(drive==1)
-		{pwmOut=KpSpeed*ESpeed+iSpeed*KiSpeed+(ESpeed-LastESpeed)*KdSpeed;}  //PID
+		{
+			pwmOut=KpSpeed*ESpeed+iSpeed*KiSpeed+(ESpeed-LastESpeed)*KdSpeed;}  //PID
 
 
 
@@ -289,15 +293,20 @@ void main(void)
 
 		else if(pwmOut>0 && pwmOut<100)     ///WEnn PWM zwischen 0 und 100 prozent
 		{
+		if(pwmOut<40)
+		{
+			Driver_SetThrottle(40);
+		}
 		Driver_SetThrottle(pwmOut);
 		}
 		else if(pwmOut<=0 && pwmOut>-10)  //bei negativer PWM
 		{
 			Driver_SetThrottle(0);
 		}
-		else if ((pwmOut<=-10) &&  (pwmOut>-100) &&(Speed>1))    // NEgative PWM
+		else if ((pwmOut<=-40) &&  (pwmOut>-100) &&(Speed>1))    // NEgative PWM
 		{
-			Driver_SetBack(-pwmOut);
+			Driver_SetThrottle(0);
+			//Driver_SetBack(-pwmOut);
 			HardBraking=0;
 			//Ehemals
 			//Driver_SetBack(100);
@@ -329,13 +338,13 @@ void main(void)
 				if(laststate!=statecase)  //komme ich aus DriveStraight?
 				{
 					laststate=statecase;
-					Driver_LCD_Clear();
-					Driver_LCD_WriteString("DriveStraight",13,5,0);
+					//Driver_LCD_Clear();
+					//Driver_LCD_WriteString("DriveStraight",13,5,0);
 					line_des=0;
 
 				}
 				line_des=0;
-				SpeedDes=200;
+				SpeedDes=100;
 
 				/*
 				if(AbstandFront>183) ////geschwindkeitswahl

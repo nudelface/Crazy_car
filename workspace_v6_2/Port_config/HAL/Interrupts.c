@@ -30,11 +30,14 @@ extern int drive;
 double PeriodTime=0;
 long PeriodSample=0;
 long DirSample=0;
-long PeriodCount=0;
+unsigned long PeriodCount=0;
+unsigned int lastCount=2000;
+unsigned int Count=0;
 
 int SpeedSamp=4;
 
 int SampleCounter=0;
+
 
 
 int state=0;
@@ -100,19 +103,19 @@ __interrupt void TIMERA_ISR (void)
 #pragma vector=TIMER0_A1_VECTOR
 __interrupt void TimerA0_ISR (void)
 {
-
+	Count=TA0CCR2;
 	if(SampleCounter<4)
 	{
-		PeriodSample=PeriodSample+(11111111&TA0CCR2);
-
+		PeriodSample=PeriodSample+( Count-lastCount);
+		lastCount=Count;
 		SampleCounter++;
 	}
 	else
 	{
 		DirSample=DIR;
 
-		if (drive==1)
-		{
+		//if (drive==1)
+		//{
 
 		PeriodCount=PeriodSample>>2;
 		SpeedReady=1;
@@ -121,11 +124,10 @@ __interrupt void TimerA0_ISR (void)
 		PeriodSample=0;
 		SampleCounter=0;
 				//TA0R=0x0;
-		}
+		//}
 	}
 	TA0CCTL2&=~CCIFG;
 	TA0CCTL2&=~COV;
-	TA0CTL |=TACLR;//clear
 	TA0CTL |= MC__CONTINUOUS;  //Mode Hochzählen
 }
 
