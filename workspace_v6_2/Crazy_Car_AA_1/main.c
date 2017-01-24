@@ -25,6 +25,14 @@ const float kpThrottle=0.3;
 
 int dir=0;  //1=links 2=rechts
 int icounter=0;
+float Excel=40800;
+float KPID=0;
+float lastKPID=0;
+
+
+float KpSpeed=1.4;
+float KiSpeed=0.3;
+float KdSpeed=0.2;
 
 
 
@@ -40,7 +48,7 @@ extern ADC12Com ADC1;
 extern int state;
 extern int counterz;
 extern double PeriodTime;
-extern double PeriodCount;
+extern unsigned long PeriodCount;
 extern int SpeedReady;
 extern int SpeedDir;
 extern int Timeout;
@@ -52,16 +60,16 @@ int AbstandFront;
 int LastValueLeft=0;
 int LastValueRight=0;
 int LastValueFront=0;
-double ESpeed=0;
-double LastSpeed=0;
-double LastESpeed=0;
+float ESpeed=0;
+float LastSpeed=0;
+float LastESpeed=0;
 int pwmOut=0;
 
-double SpeedDes=0;
-double Speedf=0;
-double Speed=0; //m/s
-double LastiSpeed=0;
-double iSpeed=0;
+float SpeedDes=0;
+float Speedf=0;
+float Speed=0; //m/s
+float LastiSpeed=0;
+float iSpeed=0;
 
 int dFront;
 int dLeft;
@@ -100,6 +108,8 @@ turns  Corner=LTurn;
 
 
 void main(void)
+
+
 {
 			HAL_Init();
 			Driver_Init();
@@ -115,8 +125,7 @@ void main(void)
 			LCD_BL_OFF;
 			Buttons.button=0;
 			Buttons.active=0;
-			Driver_SetThrottle(0);
-			pwmOut=0;
+			SpeedDes=0;
 			drive=0;
 
 
@@ -129,8 +138,6 @@ void main(void)
 			Driver_SetSteering(0);
 			drive=1;
 			statecase=DriveStraight;
-			Driver_SetThrottle(80);
-			pwmOut=80;
 			Buttons.button=0;
 			Buttons.active=0;
 
@@ -158,16 +165,17 @@ void main(void)
 				Timeout++;
 
 			}
-			else  if (HardBraking==0)
-			{
-				Speed=0;
-				LastSpeed=0;
-				Timeout=0;
-			}
 			else
 			{
-				pwmOut=0;
-				Driver_SetThrottle(0);
+				Speed=0;
+				iSpeed=0;
+				LastiSpeed=0;
+				LastSpeed=0;
+				Timeout=0;
+				LastESpeed=ESpeed;
+				ESpeed=SpeedDes-Speed;
+				lastKPID=KPID;
+				KPID=KpSpeed*ESpeed;
 			}
 			///////
 
@@ -236,74 +244,100 @@ void main(void)
 
 
 
+		if(((LastESpeed>0)&&(ESpeed<0))||((LastESpeed<0)&&(ESpeed>0)))
+		{
+			iSpeed=KPID*0.002;
+			LastiSpeed=iSpeed;
+		}
+		else
+		{
+			iSpeed=(KPID*0.002)+LastiSpeed;
+			LastiSpeed=iSpeed;
+			if(iSpeed>=500)
+			{
+				iSpeed=500;
+			}
+		}
+
 		///Speed Controller///////////////////////////////////Rennt auf Abtastung von Speed-Measurement
 
 
 		//Calculating new Values
-		if((SpeedReady==1) && (drive==1)&&(HardBraking==0))  //neue Werte ermittelt und in Drive
+		if((SpeedReady==1))  //neue Werte ermittelt und in Drive
 		{
 			LastSpeed=Speed;  //LastSpeed beschreiben
-			PeriodTime=(PeriodCount*0.000016*10); //Periodendauer in s*10 (damit nachher cm/s anstatt mm/s
+			//PeriodTime=(PeriodCount*0.00016); //Periodendauer in s*10 (damit nachher cm/s anstatt mm/s
 
 
 			if(SpeedDir<=0)  //Vorwärts
 				{
-					Speed=5.06/PeriodTime;
+
+					Speed=Excel/PeriodCount;
+					if((Speed>LastSpeed+5)&&(Speed>SpeedDes*0.75))
+					{
+						Speed=LastSpeed+15;
+					}
+					else if((Speed<LastSpeed-5)&&(Speed>SpeedDes*0.75))
+					{
+						Speed=LastSpeed-15;
+					}
 				}
 			else               //Rückwärts
 				{
-					Speed=-5.06/PeriodTime;
+					Speed=-Excel/PeriodCount;
 				}
 
 			LastESpeed=ESpeed;
-			ESpeed=SpeedDes-Speed; //Regelabweichung
-
-
-			if(((LastESpeed>0)&&(ESpeed<0))||((LastESpeed<0)&&(ESpeed>0)))
-			{
-				iSpeed=ESpeed*0.02;
-				LastiSpeed=iSpeed;
-			}
-			else
-			{
-				iSpeed=(ESpeed*0.02)+LastiSpeed;
-				LastiSpeed=iSpeed;
-			}
-
+			ESpeed=SpeedDes-Speed;
+			lastKPID=KPID;
+			KPID=KpSpeed*ESpeed;
+			 //Regelabweichung
 			// NEew PED-Value
-			pwmOut=KpSpeed*ESpeed+iSpeed*KiSpeed+(ESpeed-LastESpeed)*KdSpeed;  //PID
-
-
-
-
+			//pwmOut=KpSpeed*ESpeed+iSpeed*KiSpeed+(ESpeed-LastESpeed)*KdSpeed;  //PID
 			SpeedReady=0;
 		}
 		else if(drive==0)  //wenn off
 		{
-			pwmOut=0;
+			SpeedDes=0;
 		}
+
+
+
+
+		if(drive==1)
+		{
+
+			pwmOut=(int)(KPID+((iSpeed)*KiSpeed)+(KPID-lastKPID)*KdSpeed)+40;
+			//pwmOut=KpSpeed*ESpeed*(1+(200/iSpeed)*KiSpeed+ (ESpeed-LastESpeed)*KdSpeed;)
+		 //PID
 
 
 
 		// Stellglied
-		if(dFront<20)        // Wenn Wand schnell näher kommt abbremsen  !!!!!!!!!!!!!!!!!!!CHECKEN OBS ÜBERHAUPT WAS BRINGT
-		{
-			Driver_SetBack(100);
-			HardBraking=1;
-		}
+		//if(dFront<20)        // Wenn Wand schnell näher kommt abbremsen  !!!!!!!!!!!!!!!!!!!CHECKEN OBS ÜBERHAUPT WAS BRINGT
+		//{
+		//	Set
+		//	HardBraking=0;
+		//}
 
-		else if(pwmOut>0 && pwmOut<100)     ///WEnn PWM zwischen 0 und 100 prozent
+		 if(pwmOut>0 && pwmOut<100)     ///WEnn PWM zwischen 0 und 100 prozent
 		{
+			if(pwmOut<40)
+			{
+				Driver_SetThrottle(40);
+			}
+
 		Driver_SetThrottle(pwmOut);
 		}
-		else if(pwmOut<=0 && pwmOut>-10)  //bei negativer PWM
+		else if(pwmOut<=0 && pwmOut>-40)  //bei negativer PWM
 		{
 			Driver_SetThrottle(0);
 		}
-		else if ((pwmOut<=-10) &&  (pwmOut>-100) &&(Speed>1))    // NEgative PWM
+		else if ((pwmOut<=-40) &&  (pwmOut>-100) &&(Speed>1))    // NEgative PWM
 		{
-			Driver_SetBack(-pwmOut);
-			HardBraking=1;
+			Driver_SetThrottle(0);
+			//Driver_SetBack(-pwmOut);
+			HardBraking=0;
 			//Ehemals
 			//Driver_SetBack(100);
 		}
@@ -311,10 +345,20 @@ void main(void)
 		{
 			Driver_SetThrottle(100);
 		}
-		else  if((pwmOut<-100)&&(Speed>1))                 //HardBrake
+		else  if(pwmOut<-100)                //HardBrake
+		{
+			Driver_SetBack(-pwmOut>>1);
+			HardBraking=0;
+		}
+		else if(pwmOut<-200)
 		{
 			Driver_SetBack(100);
-			HardBraking=1;
+			HardBraking=0;
+		}
+		else
+		{
+			Driver_SetThrottle(0);
+		}
 		}
 
 
@@ -340,25 +384,25 @@ void main(void)
 
 				if(AbstandFront>183) ////geschwindkeitswahl
 				{
-					SpeedDes=120;
+					SpeedDes=200;
 
 				}
 				else if (AbstandFront> 160)
 				{
-					SpeedDes=50;
+					SpeedDes=100;
 
 				}
 				else if(AbstandFront>100)
 				{
-					SpeedDes=40;
+					SpeedDes=80;
 				}
 				else if (AbstandFront>30)
 				{
-					SpeedDes=40;
+					SpeedDes=60;
 				}
 				else
 				{
-					SpeedDes=40;
+					SpeedDes=20;
 				}
 
 
@@ -390,14 +434,14 @@ void main(void)
 						if((dLeft>20) || (dLeft>10 && AbstandFront>170))   //Links plötzlich weg, linkskurve
 						{
 							//Driver_SetBack(100);
-							SpeedDes=55;
+							SpeedDes=70;
 							Corner=LTurn;   // Links
 							statecase= Curve;
 						}
 						else if((dRight>20) || (dRight>10 && AbstandFront >170))
 						{
 							//Driver_SetBack(100);
-							SpeedDes=55;
+							SpeedDes=70;
 								Corner=RTurn;  // Rechts
 								statecase= Curve;
 						}
@@ -451,7 +495,7 @@ void main(void)
 									else if(dRight>15)
 									{dir=RTurn;}
 
-									SpeedDes=45;
+									SpeedDes=60;
 								}
 				else if(Corner==RTurn)
 								{
@@ -464,7 +508,7 @@ void main(void)
 									else if(dLeft>15)
 									{dir=LTurn;}
 
-									SpeedDes=45;
+									SpeedDes=60;
 								}
 					else if(Corner==UTurnR)
 								{
@@ -478,16 +522,16 @@ void main(void)
 									}
 									else if((AbstandLinks<=8)&&(AbstandFront>14))
 									{
-										SpeedDes=70;
+										SpeedDes=60;
 										statecase=DriveStraight;
 									}
 
-									else if(AbstandLinks<=5)
+									else if((AbstandLinks<=5)||(AbstandRechts<=3))
 									{
 										statecase=Hinderniss;
 									}
 
-									SpeedDes=45;
+									SpeedDes=60;
 								}
 
 					else if(Corner==UTurnL)
@@ -506,11 +550,11 @@ void main(void)
 										SpeedDes=70;
 										statecase=DriveStraight;
 									}
-									else if(AbstandRechts<=5)
+									else if((AbstandRechts<=5)||(AbstandLinks<=3))
 									{
 										statecase=Hinderniss;
 									}
-									SpeedDes=45;
+									SpeedDes=60;
 								}
 
 
@@ -603,18 +647,16 @@ void main(void)
 											if(AbstandLinks<AbstandRechts)
 											{
 												Driver_SetSteering(-100);
-												HardBraking=1;
-												pwmOut=-40;
-												Driver_SetBack(40);
-												//Versuche::. Speed_Des-40;
+												HardBraking=0;
+
+												SpeedDes=SpeedBack;
 											}
 											else if (AbstandRechts<=AbstandLinks)
 											{
 												Driver_SetSteering(100);
-												HardBraking=1;
-												pwmOut=-40;
-												Driver_SetBack(40);
-												//Versuche:. Speed_des -40;
+												HardBraking=0;
+
+												SpeedDes=SpeedBack;
 											}
 										}
 										else
@@ -622,7 +664,7 @@ void main(void)
 											line_des=0;
 											didit=0;
 											HardBraking=0;
-											pwmOut=40;
+											SpeedDes=100;
 
 											if(laststate!=statecase)
 											{
@@ -643,24 +685,19 @@ void main(void)
 									if(AbstandLinks<AbstandRechts)
 									{
 										Driver_SetSteering(-100);
-										HardBraking=1;
-										pwmOut=-40;
-										Driver_SetBack(40);
-										//Driver_SetBack(80);
+										HardBraking=0;
+										SpeedDes=SpeedBack;
 									}
 									else if (AbstandRechts<=AbstandLinks)
 									{
 										Driver_SetSteering(100);
-										HardBraking=1;
-										pwmOut=-40;
-										Driver_SetBack(40);
-										//Driver_SetBack(80);
+										HardBraking=0;
+										SpeedDes=SpeedBack;
 									}
 								}
 								else
 									{
 									HardBraking=0;
-									pwmOut=40;
 									line_des=0;
 									didit=0;
 

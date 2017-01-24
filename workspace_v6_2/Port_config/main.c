@@ -26,11 +26,13 @@ const float kpThrottle=0.3;
 int dir=0;  //1=links 2=rechts
 int icounter=0;
 float Excel=40800;
+float KPID=0;
+float lastKPID=0;
 
 
-float KpSpeed=1.5;
-float KiSpeed=0.2;
-float KdSpeed=0.4;
+float KpSpeed=1.4;
+float KiSpeed=0.3;
+float KdSpeed=0.2;
 
 
 
@@ -160,16 +162,24 @@ void main(void)
 			if ((Timeout<=30)&&(HardBraking==0))  //in fahrt muss erst nach 1s stillstand erkannt werden
 			{
 			Timeout++;
+
 			}
 			else if ((Timeout<=2)&&(HardBraking==1))  //in Bremse muss blockieren detektiert werden
 			{
+
 				Timeout++;
 			}
 			else
 			{
 				Speed=0;
+				iSpeed=0;
+				LastiSpeed=0;
 				LastSpeed=0;
 				Timeout=0;
+				LastESpeed=ESpeed;
+				ESpeed=SpeedDes-Speed;
+				lastKPID=KPID;
+				KPID=KpSpeed*ESpeed;
 			}
 			///////
 
@@ -194,10 +204,10 @@ void main(void)
 					dDelta=DeltaDist-LastDeltaDist;          //dDelta = e abgeleitet
 					}
 
-					if(drive=1)
+					if(drive==1)
 					{
-							Driver_LCD_WriteString("dist_left",6,1,0);
-							Driver_LCD_WriteUInt((int)AbstandLinks,1, 50);
+							Driver_LCD_WriteString("ISpeed",6,1,0);
+							Driver_LCD_WriteUInt((int)iSpeed,1, 50);
 							Driver_LCD_WriteString("dir",3,1,70);
 							if(SpeedDir<=0)
 								{
@@ -209,8 +219,8 @@ void main(void)
 								Driver_LCD_WriteString("+",1,1,100);
 								Driver_LCD_WriteUInt(SpeedDir,1,108);
 							}
-							Driver_LCD_WriteString("V_right",7,2,0);
-							Driver_LCD_WriteUInt((int)AbstandRechts,2, 50);
+							Driver_LCD_WriteString("pwmOut",6,2,0);
+							Driver_LCD_WriteUInt((int)pwmOut,2, 50);
 							Driver_LCD_WriteString("V_front",7,4,0);
 							Driver_LCD_WriteUInt(AbstandFront,4, 50);
 							Driver_LCD_WriteString("speed",5,5,0);
@@ -232,18 +242,21 @@ void main(void)
 
 
 
-		LastESpeed=ESpeed;
-		ESpeed=SpeedDes-Speed;
+
 
 		if(((LastESpeed>0)&&(ESpeed<0))||((LastESpeed<0)&&(ESpeed>0)))
 		{
-			iSpeed=ESpeed*0.02;
+			iSpeed=KPID*0.002;
 			LastiSpeed=iSpeed;
 		}
 		else
 		{
-			iSpeed=(ESpeed*0.02)+LastiSpeed;
+			iSpeed=(KPID*0.002)+LastiSpeed;
 			LastiSpeed=iSpeed;
+			if(iSpeed>=500)
+			{
+				iSpeed=500;
+			}
 		}
 
 		///Speed Controller///////////////////////////////////Rennt auf Abtastung von Speed-Measurement
@@ -258,13 +271,25 @@ void main(void)
 
 			if(SpeedDir<=0)  //Vorwärts
 				{
+
 					Speed=Excel/PeriodCount;
+					if((Speed>LastSpeed+5)&&(Speed>SpeedDes*0.75))
+					{
+						Speed=LastSpeed+15;
+					}
+					else if((Speed<LastSpeed-5)&&(Speed>SpeedDes*0.75))
+					{
+						Speed=LastSpeed-15;
+					}
 				}
 			else               //Rückwärts
 				{
 					Speed=-Excel/PeriodCount;
 				}
-
+			LastESpeed=ESpeed;
+			ESpeed=SpeedDes-Speed;
+			lastKPID=KPID;
+			KPID=KpSpeed*ESpeed;
 			 //Regelabweichung
 			// NEew PED-Value
 			//pwmOut=KpSpeed*ESpeed+iSpeed*KiSpeed+(ESpeed-LastESpeed)*KdSpeed;  //PID
@@ -280,7 +305,10 @@ void main(void)
 
 		if(drive==1)
 		{
-			pwmOut=KpSpeed*ESpeed+iSpeed*KiSpeed+(ESpeed-LastESpeed)*KdSpeed;}  //PID
+
+			pwmOut=(int)(KPID+((iSpeed)*KiSpeed)+(KPID-lastKPID)*KdSpeed)+40;
+			//pwmOut=KpSpeed*ESpeed*(1+(200/iSpeed)*KiSpeed+ (ESpeed-LastESpeed)*KdSpeed;)
+		 //PID
 
 
 
@@ -317,6 +345,11 @@ void main(void)
 		}
 		else  if((pwmOut<-100)&&(Speed>1))                 //HardBrake
 		{
+			Driver_SetBack(-pwmOut>>1);
+			HardBraking=0;
+		}
+		else if((pwmOut<-200)&&(Speed>1))
+		{
 			Driver_SetBack(100);
 			HardBraking=0;
 		}
@@ -324,7 +357,7 @@ void main(void)
 		{
 			Driver_SetThrottle(0);
 		}
-
+		}
 
 		////////////////////////////////////////////////////////////////////
 
@@ -346,10 +379,10 @@ void main(void)
 				line_des=0;
 				SpeedDes=100;
 
-				/*
+
 				if(AbstandFront>183) ////geschwindkeitswahl
 				{
-					SpeedDes=120;
+					SpeedDes=50;
 
 				}
 				else if (AbstandFront> 160)
@@ -359,15 +392,15 @@ void main(void)
 				}
 				else if(AbstandFront>100)
 				{
-					SpeedDes=40;
+					SpeedDes=50;
 				}
 				else if (AbstandFront>30)
 				{
-					SpeedDes=40;
+					SpeedDes=60;
 				}
 				else
 				{
-					SpeedDes=40;
+					SpeedDes=0;
 				}
 
 
@@ -379,11 +412,10 @@ void main(void)
 					Driver_SetSteering(Steer);
 
 				}
-				 */
-				Driver_SetSteering(0);
-				if((AbstandFront<=50))  //wenn Abstand Vorne kleiner als 50cm ist UND Objekt sich schnell genähert hat && StartupTimer abgelaufen ist
+
+				if(AbstandFront<=50) //wenn Abstand Vorne kleiner als 50cm ist UND Objekt sich schnell genähert hat && StartupTimer abgelaufen ist
 				{
-                 //    SpeedDes=0;           //ausweich/Überholmanöver
+                    SpeedDes=0;           //ausweich/Überholmanöver
 				}
 
 				/*
@@ -405,8 +437,8 @@ void main(void)
 								Corner=RTurn;  // Rechts
 								statecase= Curve;
 						}
+*/
 
-		        }*/
 
 			break;
 /*

@@ -13,7 +13,7 @@ void HAL_TimerA0_Init()
 {
 	//////////////////////ZÄHLT MIT 62,5kHz///
 	TA0CTL |= TASSEL__SMCLK+ID_3+MC__STOP;/*+CNTL__16*/    	//SEL_SMCLKK=Clock ist SMCLOCK    MC_STOP=Mode ist Stop
-	TA0EX0 = TAIDEX_4;
+	TA0EX0 = TAIDEX_7;
 	//TA1CCTL0 |= CM_0+CCIS_0+SCS+OUTMOD_0+CCIE;		//CM=Capture mode:No Capture     CCIS=Capt/compare Inpt select ist   SCS=Syncron Capture  OUTMOD_0=Out BIT-Value   CCIE=Interrupt enable
 	//TA1CCTL1 |= CM_0+CCIS_0+SCS+OUTMOD_7;      //Throttle 7  Outmod: Reset/Set  für PWM
 	TA0CCTL2 |= CM_2+CCIS_0+CAP+CCIE;
