@@ -66,6 +66,8 @@ float LastESpeed=0;
 int pwmOut=0;
 
 float SpeedDes=0;
+float LastSpeedDes=0;
+
 float Speedf=0;
 float Speed=0; //m/s
 float LastiSpeed=0;
@@ -145,18 +147,33 @@ void main(void)
 
 
 		//////////////////////////////////////////////////
+		if(LastSpeedDes!=SpeedDes)
+		{
+			iSpeed=0;
+			iSpeed=0;
+			LastiSpeed=0;
+			LastSpeed=0;
+			Timeout=0;
+			LastESpeed=0;
+			ESpeed=SpeedDes-Speed;
+			KPID=KpSpeed*ESpeed;
+			lastKPID=0;
+			LastSpeedDes=SpeedDes;
+		}
+
+
 
 
 
 		///Abstandermittlung und Berechneng für LENK-PID//////////////////////////////////////////////////////////////////////77
 
 		if(ADC1.Status.B.ADCrdy==1)
-				{
+			{
 
 
 			//SpeedMess TImeout
 
-			if ((Timeout<=30)&&(HardBraking==0))  //in fahrt muss erst nach 1s stillstand erkannt werden
+			if ((Timeout<=5)&&(HardBraking==0))  //in fahrt muss erst nach 1s stillstand erkannt werden
 			{
 			Timeout++;
 			}
@@ -172,10 +189,10 @@ void main(void)
 				LastiSpeed=0;
 				LastSpeed=0;
 				Timeout=0;
-				LastESpeed=ESpeed;
+				LastESpeed=0;
 				ESpeed=SpeedDes-Speed;
-				lastKPID=KPID;
 				KPID=KpSpeed*ESpeed;
+				lastKPID=0;
 			}
 			///////
 
@@ -253,9 +270,17 @@ void main(void)
 		{
 			iSpeed=(KPID*0.002)+LastiSpeed;
 			LastiSpeed=iSpeed;
-			if(iSpeed>=500)
+			if((iSpeed>=500)&&(SpeedDes>5))
 			{
 				iSpeed=500;
+			}
+			else if((SpeedDes<-10)&&(iSpeed<-500))
+			{
+				iSpeed=-500;
+			}
+			else if((iSpeed>100)&&(SpeedDes<-5))
+			{
+				iSpeed=0;
 			}
 		}
 
@@ -304,10 +329,18 @@ void main(void)
 
 
 
-		if(drive==1)
+		if(drive==1||drive==0)
 		{
 
+			if(SpeedDes>=0)
+			{
 			pwmOut=(int)(KPID+((iSpeed)*KiSpeed)+(KPID-lastKPID)*KdSpeed)+40;
+			}
+			else
+			{
+				pwmOut=-60;
+			}
+
 			//pwmOut=KpSpeed*ESpeed*(1+(200/iSpeed)*KiSpeed+ (ESpeed-LastESpeed)*KdSpeed;)
 		 //PID
 
@@ -329,7 +362,7 @@ void main(void)
 
 		Driver_SetThrottle(pwmOut);
 		}
-		else if(pwmOut<=0 && pwmOut>-40)  //bei negativer PWM
+		else if((pwmOut<=0 && pwmOut>-40)&&(SpeedDes>5)) //bei negativer PWM
 		{
 			Driver_SetThrottle(0);
 		}
@@ -340,6 +373,10 @@ void main(void)
 			HardBraking=0;
 			//Ehemals
 			//Driver_SetBack(100);
+		}
+		else if((pwmOut<=-40) &&  (pwmOut>-100) &&(SpeedDes<-1))
+		{
+			Driver_SetBack(-pwmOut);
 		}
 		else if(pwmOut>100)         //Grenzwert
 		{
@@ -387,14 +424,14 @@ void main(void)
 					SpeedDes=200;
 
 				}
-				else if (AbstandFront> 160)
+				else if (AbstandFront> 150)
 				{
-					SpeedDes=100;
+					SpeedDes=150;
 
 				}
 				else if(AbstandFront>100)
 				{
-					SpeedDes=80;
+					SpeedDes=70;
 				}
 				else if (AbstandFront>30)
 				{
@@ -402,24 +439,18 @@ void main(void)
 				}
 				else
 				{
-					SpeedDes=20;
+					SpeedDes=50;
 				}
 
 
 
-				if((DeltaDist>3)||(DeltaDist<-3))  //Hysteres für mittenController
-				{
-
-				    Steer=DeltaDist*kpSteer+dDelta*2.1;  //KD controller
-					Driver_SetSteering(Steer);
-
-				}
 
 
-				if((AbstandFront<=50)&&(dFront<-20)&&(StartupC>100))  //wenn Abstand Vorne kleiner als 50cm ist UND Objekt sich schnell genähert hat && StartupTimer abgelaufen ist
+
+				if((AbstandFront<=50)&&(dFront<15||dFront>-15)&&(Speed>60))  //wenn Abstand Vorne kleiner als 50cm ist UND Objekt sich schnell genähert hat && StartupTimer abgelaufen ist
 				{
 					statecase=Hinderniss;
-					didit=1;                                    //ausweich/Überholmanöver
+					//didit=1;                                    //ausweich/Überholmanöver
 				}
 				else if((AbstandFront<=8 )&& (AbstandLinks<3||AbstandRechts<3)&&(Speed<=5))  //Wenn AbstandFront<8 und Abstand Links gering und Speed gering, dann rückwärts
 				{
@@ -431,22 +462,41 @@ void main(void)
 		        if (StartupC>100)  //startuptimer, damit nicht falsch gemessen wird   KURVENDETEKTION
 		        {
 						/// Abbruch Straight to into curve
-						if((dLeft>20) || (dLeft>10 && AbstandFront>170))   //Links plötzlich weg, linkskurve
+						if((dLeft>10) || (dLeft>10 && AbstandFront>170))   //Links plötzlich weg, linkskurve
 						{
 							//Driver_SetBack(100);
 							SpeedDes=70;
 							Corner=LTurn;   // Links
 							statecase= Curve;
+							Driver_SetSteering(40);
+							line_des=10;
+							LastDeltaDist=DeltaDist;
+							DeltaDist=line_des+(AbstandRechts-AbstandLinks);  //deltaDist = e
+
+							dDelta=DeltaDist-LastDeltaDist;
 						}
-						else if((dRight>20) || (dRight>10 && AbstandFront >170))
+						else if((dRight>10) || (dRight>10 && AbstandFront >170))
 						{
 							//Driver_SetBack(100);
 							SpeedDes=70;
 								Corner=RTurn;  // Rechts
 								statecase= Curve;
+								Driver_SetSteering(-40);
+								line_des=-10;
+								LastDeltaDist=DeltaDist;
+								DeltaDist=line_des+(AbstandRechts-AbstandLinks);  //deltaDist = e
+
+								dDelta=DeltaDist-LastDeltaDist;
 						}
 
 		        }
+				if((DeltaDist>3)||(DeltaDist<-3))  //Hysteres für mittenController
+				{
+
+				    Steer=DeltaDist*kpSteer+dDelta*2.1;  //KD controller
+					Driver_SetSteering(Steer);
+
+				}
 
 			break;
 
@@ -493,7 +543,9 @@ void main(void)
 										statecase=DriveStraight;
 									}
 									else if(dRight>15)
-									{dir=RTurn;}
+									{
+										dir=RTurn;
+									}
 
 									SpeedDes=60;
 								}
@@ -566,7 +618,7 @@ void main(void)
 									statecase=Hinderniss;
 
 								}
-								else if((AbstandLinks<2)||(AbstandRechts<2))
+								else if((AbstandLinks<3)||(AbstandRechts<3))
 								{
 									//Driver_SetBack(50);
 									//Driver_SetBrake(100);
@@ -577,72 +629,15 @@ void main(void)
 
 			//////////////Hinderniss State
 			case Hinderniss:
-				SpeedSamp=12;
+
 							Driver_LCD_Clear();
 							Driver_LCD_WriteString("Hinderniss",10,5,0);
 
 							if(laststate==DriveStraight)
 							{
-								if(didit==1)  //Wenn überholanfrage
-								{
-												if(AbstandLinks<(AbstandRechts+2))
-												{
-													line_des=10;
-												}
-												else
-												{
-													line_des=-10;
-												}
 
-												LastDeltaDist=DeltaDist;
-												DeltaDist=line_des+(AbstandRechts-AbstandLinks);  //deltaDist = e
 
-												dDelta=DeltaDist-LastDeltaDist;
-
-														if((DeltaDist>3)||(DeltaDist<-3))
-														{
-															Steer=DeltaDist*kpSteer+dDelta*2.1;
-															Driver_SetSteering(Steer);
-
-														}
-														else if((dRight>15)||(dLeft>15))
-														{
-															line_des=0;
-															didit=0;
-
-															if(laststate!=statecase)
-															{
-																laststate=statecase;
-															}
-															statecase=DriveStraight;
-														}
-
-														if(AbstandFront>183) ////geschwindkeitswahl
-														{
-															SpeedDes=120;
-														}
-														else if (AbstandFront> 160)
-														{
-															SpeedDes=50;
-														}
-														else if(AbstandFront>100)
-														{
-															SpeedDes=40;
-														}
-														else if (AbstandFront>30)
-														{
-															SpeedDes=40;
-														}
-														else
-														{
-															SpeedDes=40;
-														}
-
-								}
-								else   //stehe an / Hinderniss
-								{
-
-										if(AbstandFront<10)
+										if(AbstandFront<=30)
 										{
 											if(AbstandLinks<AbstandRechts)
 											{
@@ -664,7 +659,6 @@ void main(void)
 											line_des=0;
 											didit=0;
 											HardBraking=0;
-											SpeedDes=100;
 
 											if(laststate!=statecase)
 											{
@@ -672,7 +666,7 @@ void main(void)
 											}
 											statecase=DriveStraight;
 										}
-									}
+
 
 								}
 
@@ -680,7 +674,7 @@ void main(void)
 
 							else if(laststate==Curve)  ////////Komme aus KURVE
 							{
-								if(AbstandFront<10)
+								if(AbstandFront<=30)
 								{
 									if(AbstandLinks<AbstandRechts)
 									{
@@ -705,12 +699,14 @@ void main(void)
 									{
 										laststate=statecase;
 									}
+
 									statecase=DriveStraight;
+
 									}
 								}
 
 
-							if(AbstandFront>20)
+							if(AbstandFront>30)
 							{
 								HardBraking=0;
 								if(laststate!=statecase)

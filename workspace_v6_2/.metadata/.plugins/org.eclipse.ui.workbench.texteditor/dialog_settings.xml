@@ -3,20 +3,20 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="200" key="DIALOG_Y_ORIGIN"/>
-		<item value="984" key="DIALOG_X_ORIGIN"/>
 		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="984" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="casesensitive"/>
 		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="xFrontDist" key="selection"/>
+		<item value="Driver_SetBack" key="selection"/>
 		<list key="findhistory">
-			<item value="xFrontDist"/>
 			<item value="Driver_SetBack"/>
+			<item value="xFrontDist"/>
 			<item value="TA0CCR5"/>
 			<item value="ta0ccr5"/>
 			<item value="0xFFE8"/>
