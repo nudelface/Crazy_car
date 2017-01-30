@@ -11,8 +11,8 @@
 #ifndef DRIVER_DRIVER_AKTORIK_H_
 #define DRIVER_DRIVER_AKTORIK_H_
 
-#define StPWM_full_left 3000
-#define StPWM_full_right 4250
+#define StPWM_full_left 2800
+#define StPWM_full_right 4350
 #define StPWM_middle 3590
 #define res_left ((StPWM_middle-StPWM_full_left) / 100)
 #define res_right ((StPWM_full_right-StPWM_middle) / 100)
