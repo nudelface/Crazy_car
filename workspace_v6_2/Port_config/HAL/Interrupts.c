@@ -61,7 +61,7 @@ __interrupt void PORT1_ISR (void)
 #pragma vector=TIMER0_B0_VECTOR
 __interrupt void TIMERB_ISR (void)
 {
-	LCD_BL_ON;
+
 	/*if (state==0)
 	{
 	LCD_BL_ON;
