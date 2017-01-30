@@ -4,11 +4,11 @@
  *  Created on: 31. Okt. 2016
  *      Author: KlotzSeb
  */
-#include <DL/driver_aktorik.h>
-#include <DL/driver_lcd.h>
 #include <msp430.h>
 #include "..\HAL\hal_timerA1.h"
 #include "..\HAL\hal_usc.h"
+#include "driver_aktorik.h"
+#include "driver_lcd.h"
 
 
 

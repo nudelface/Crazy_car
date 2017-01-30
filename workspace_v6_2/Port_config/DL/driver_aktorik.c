@@ -10,8 +10,8 @@
  *  Created on: 31. Okt. 2016
  *      Author: KlotzSeb
  */
-#include <DL/driver_aktorik.h>
 #include <msp430.h>
+#include "driver_aktorik.h"
 #include "..\HAL\hal_timerA1.h"
 
 

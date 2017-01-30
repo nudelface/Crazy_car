@@ -5,8 +5,8 @@
  *      Author: Sebo
  */
 
-#ifndef DL_DRIVER_LCD_H_
-#define DL_DRIVER_LCD_H_
+#ifndef DRIVER_DRIVER_LCD_H_
+#define DRIVER_DRIVER_LCD_H_
 
 #define LCD_RESET_c 0xD2
 #define LCD_BIAS 0xA3
@@ -46,4 +46,4 @@ void itoa(unsigned int , char* , unsigned char);
 
 
 
-#endif /* DL_DRIVER_LCD_H_ */
+#endif /* DRIVER_DRIVER_LCD_H_ */

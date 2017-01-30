@@ -4,10 +4,11 @@
  *  Created on: 14.11.2016
  *      Author: Sebo
  */
-#include <DL/driver_lcd.h>
-#include <DL/drl_lcd_fonts.h>
+#include "driver_lcd.h"
+
 #include "..\HAL\hal_gpio.h"
 #include "..\HAL\hal_usciB1.h"
+#include "drl_lcd_fonts.h"
 
 
 extern USCIB1_SPICom SpiCom;

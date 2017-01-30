@@ -12,7 +12,7 @@
 
 void HAL_TimerB0_Init()
 {
-	TBCTL |= 0x0+TBSSEL__SMCLK+CNTL__16+ID_3+MC__UP+TBIE;	//0x0 zum init   TBSource=SMCLOCK , CNTL_16=Counter Länge 16,  ID_3 = Divider durch 4 (input CLK)    , MC_Up = Mode hochzählen bis TB0CL0  ,  Interrupt Enabled
+	TBCTL |= 0x0+TBSSEL__SMCLK+CNTL__16+ID_3+MC__UP+TBIE;	//0x0 zum init   TBSource=SMCLOCK , CNTL_16=Counter Länge 16,  ID_3 = Divider durch 8 (input CLK)    , MC_Up = Mode hochzählen bis TB0CL0  ,  Interrupt Enabled
 	TBCCTL0 |= CM_1+CCIS_0+SCS+CLLD_0+OUTMOD_4+CCIE;		//CM_1= Capture on rising Edge   CCIS_0=CCIxA CCR input oder so   SCS=Synchronized capture  CCLD_0=TBxCLn wird geladen wenn auf TBCCR geschrieben wird   Outmod_4=Toggle
 															//CLLD=loads on write OUTMODE=toggle CCIE=interrupt
 	TBR |= 0x0;  // Zähler Init

@@ -16,8 +16,8 @@
 
 
 ButtonCom Buttons;
-int SteeringCalibC=0;// Prüfen ob Leiche
-int initcounter=0;  // Prüfen ob Leiche
+
+int initcounter=0;
 extern USCIB1_SPICom SpiCom;
 extern ADC12Com ADC1;
 int counterz=0;
@@ -74,7 +74,7 @@ __interrupt void TIMERB_ISR (void)
 	}*/
 	counterz++;
 
-	ADC1.Status.B.ADCrdy=0;
+	//ADC1.Status.B.ADCrdy=0;
 
 	TBCTL |= TBCLR;
 	TBEX0 |= TBIDEX__5;										// divide/5
@@ -175,7 +175,6 @@ __interrupt void DMA_ISR(void)
 	DMA0CTL|=DMAEN;
 	ADC12CTL0 |= ADC12ENC;
 	ADC1.Status.B.ADCrdy=1;
-	DiskretEn=1;
 	}
 }
 

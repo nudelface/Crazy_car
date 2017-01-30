@@ -9,9 +9,6 @@
 #define AL_CONTROLLER_H_
 
 
-//#define KpSpeed 0.8
-//#define KiSpeed 1
-//#define KdSpeed 1
-
+#define SpeedBack -300
 
 #endif /* AL_CONTROLLER_H_ */
