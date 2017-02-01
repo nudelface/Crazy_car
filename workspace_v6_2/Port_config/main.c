@@ -194,6 +194,7 @@ void main(void)
 			}
 			else
 			{
+				SpeedDes=30;
 				Speed=0;
 				iSpeed=0;
 				LastiSpeed=0;
@@ -428,47 +429,104 @@ void main(void)
 				}
 				//line_des=0;
 
+
+
 			if(drive==1)
 			{
-				if(AbstandFront>183) ////geschwindkeitswahl
+
+				if((lastturn==RTurn)||(lastturn==UTurnR))
 				{
-					SpeedDes=250;
+
+					if(AbstandFront>183) ////geschwindkeitswahl
+					{
+						SpeedDes=180;
+
+					}
+					else if ((AbstandFront> 150)&&(dFront<-2))
+					{
+						SpeedDes=50;
+
+					}
+
+					else if((AbstandFront>100)&&(dFront<-8))
+					{
+						SpeedDes=50;
+
+					}
+					else if((AbstandFront>100)&&(dFront<-2))
+					{
+						SpeedDes=50;
+					}
+					else if((AbstandFront>100)&&(dFront>=0))
+					{
+						SpeedDes=100;
+					}
+					else if ((AbstandFront>60)&&(dFront>=0))
+					{
+						SpeedDes=70;
+					}
+					else if ((AbstandFront>60)&&(dFront<-1))
+					{
+						SpeedDes=60;
+					}
+					else
+					{
+						SpeedDes=50;
+					}
+
+
+
+
 
 				}
-				else if ((AbstandFront> 150)&&(dFront<-2))
-				{
-					SpeedDes=80;
 
-				}
 
-				else if((AbstandFront>100)&&(dFront<-8))
-				{
-					SpeedDes=60;
 
-				}
-				else if((AbstandFront>100)&&(dFront<-2))
-				{
-					SpeedDes=70;
-				}
-				else if((AbstandFront>100)&&(dFront>=0))
-				{
-					SpeedDes=180;
-				}
-				else if ((AbstandFront>60)&&(dFront>=0))
-				{
-					SpeedDes=80;
-				}
-				else if ((AbstandFront>60)&&(dFront<-1))
-				{
-					SpeedDes=60;
-				}
+
 				else
 				{
-					SpeedDes=50;
-				}
+
+				lastturn=Straight;
+
+						if(AbstandFront>183) ////geschwindkeitswahl
+						{
+							SpeedDes=250;
+
+						}
+						else if ((AbstandFront> 150)&&(dFront<-2))
+						{
+							SpeedDes=60;
+
+						}
+
+						else if((AbstandFront>100)&&(dFront<-8))
+						{
+							SpeedDes=60;
+
+						}
+						else if((AbstandFront>100)&&(dFront<-2))
+						{
+							SpeedDes=70;
+						}
+						else if((AbstandFront>100)&&(dFront>=0))
+						{
+							SpeedDes=110;
+						}
+						else if ((AbstandFront>60)&&(dFront>=0))
+						{
+							SpeedDes=80;
+						}
+						else if ((AbstandFront>60)&&(dFront<-1))
+						{
+							SpeedDes=60;
+						}
+						else
+						{
+							SpeedDes=50;
+						}
 
 			}
-
+			}
 
 
 
@@ -647,6 +705,7 @@ void main(void)
 										SpeedDes=SCornsl;
 									}
 
+
 								}
 					else if(Corner==UTurnR)
 								{
@@ -664,7 +723,7 @@ void main(void)
 									else if((AbstandRechts<45)&&(AbstandFront>30)) //abstandfront vorher 110
 									{
 										//statecase=DriveStraight;
-										Corner=LTurn;
+										statecase=DriveStraight;//LTurn;
 										//Driver_SetSteering(0);
 									}
 									else if((AbstandLinks<=8)&&(AbstandFront>14))
@@ -716,6 +775,10 @@ void main(void)
 										statecase=DriveStraight;
 									}
 									else if((AbstandRechts<=5)||(AbstandLinks<=3))
+									{
+										statecase=Hinderniss;
+									}
+									else if(AbstandFront>178)
 									{
 										statecase=Hinderniss;
 									}
@@ -835,6 +898,10 @@ void main(void)
 										if(AbstandRechts<5)
 										{
 											Driver_SetSteering(-20);
+										}
+										else if(AbstandRechts>20)
+										{
+											Driver_SetSteering(20);
 										}
 										SpeedDes=80;
 
