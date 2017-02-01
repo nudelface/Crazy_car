@@ -13,8 +13,8 @@
 #define SUturnsl 50
 #define SUturnmid 60
 #define SUturnf 80
-#define SCornsl 50
-#define SCornmid 60
+#define SCornsl 60
+#define SCornmid 70
 #define SCornf 80
 
 #endif /* AL_CONTROLLER_H_ */

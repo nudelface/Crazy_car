@@ -339,9 +339,13 @@ void main(void)
 		if(drive==1)
 		{
 
-			if(SpeedDes>=0)
+			if((SpeedDes>=0)&&(Timeout<=2))
 			{
 			pwmOut=(int)(KPID+((iSpeed)*KiSpeed)+(KPID-lastKPID)*KdSpeed)+40;
+			}
+			else if((SpeedDes>=0)&&(Timeout>2)&&(Timeout<5))
+			{
+				pwmOut=0;
 			}
 			else
 			{
@@ -490,13 +494,17 @@ void main(void)
 
 						if(AbstandFront>183) ////geschwindkeitswahl
 						{
-							SpeedDes=250;
+							SpeedDes=350;
 
 						}
-						else if ((AbstandFront> 150)&&(dFront<-2))
+						else if ((AbstandFront> 150)&&(dFront<-5))
 						{
 							SpeedDes=60;
 
+						}
+						else if((AbstandFront>150)&&(dFront>=0))
+						{
+							SpeedDes=150;
 						}
 
 						else if((AbstandFront>100)&&(dFront<-8))
@@ -504,7 +512,7 @@ void main(void)
 							SpeedDes=60;
 
 						}
-						else if((AbstandFront>100)&&(dFront<-2))
+						else if((AbstandFront>100)&&(dFront<-5))
 						{
 							SpeedDes=70;
 						}
@@ -522,7 +530,7 @@ void main(void)
 						}
 						else
 						{
-							SpeedDes=50;
+							SpeedDes=70;
 						}
 
 			}
