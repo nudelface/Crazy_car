@@ -417,6 +417,7 @@ void main(void)
 		switch(statecase)
 		{
 			case DriveStraight:
+				//LCD_BL_ON;
 				//LCD_BL_OFF;
 				if(laststate!=statecase)  //komme ich aus DriveStraight?
 				{
@@ -500,7 +501,7 @@ void main(void)
 
 							dDelta=DeltaDist-LastDeltaDist;
 						}
-						else if((dRight>9) || (dRight>10 && AbstandFront >170))
+						else if((dRight>9) || (dRight>10 && AbstandFront >170) ||(AbstandRechts>AbstandLinks+50))
 						{
 							//Driver_SetBack(100);
 
@@ -637,7 +638,7 @@ void main(void)
 								}
 					else if(Corner==UTurnR)
 								{
-						//LCD_BL_OFF;
+									//LCD_BL_OFF;
 
 									Driver_SetSteering(80);
 
@@ -688,7 +689,7 @@ void main(void)
 
 					else if(Corner==UTurnL)
 								{
-						//LCD_BL_ON;
+									//LCD_BL_OFF;
 
 									Driver_SetSteering(-100);
 
