@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker PC v15.12.3                    
 ******************************************************************************
->> Linked Wed Feb 01 22:20:50 2017
+>> Linked Wed Feb 01 22:55:36 2017
 
 OUTPUT FILE NAME:   <Port_config.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 00008116
@@ -84,7 +84,7 @@ MEMORY CONFIGURATION
   INT61                 0000fffa   00000002  00000002  00000000  RWIX
   INT62                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FLASH2                00010000   00038000  000030c2  00034f3e  RWIX
+  FLASH2                00010000   00038000  000030ec  00034f14  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -231,89 +231,89 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.obj (.reset)
 
-.text      0    00010000    000030c2     
-                  00010000    0000108c     main.obj (.text:main)
-                  0001108c    000002e4     rts430x_lc_rd_eabi.lib : frcmpyd.obj (.text:__TI_frcmpyd)
-                  00011370    000002d8                            : addd.obj (.text:__mspabi_addd)
-                  00011648    00000282                            : mpyd.obj (.text:__mspabi_mpyd)
-                  000118ca    00000252                            : frcaddd.obj (.text:__TI_frcaddd)
-                  00011b1c    00000132                            : fs_add.obj (.text)
-                  00011c4e    000000fa     driver_lcd.obj (.text:Driver_LCD_WriteUInt)
-                  00011d48    000000ea     driver_lcd.obj (.text:itoa)
-                  00011e32    000000e6     hal_pmm.obj (.text:HAL_PMM_SetVCoreUp)
-                  00011f18    000000e4     hal_gpio.obj (.text:HAL_GPIO_Init)
-                  00011ffc    000000d8     rts430x_lc_rd_eabi.lib : cmpd.obj (.text:__mspabi_cmpd)
-                  000120d4    000000b8                            : fs_mpy.obj (.text)
-                  0001218c    000000b6     driver_lcd.obj (.text:Driver_LCD_WriteString)
-                  00012242    000000b4     hal_pmm.obj (.text:HAL_PMM_SetVCoreDown)
-                  000122f6    000000b2     rts430x_lc_rd_eabi.lib : renormd.obj (.text:__TI_renormd)
-                  000123a8    000000a8     driver_lcd.obj (.text:Driver_LCD_Clear)
-                  00012450    0000009e     rts430x_lc_rd_eabi.lib : fltlid.obj (.text:__mspabi_fltlid)
-                  000124ee    00000090                            : fs_div.obj (.text)
-                  0001257e    0000008c                            : cvtdf.obj (.text:__mspabi_cvtdf)
-                  0001260a    0000008a     driver_aktorik.obj (.text:Driver_SetSteering)
-                  00012694    00000082     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
-                  00012716    00000076     driver_lcd.obj (.text:Driver_LCD_WriteCommand)
-                  0001278c    0000006e     rts430x_lc_rd_eabi.lib : cvtfd.obj (.text:__mspabi_cvtfd)
-                  000127fa    0000006a     hal_pmm.obj (.text:HAL_PMM_SetVCore)
-                  00012864    00000068     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
-                  000128cc    00000068                            : fs_toi.obj (.text)
-                  00012934    00000066                            : fixdli.obj (.text:__mspabi_fixdli)
-                  0001299a    00000066                            : cpy_tbl.obj (.text:copy_in)
-                  00012a00    00000058                            : div32u.obj (.text)
-                  00012a58    00000050     driver_lcd.obj (.text:Driver_LCD_SetPosition)
-                  00012aa8    0000004a     rts430x_lc_rd_eabi.lib : fs_cmp.obj (.text)
-                  00012af2    00000048     driver_aktorik.obj (.text:Driver_ESCInit)
-                  00012b3a    00000042     driver_aktorik.obj (.text:Driver_SetBack)
-                  00012b7c    00000042     driver_aktorik.obj (.text:Driver_SetThrottle)
-                  00012bbe    00000040     rts430x_lc_rd_eabi.lib : div32s.obj (.text)
-                  00012bfe    0000003e                            : asr32.obj (.text:l_asr_const)
-                  00012c3c    0000003e                            : lsl32.obj (.text:l_lsl_const)
-                  00012c7a    0000003e                            : lsr32.obj (.text:l_lsr_const)
-                  00012cb8    0000003a     hal_timerA1.obj (.text:HAL_TimerA1_Init)
-                  00012cf2    00000036     hal_usc.obj (.text:HAL_UCS_Init)
-                  00012d28    00000036     rts430x_lc_rd_eabi.lib : fs_itof.obj (.text)
-                  00012d5e    00000032     driver_lcd.obj (.text:Driver_LCD_Init)
-                  00012d90    00000032     hal_dma.obj (.text:HAL_DMA_Init)
-                  00012dc2    00000032     rts430x_lc_rd_eabi.lib : fs_ultof.obj (.text)
-                  00012df4    0000002e     hal_general.obj (.text:HAL_Init)
-                  00012e22    0000002c     hal_adc12.obj (.text:HAL_Adc_init)
-                  00012e4e    0000002c     hal_usciB1.obj (.text:HAL_USCIB1_Init)
-                  00012e7a    0000002a     sense_read.obj (.text:Distleft)
-                  00012ea4    0000002a     sense_read.obj (.text:Distmid)
-                  00012ece    0000002a     sense_read.obj (.text:Distright)
-                  00012ef8    0000002a     driver_aktorik.obj (.text:Driver_PWMInit)
-                  00012f22    00000028     hal_timerB0.obj (.text:HAL_TimerB0_Init)
-                  00012f4a    00000028     rts430x_lc_rd_eabi.lib : fixdi.obj (.text:__mspabi_fixdi)
-                  00012f72    00000024                            : mult32_f5hw.obj (.text)
-                  00012f96    00000022     hal_timerA0.obj (.text:HAL_TimerA0_Init)
-                  00012fb8    0000001e     hal_usciB1.obj (.text:HAL_USCIB1_Transmit)
-                  00012fd6    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.obj (.text)
-                  00012fee    00000016                            : memset.obj (.text:memset)
-                  00013004    00000016                            : div16u.obj (.text)
-                  0001301a    00000014                            : memcpy.obj (.text:memcpy)
-                  0001302e    00000012     hal_pmm.obj (.text:HAL_PMM_Init)
-                  00013040    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  00013052    00000010     driver_general.obj (.text:Driver_Init)
-                  00013062    00000010     rts430x_lc_rd_eabi.lib : asr32.obj (.text:l_asr)
-                  00013072    00000010                            : lsl32.obj (.text:l_lsl)
-                  00013082    00000010                            : lsr32.obj (.text:l_lsr)
-                  00013092    0000000c                            : fltid.obj (.text:__mspabi_fltid)
-                  0001309e    0000000a                            : fs_neg.obj (.text)
-                  000130a8    00000008     hal_wdt.obj (.text:HAL_Wdt_Init)
-                  000130b0    00000006     rts430x_lc_rd_eabi.lib : exit.obj (.text:abort)
-                  000130b6    00000006                            : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
-                  000130bc    00000004                            : pre_init.obj (.text:_system_pre_init)
-                  000130c0    00000002                            : startup.obj (.text:_system_post_cinit)
+.text      0    00010000    000030ec     
+                  00010000    000010b6     main.obj (.text:main)
+                  000110b6    000002e4     rts430x_lc_rd_eabi.lib : frcmpyd.obj (.text:__TI_frcmpyd)
+                  0001139a    000002d8                            : addd.obj (.text:__mspabi_addd)
+                  00011672    00000282                            : mpyd.obj (.text:__mspabi_mpyd)
+                  000118f4    00000252                            : frcaddd.obj (.text:__TI_frcaddd)
+                  00011b46    00000132                            : fs_add.obj (.text)
+                  00011c78    000000fa     driver_lcd.obj (.text:Driver_LCD_WriteUInt)
+                  00011d72    000000ea     driver_lcd.obj (.text:itoa)
+                  00011e5c    000000e6     hal_pmm.obj (.text:HAL_PMM_SetVCoreUp)
+                  00011f42    000000e4     hal_gpio.obj (.text:HAL_GPIO_Init)
+                  00012026    000000d8     rts430x_lc_rd_eabi.lib : cmpd.obj (.text:__mspabi_cmpd)
+                  000120fe    000000b8                            : fs_mpy.obj (.text)
+                  000121b6    000000b6     driver_lcd.obj (.text:Driver_LCD_WriteString)
+                  0001226c    000000b4     hal_pmm.obj (.text:HAL_PMM_SetVCoreDown)
+                  00012320    000000b2     rts430x_lc_rd_eabi.lib : renormd.obj (.text:__TI_renormd)
+                  000123d2    000000a8     driver_lcd.obj (.text:Driver_LCD_Clear)
+                  0001247a    0000009e     rts430x_lc_rd_eabi.lib : fltlid.obj (.text:__mspabi_fltlid)
+                  00012518    00000090                            : fs_div.obj (.text)
+                  000125a8    0000008c                            : cvtdf.obj (.text:__mspabi_cvtdf)
+                  00012634    0000008a     driver_aktorik.obj (.text:Driver_SetSteering)
+                  000126be    00000082     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
+                  00012740    00000076     driver_lcd.obj (.text:Driver_LCD_WriteCommand)
+                  000127b6    0000006e     rts430x_lc_rd_eabi.lib : cvtfd.obj (.text:__mspabi_cvtfd)
+                  00012824    0000006a     hal_pmm.obj (.text:HAL_PMM_SetVCore)
+                  0001288e    00000068     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
+                  000128f6    00000068                            : fs_toi.obj (.text)
+                  0001295e    00000066                            : fixdli.obj (.text:__mspabi_fixdli)
+                  000129c4    00000066                            : cpy_tbl.obj (.text:copy_in)
+                  00012a2a    00000058                            : div32u.obj (.text)
+                  00012a82    00000050     driver_lcd.obj (.text:Driver_LCD_SetPosition)
+                  00012ad2    0000004a     rts430x_lc_rd_eabi.lib : fs_cmp.obj (.text)
+                  00012b1c    00000048     driver_aktorik.obj (.text:Driver_ESCInit)
+                  00012b64    00000042     driver_aktorik.obj (.text:Driver_SetBack)
+                  00012ba6    00000042     driver_aktorik.obj (.text:Driver_SetThrottle)
+                  00012be8    00000040     rts430x_lc_rd_eabi.lib : div32s.obj (.text)
+                  00012c28    0000003e                            : asr32.obj (.text:l_asr_const)
+                  00012c66    0000003e                            : lsl32.obj (.text:l_lsl_const)
+                  00012ca4    0000003e                            : lsr32.obj (.text:l_lsr_const)
+                  00012ce2    0000003a     hal_timerA1.obj (.text:HAL_TimerA1_Init)
+                  00012d1c    00000036     hal_usc.obj (.text:HAL_UCS_Init)
+                  00012d52    00000036     rts430x_lc_rd_eabi.lib : fs_itof.obj (.text)
+                  00012d88    00000032     driver_lcd.obj (.text:Driver_LCD_Init)
+                  00012dba    00000032     hal_dma.obj (.text:HAL_DMA_Init)
+                  00012dec    00000032     rts430x_lc_rd_eabi.lib : fs_ultof.obj (.text)
+                  00012e1e    0000002e     hal_general.obj (.text:HAL_Init)
+                  00012e4c    0000002c     hal_adc12.obj (.text:HAL_Adc_init)
+                  00012e78    0000002c     hal_usciB1.obj (.text:HAL_USCIB1_Init)
+                  00012ea4    0000002a     sense_read.obj (.text:Distleft)
+                  00012ece    0000002a     sense_read.obj (.text:Distmid)
+                  00012ef8    0000002a     sense_read.obj (.text:Distright)
+                  00012f22    0000002a     driver_aktorik.obj (.text:Driver_PWMInit)
+                  00012f4c    00000028     hal_timerB0.obj (.text:HAL_TimerB0_Init)
+                  00012f74    00000028     rts430x_lc_rd_eabi.lib : fixdi.obj (.text:__mspabi_fixdi)
+                  00012f9c    00000024                            : mult32_f5hw.obj (.text)
+                  00012fc0    00000022     hal_timerA0.obj (.text:HAL_TimerA0_Init)
+                  00012fe2    0000001e     hal_usciB1.obj (.text:HAL_USCIB1_Transmit)
+                  00013000    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.obj (.text)
+                  00013018    00000016                            : memset.obj (.text:memset)
+                  0001302e    00000016                            : div16u.obj (.text)
+                  00013044    00000014                            : memcpy.obj (.text:memcpy)
+                  00013058    00000012     hal_pmm.obj (.text:HAL_PMM_Init)
+                  0001306a    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  0001307c    00000010     driver_general.obj (.text:Driver_Init)
+                  0001308c    00000010     rts430x_lc_rd_eabi.lib : asr32.obj (.text:l_asr)
+                  0001309c    00000010                            : lsl32.obj (.text:l_lsl)
+                  000130ac    00000010                            : lsr32.obj (.text:l_lsr)
+                  000130bc    0000000c                            : fltid.obj (.text:__mspabi_fltid)
+                  000130c8    0000000a                            : fs_neg.obj (.text)
+                  000130d2    00000008     hal_wdt.obj (.text:HAL_Wdt_Init)
+                  000130da    00000006     rts430x_lc_rd_eabi.lib : exit.obj (.text:abort)
+                  000130e0    00000006                            : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
+                  000130e6    00000004                            : pre_init.obj (.text:_system_pre_init)
+                  000130ea    00000002                            : startup.obj (.text:_system_post_cinit)
 
 MODULE SUMMARY
 
        Module                     code    ro data   rw data
        ------                     ----    -------   -------
     .\
-       main.obj                   4236    62        88     
+       main.obj                   4278    62        88     
     +--+--------------------------+-------+---------+---------+
-       Total:                     4236    62        88     
+       Total:                     4278    62        88     
                                                            
     .\AL\
        sense_read.obj             126     0         4920   
@@ -408,7 +408,7 @@ MODULE SUMMARY
        Stack:                     0       0         160    
        Linker Generated:          0       4036      0      
     +--+--------------------------+-------+---------+---------+
-       Grand Total:               12830   4795      5755   
+       Grand Total:               12872   4795      5755   
 
 
 LINKER GENERATED COPY TABLES
@@ -536,7 +536,7 @@ address   name
 000004be  BCD2BIN                 
 000004bc  BIN2BCD                 
 000031d2  Buttons                 
-000130b0  C$$EXIT                 
+000130da  C$$EXIT                 
 000008c0  CBCTL0                  
 000008c1  CBCTL0_H                
 000008c0  CBCTL0_L                
@@ -648,21 +648,21 @@ address   name
 00008130  DMA_ISR                 
 00002f74  DeltaDist               
 00002f98  DirSample               
-00012e7a  Distleft                
-00012ea4  Distmid                 
-00012ece  Distright               
-00012af2  Driver_ESCInit          
-00013052  Driver_Init             
-000123a8  Driver_LCD_Clear        
-00012d5e  Driver_LCD_Init         
-00012a58  Driver_LCD_SetPosition  
-00012716  Driver_LCD_WriteCommand 
-0001218c  Driver_LCD_WriteString  
-00011c4e  Driver_LCD_WriteUInt    
-00012ef8  Driver_PWMInit          
-00012b3a  Driver_SetBack          
-0001260a  Driver_SetSteering      
-00012b7c  Driver_SetThrottle      
+00012ea4  Distleft                
+00012ece  Distmid                 
+00012ef8  Distright               
+00012b1c  Driver_ESCInit          
+0001307c  Driver_Init             
+000123d2  Driver_LCD_Clear        
+00012d88  Driver_LCD_Init         
+00012a82  Driver_LCD_SetPosition  
+00012740  Driver_LCD_WriteCommand 
+000121b6  Driver_LCD_WriteString  
+00011c78  Driver_LCD_WriteUInt    
+00012f22  Driver_PWMInit          
+00012b64  Driver_SetBack          
+00012634  Driver_SetSteering      
+00012ba6  Driver_SetThrottle      
 00002f48  ESpeed                  
 0000840c  Excel                   
 00000140  FCTL1                   
@@ -674,21 +674,21 @@ address   name
 00000146  FCTL4                   
 00000147  FCTL4_H                 
 00000146  FCTL4_L                 
-00012e22  HAL_Adc_init            
-00012d90  HAL_DMA_Init            
-00011f18  HAL_GPIO_Init           
-00012df4  HAL_Init                
-0001302e  HAL_PMM_Init            
-000127fa  HAL_PMM_SetVCore        
-00012242  HAL_PMM_SetVCoreDown    
-00011e32  HAL_PMM_SetVCoreUp      
-00012f96  HAL_TimerA0_Init        
-00012cb8  HAL_TimerA1_Init        
-00012f22  HAL_TimerB0_Init        
-00012cf2  HAL_UCS_Init            
-00012e4e  HAL_USCIB1_Init         
-00012fb8  HAL_USCIB1_Transmit     
-000130a8  HAL_Wdt_Init            
+00012e4c  HAL_Adc_init            
+00012dba  HAL_DMA_Init            
+00011f42  HAL_GPIO_Init           
+00012e1e  HAL_Init                
+00013058  HAL_PMM_Init            
+00012824  HAL_PMM_SetVCore        
+0001226c  HAL_PMM_SetVCoreDown    
+00011e5c  HAL_PMM_SetVCoreUp      
+00012fc0  HAL_TimerA0_Init        
+00012ce2  HAL_TimerA1_Init        
+00012f4c  HAL_TimerB0_Init        
+00012d1c  HAL_UCS_Init            
+00012e78  HAL_USCIB1_Init         
+00012fe2  HAL_USCIB1_Transmit     
+000130d2  HAL_Wdt_Init            
 00002f6e  HardBraking             
 00002fb4  Init2Arr                
 00002f3a  KPID                    
@@ -1217,10 +1217,10 @@ UNDEFED   __TI_BINIT_Limit
 UNDEFED   __TI_INITARRAY_Base     
 UNDEFED   __TI_INITARRAY_Limit    
 00008154  __TI_ISR_TRAP           
-00013040  __TI_decompress_none    
-000130b6  __TI_decompress_rle24   
-000118ca  __TI_frcaddd            
-0001108c  __TI_frcmpyd            
+0001306a  __TI_decompress_none    
+000130e0  __TI_decompress_rle24   
+000118f4  __TI_frcaddd            
+000110b6  __TI_frcmpyd            
 0000ffca  __TI_int37              
 0000ffcc  __TI_int38              
 0000ffce  __TI_int39              
@@ -1248,90 +1248,90 @@ UNDEFED   __TI_INITARRAY_Limit
 ffffffff  __TI_pprof_out_hndl     
 ffffffff  __TI_prof_data_size     
 ffffffff  __TI_prof_data_start    
-000122f6  __TI_renormd            
+00012320  __TI_renormd            
 ffffffff  __c_args__              
-00011370  __mspabi_addd           
-00011b22  __mspabi_addf           
-00011ffc  __mspabi_cmpd           
-00012aa8  __mspabi_cmpf           
-0001257e  __mspabi_cvtdf          
-0001278c  __mspabi_cvtfd          
-000124ee  __mspabi_divf           
-00012bbe  __mspabi_divli          
-00013004  __mspabi_divu           
-00012a00  __mspabi_divul          
-00012f4a  __mspabi_fixdi          
-00012934  __mspabi_fixdli         
-000128cc  __mspabi_fixfi          
-00013092  __mspabi_fltid          
-00012d28  __mspabi_fltif          
-00012450  __mspabi_fltlid         
-00012dc2  __mspabi_fltulf         
-00011648  __mspabi_mpyd           
-000120d4  __mspabi_mpyf           
-00012fd6  __mspabi_mpyi_f5hw      
-00012f72  __mspabi_mpyl_f5hw      
-0001309e  __mspabi_negf           
-00012bbe  __mspabi_remli          
-00013004  __mspabi_remu           
-00012a00  __mspabi_remul          
-00013072  __mspabi_slll           
-00012c74  __mspabi_slll_1         
-00012c50  __mspabi_slll_10        
-00012c4c  __mspabi_slll_11        
-00012c48  __mspabi_slll_12        
-00012c44  __mspabi_slll_13        
-00012c40  __mspabi_slll_14        
-00012c3c  __mspabi_slll_15        
-00012c70  __mspabi_slll_2         
-00012c6c  __mspabi_slll_3         
-00012c68  __mspabi_slll_4         
-00012c64  __mspabi_slll_5         
-00012c60  __mspabi_slll_6         
-00012c5c  __mspabi_slll_7         
-00012c58  __mspabi_slll_8         
-00012c54  __mspabi_slll_9         
-00013062  __mspabi_sral           
-00012c36  __mspabi_sral_1         
-00012c12  __mspabi_sral_10        
-00012c0e  __mspabi_sral_11        
-00012c0a  __mspabi_sral_12        
-00012c06  __mspabi_sral_13        
-00012c02  __mspabi_sral_14        
-00012bfe  __mspabi_sral_15        
-00012c32  __mspabi_sral_2         
-00012c2e  __mspabi_sral_3         
-00012c2a  __mspabi_sral_4         
-00012c26  __mspabi_sral_5         
-00012c22  __mspabi_sral_6         
-00012c1e  __mspabi_sral_7         
-00012c1a  __mspabi_sral_8         
-00012c16  __mspabi_sral_9         
-00013082  __mspabi_srll           
-00012cb2  __mspabi_srll_1         
-00012c8e  __mspabi_srll_10        
-00012c8a  __mspabi_srll_11        
-00012c86  __mspabi_srll_12        
-00012c82  __mspabi_srll_13        
-00012c7e  __mspabi_srll_14        
-00012c7a  __mspabi_srll_15        
-00012cae  __mspabi_srll_2         
-00012caa  __mspabi_srll_3         
-00012ca6  __mspabi_srll_4         
-00012ca2  __mspabi_srll_5         
-00012c9e  __mspabi_srll_6         
-00012c9a  __mspabi_srll_7         
-00012c96  __mspabi_srll_8         
-00012c92  __mspabi_srll_9         
-00011b1c  __mspabi_subf           
-00012694  _auto_init_hold_wdt     
+0001139a  __mspabi_addd           
+00011b4c  __mspabi_addf           
+00012026  __mspabi_cmpd           
+00012ad2  __mspabi_cmpf           
+000125a8  __mspabi_cvtdf          
+000127b6  __mspabi_cvtfd          
+00012518  __mspabi_divf           
+00012be8  __mspabi_divli          
+0001302e  __mspabi_divu           
+00012a2a  __mspabi_divul          
+00012f74  __mspabi_fixdi          
+0001295e  __mspabi_fixdli         
+000128f6  __mspabi_fixfi          
+000130bc  __mspabi_fltid          
+00012d52  __mspabi_fltif          
+0001247a  __mspabi_fltlid         
+00012dec  __mspabi_fltulf         
+00011672  __mspabi_mpyd           
+000120fe  __mspabi_mpyf           
+00013000  __mspabi_mpyi_f5hw      
+00012f9c  __mspabi_mpyl_f5hw      
+000130c8  __mspabi_negf           
+00012be8  __mspabi_remli          
+0001302e  __mspabi_remu           
+00012a2a  __mspabi_remul          
+0001309c  __mspabi_slll           
+00012c9e  __mspabi_slll_1         
+00012c7a  __mspabi_slll_10        
+00012c76  __mspabi_slll_11        
+00012c72  __mspabi_slll_12        
+00012c6e  __mspabi_slll_13        
+00012c6a  __mspabi_slll_14        
+00012c66  __mspabi_slll_15        
+00012c9a  __mspabi_slll_2         
+00012c96  __mspabi_slll_3         
+00012c92  __mspabi_slll_4         
+00012c8e  __mspabi_slll_5         
+00012c8a  __mspabi_slll_6         
+00012c86  __mspabi_slll_7         
+00012c82  __mspabi_slll_8         
+00012c7e  __mspabi_slll_9         
+0001308c  __mspabi_sral           
+00012c60  __mspabi_sral_1         
+00012c3c  __mspabi_sral_10        
+00012c38  __mspabi_sral_11        
+00012c34  __mspabi_sral_12        
+00012c30  __mspabi_sral_13        
+00012c2c  __mspabi_sral_14        
+00012c28  __mspabi_sral_15        
+00012c5c  __mspabi_sral_2         
+00012c58  __mspabi_sral_3         
+00012c54  __mspabi_sral_4         
+00012c50  __mspabi_sral_5         
+00012c4c  __mspabi_sral_6         
+00012c48  __mspabi_sral_7         
+00012c44  __mspabi_sral_8         
+00012c40  __mspabi_sral_9         
+000130ac  __mspabi_srll           
+00012cdc  __mspabi_srll_1         
+00012cb8  __mspabi_srll_10        
+00012cb4  __mspabi_srll_11        
+00012cb0  __mspabi_srll_12        
+00012cac  __mspabi_srll_13        
+00012ca8  __mspabi_srll_14        
+00012ca4  __mspabi_srll_15        
+00012cd8  __mspabi_srll_2         
+00012cd4  __mspabi_srll_3         
+00012cd0  __mspabi_srll_4         
+00012ccc  __mspabi_srll_5         
+00012cc8  __mspabi_srll_6         
+00012cc4  __mspabi_srll_7         
+00012cc0  __mspabi_srll_8         
+00012cbc  __mspabi_srll_9         
+00011b46  __mspabi_subf           
+000126be  _auto_init_hold_wdt     
 00008116  _c_int00_noargs_noexit  
 0000fffe  _reset_vector           
 00006360  _stack                  
-000130c0  _system_post_cinit      
-000130bc  _system_pre_init        
-000130b0  abort                   
-0001299a  copy_in                 
+000130ea  _system_post_cinit      
+000130e6  _system_pre_init        
+000130da  abort                   
+000129c4  copy_in                 
 00002f84  counterz                
 00002f76  dDelta                  
 000031d4  dFront                  
@@ -1343,7 +1343,7 @@ ffffffff  __c_args__
 0000815c  font                    
 00002f66  iSpeed                  
 00002f82  initcounter             
-00011d48  itoa                    
+00011d72  itoa                    
 00008404  kpSteer                 
 00008408  kpThrottle              
 00002fa0  lastCount               
@@ -1352,8 +1352,8 @@ ffffffff  __c_args__
 000031da  lastturn                
 00002f78  line_des                
 00010000  main                    
-0001301a  memcpy                  
-00012fee  memset                  
+00013044  memcpy                  
+00013018  memset                  
 00002f54  pwmOut                  
 00001c00  sense_left              
 00002268  sense_mid               
@@ -2173,124 +2173,124 @@ address   name
 0000fffc  __TI_int62              
 0000fffe  _reset_vector           
 00010000  main                    
-0001108c  __TI_frcmpyd            
-00011370  __mspabi_addd           
-00011648  __mspabi_mpyd           
-000118ca  __TI_frcaddd            
-00011b1c  __mspabi_subf           
-00011b22  __mspabi_addf           
-00011c4e  Driver_LCD_WriteUInt    
-00011d48  itoa                    
-00011e32  HAL_PMM_SetVCoreUp      
-00011f18  HAL_GPIO_Init           
-00011ffc  __mspabi_cmpd           
-000120d4  __mspabi_mpyf           
-0001218c  Driver_LCD_WriteString  
-00012242  HAL_PMM_SetVCoreDown    
-000122f6  __TI_renormd            
-000123a8  Driver_LCD_Clear        
-00012450  __mspabi_fltlid         
-000124ee  __mspabi_divf           
-0001257e  __mspabi_cvtdf          
-0001260a  Driver_SetSteering      
-00012694  _auto_init_hold_wdt     
-00012716  Driver_LCD_WriteCommand 
-0001278c  __mspabi_cvtfd          
-000127fa  HAL_PMM_SetVCore        
-000128cc  __mspabi_fixfi          
-00012934  __mspabi_fixdli         
-0001299a  copy_in                 
-00012a00  __mspabi_divul          
-00012a00  __mspabi_remul          
-00012a58  Driver_LCD_SetPosition  
-00012aa8  __mspabi_cmpf           
-00012af2  Driver_ESCInit          
-00012b3a  Driver_SetBack          
-00012b7c  Driver_SetThrottle      
-00012bbe  __mspabi_divli          
-00012bbe  __mspabi_remli          
-00012bfe  __mspabi_sral_15        
-00012c02  __mspabi_sral_14        
-00012c06  __mspabi_sral_13        
-00012c0a  __mspabi_sral_12        
-00012c0e  __mspabi_sral_11        
-00012c12  __mspabi_sral_10        
-00012c16  __mspabi_sral_9         
-00012c1a  __mspabi_sral_8         
-00012c1e  __mspabi_sral_7         
-00012c22  __mspabi_sral_6         
-00012c26  __mspabi_sral_5         
-00012c2a  __mspabi_sral_4         
-00012c2e  __mspabi_sral_3         
-00012c32  __mspabi_sral_2         
-00012c36  __mspabi_sral_1         
-00012c3c  __mspabi_slll_15        
-00012c40  __mspabi_slll_14        
-00012c44  __mspabi_slll_13        
-00012c48  __mspabi_slll_12        
-00012c4c  __mspabi_slll_11        
-00012c50  __mspabi_slll_10        
-00012c54  __mspabi_slll_9         
-00012c58  __mspabi_slll_8         
-00012c5c  __mspabi_slll_7         
-00012c60  __mspabi_slll_6         
-00012c64  __mspabi_slll_5         
-00012c68  __mspabi_slll_4         
-00012c6c  __mspabi_slll_3         
-00012c70  __mspabi_slll_2         
-00012c74  __mspabi_slll_1         
-00012c7a  __mspabi_srll_15        
-00012c7e  __mspabi_srll_14        
-00012c82  __mspabi_srll_13        
-00012c86  __mspabi_srll_12        
-00012c8a  __mspabi_srll_11        
-00012c8e  __mspabi_srll_10        
-00012c92  __mspabi_srll_9         
-00012c96  __mspabi_srll_8         
-00012c9a  __mspabi_srll_7         
-00012c9e  __mspabi_srll_6         
-00012ca2  __mspabi_srll_5         
-00012ca6  __mspabi_srll_4         
-00012caa  __mspabi_srll_3         
-00012cae  __mspabi_srll_2         
-00012cb2  __mspabi_srll_1         
-00012cb8  HAL_TimerA1_Init        
-00012cf2  HAL_UCS_Init            
-00012d28  __mspabi_fltif          
-00012d5e  Driver_LCD_Init         
-00012d90  HAL_DMA_Init            
-00012dc2  __mspabi_fltulf         
-00012df4  HAL_Init                
-00012e22  HAL_Adc_init            
-00012e4e  HAL_USCIB1_Init         
-00012e7a  Distleft                
-00012ea4  Distmid                 
-00012ece  Distright               
-00012ef8  Driver_PWMInit          
-00012f22  HAL_TimerB0_Init        
-00012f4a  __mspabi_fixdi          
-00012f72  __mspabi_mpyl_f5hw      
-00012f96  HAL_TimerA0_Init        
-00012fb8  HAL_USCIB1_Transmit     
-00012fd6  __mspabi_mpyi_f5hw      
-00012fee  memset                  
-00013004  __mspabi_divu           
-00013004  __mspabi_remu           
-0001301a  memcpy                  
-0001302e  HAL_PMM_Init            
-00013040  __TI_decompress_none    
-00013052  Driver_Init             
-00013062  __mspabi_sral           
-00013072  __mspabi_slll           
-00013082  __mspabi_srll           
-00013092  __mspabi_fltid          
-0001309e  __mspabi_negf           
-000130a8  HAL_Wdt_Init            
-000130b0  C$$EXIT                 
-000130b0  abort                   
-000130b6  __TI_decompress_rle24   
-000130bc  _system_pre_init        
-000130c0  _system_post_cinit      
+000110b6  __TI_frcmpyd            
+0001139a  __mspabi_addd           
+00011672  __mspabi_mpyd           
+000118f4  __TI_frcaddd            
+00011b46  __mspabi_subf           
+00011b4c  __mspabi_addf           
+00011c78  Driver_LCD_WriteUInt    
+00011d72  itoa                    
+00011e5c  HAL_PMM_SetVCoreUp      
+00011f42  HAL_GPIO_Init           
+00012026  __mspabi_cmpd           
+000120fe  __mspabi_mpyf           
+000121b6  Driver_LCD_WriteString  
+0001226c  HAL_PMM_SetVCoreDown    
+00012320  __TI_renormd            
+000123d2  Driver_LCD_Clear        
+0001247a  __mspabi_fltlid         
+00012518  __mspabi_divf           
+000125a8  __mspabi_cvtdf          
+00012634  Driver_SetSteering      
+000126be  _auto_init_hold_wdt     
+00012740  Driver_LCD_WriteCommand 
+000127b6  __mspabi_cvtfd          
+00012824  HAL_PMM_SetVCore        
+000128f6  __mspabi_fixfi          
+0001295e  __mspabi_fixdli         
+000129c4  copy_in                 
+00012a2a  __mspabi_divul          
+00012a2a  __mspabi_remul          
+00012a82  Driver_LCD_SetPosition  
+00012ad2  __mspabi_cmpf           
+00012b1c  Driver_ESCInit          
+00012b64  Driver_SetBack          
+00012ba6  Driver_SetThrottle      
+00012be8  __mspabi_divli          
+00012be8  __mspabi_remli          
+00012c28  __mspabi_sral_15        
+00012c2c  __mspabi_sral_14        
+00012c30  __mspabi_sral_13        
+00012c34  __mspabi_sral_12        
+00012c38  __mspabi_sral_11        
+00012c3c  __mspabi_sral_10        
+00012c40  __mspabi_sral_9         
+00012c44  __mspabi_sral_8         
+00012c48  __mspabi_sral_7         
+00012c4c  __mspabi_sral_6         
+00012c50  __mspabi_sral_5         
+00012c54  __mspabi_sral_4         
+00012c58  __mspabi_sral_3         
+00012c5c  __mspabi_sral_2         
+00012c60  __mspabi_sral_1         
+00012c66  __mspabi_slll_15        
+00012c6a  __mspabi_slll_14        
+00012c6e  __mspabi_slll_13        
+00012c72  __mspabi_slll_12        
+00012c76  __mspabi_slll_11        
+00012c7a  __mspabi_slll_10        
+00012c7e  __mspabi_slll_9         
+00012c82  __mspabi_slll_8         
+00012c86  __mspabi_slll_7         
+00012c8a  __mspabi_slll_6         
+00012c8e  __mspabi_slll_5         
+00012c92  __mspabi_slll_4         
+00012c96  __mspabi_slll_3         
+00012c9a  __mspabi_slll_2         
+00012c9e  __mspabi_slll_1         
+00012ca4  __mspabi_srll_15        
+00012ca8  __mspabi_srll_14        
+00012cac  __mspabi_srll_13        
+00012cb0  __mspabi_srll_12        
+00012cb4  __mspabi_srll_11        
+00012cb8  __mspabi_srll_10        
+00012cbc  __mspabi_srll_9         
+00012cc0  __mspabi_srll_8         
+00012cc4  __mspabi_srll_7         
+00012cc8  __mspabi_srll_6         
+00012ccc  __mspabi_srll_5         
+00012cd0  __mspabi_srll_4         
+00012cd4  __mspabi_srll_3         
+00012cd8  __mspabi_srll_2         
+00012cdc  __mspabi_srll_1         
+00012ce2  HAL_TimerA1_Init        
+00012d1c  HAL_UCS_Init            
+00012d52  __mspabi_fltif          
+00012d88  Driver_LCD_Init         
+00012dba  HAL_DMA_Init            
+00012dec  __mspabi_fltulf         
+00012e1e  HAL_Init                
+00012e4c  HAL_Adc_init            
+00012e78  HAL_USCIB1_Init         
+00012ea4  Distleft                
+00012ece  Distmid                 
+00012ef8  Distright               
+00012f22  Driver_PWMInit          
+00012f4c  HAL_TimerB0_Init        
+00012f74  __mspabi_fixdi          
+00012f9c  __mspabi_mpyl_f5hw      
+00012fc0  HAL_TimerA0_Init        
+00012fe2  HAL_USCIB1_Transmit     
+00013000  __mspabi_mpyi_f5hw      
+00013018  memset                  
+0001302e  __mspabi_divu           
+0001302e  __mspabi_remu           
+00013044  memcpy                  
+00013058  HAL_PMM_Init            
+0001306a  __TI_decompress_none    
+0001307c  Driver_Init             
+0001308c  __mspabi_sral           
+0001309c  __mspabi_slll           
+000130ac  __mspabi_srll           
+000130bc  __mspabi_fltid          
+000130c8  __mspabi_negf           
+000130d2  HAL_Wdt_Init            
+000130da  C$$EXIT                 
+000130da  abort                   
+000130e0  __TI_decompress_rle24   
+000130e6  _system_pre_init        
+000130ea  _system_post_cinit      
 ffffffff  __TI_pprof_out_hndl     
 ffffffff  __TI_prof_data_size     
 ffffffff  __TI_prof_data_start    

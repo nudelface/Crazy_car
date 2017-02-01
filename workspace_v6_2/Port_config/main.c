@@ -497,10 +497,14 @@ void main(void)
 							SpeedDes=350;
 
 						}
-						else if ((AbstandFront> 150)&&(dFront<-5))
+						else if ((AbstandFront> 150)&&(dFront<-10))
 						{
 							SpeedDes=60;
 
+						}
+						else if ((AbstandFront> 150) && (dFront<-2))
+						{
+							SpeedDes=110;
 						}
 						else if((AbstandFront>150)&&(dFront>=0))
 						{
@@ -728,6 +732,10 @@ void main(void)
 										statecase=DriveStraight;
 										//Driver_SetSteering(0);
 									}
+									else if(dLeft>50)
+									{
+										statecase=DriveStraight;
+									}
 									else if((AbstandRechts<45)&&(AbstandFront>30)) //abstandfront vorher 110
 									{
 										//statecase=DriveStraight;
@@ -798,11 +806,11 @@ void main(void)
 									}
 									else if(AbstandFront>30)
 									{
-										SpeedDes=SUturnmid-10;
+										SpeedDes=SUturnmid+10;
 									}
 									else
 									{
-										SpeedDes=SUturnsl-10;
+										SpeedDes=SUturnsl+10;			///////////
 									}
 
 								}

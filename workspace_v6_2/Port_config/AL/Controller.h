@@ -10,11 +10,11 @@
 
 
 #define SpeedBack -300
-#define SUturnsl 50
-#define SUturnmid 60
+#define SUturnsl 60
+#define SUturnmid 70
 #define SUturnf 80
-#define SCornsl 60
-#define SCornmid 70
-#define SCornf 80
+#define SCornsl 70
+#define SCornmid 80
+#define SCornf 90
 
 #endif /* AL_CONTROLLER_H_ */
