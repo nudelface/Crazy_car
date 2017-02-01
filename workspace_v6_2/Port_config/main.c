@@ -225,7 +225,7 @@ void main(void)
 					if(statecase!=Hinderniss)
 					{
 					LastDeltaDist=DeltaDist;
-					DeltaDist=(AbstandRechts-AbstandLinks);  //deltaDist = e
+					DeltaDist=line_des+(AbstandRechts-AbstandLinks);  //deltaDist = e
 
 					dDelta=DeltaDist-LastDeltaDist;          //dDelta = e abgeleitet
 					}
