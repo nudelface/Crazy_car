@@ -106,7 +106,7 @@ __interrupt void TimerA0_ISR (void)
 	Count=TA0CCR2;
 	if(SampleCounter<4)
 	{
-		PeriodSample=PeriodSample+( Count-lastCount);
+		PeriodSample=PeriodSample+( Count-lastCount); //Count-lastCount ist Periodendauer in Zählerzahl
 		lastCount=Count;
 		SampleCounter++;
 	}
@@ -126,8 +126,8 @@ __interrupt void TimerA0_ISR (void)
 				//TA0R=0x0;
 		//}
 	}
-	TA0CCTL2&=~CCIFG;
-	TA0CCTL2&=~COV;
+	TA0CCTL2&=~CCIFG; //not suere
+	TA0CCTL2&=~COV; //not sure
 	TA0CTL |= MC__CONTINUOUS;  //Mode Hochzählen
 }
 
