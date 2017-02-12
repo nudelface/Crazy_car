@@ -428,7 +428,7 @@ void main(void)
 					laststate=statecase;
 					////Driver_LCD_Clear();
 					//Driver_LCD_WriteString("DriveStraight",13,5,0);
-					line_des=0;
+					line_des=0;  //desired line auf 0 setzen, falls vorher Überholvorgang
 
 				}
 				//line_des=0;

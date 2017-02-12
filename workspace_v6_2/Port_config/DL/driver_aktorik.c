@@ -14,7 +14,8 @@
 #include "driver_aktorik.h"
 #include "..\HAL\hal_timerA1.h"
 
-
+extern unsigned int pwmThr;
+extern unsigned int pwmMot;
 
 extern int initcounter;
 int state_akt=1;
@@ -49,11 +50,11 @@ void Driver_SetSteering (int SteeringAngle)  //Void funktion. Eingabe: -100% bis
 	}
 	if((StPWM>=StPWM_full_left) && (StPWM<=StPWM_full_right))  //Anschlagprüfung 2
 	{
-		TA1CCR2 = StPWM;                                     //Schreibe PWM-Wert
+		pwmThr = StPWM;                                     //Schreibe PWM-Wert
 	}
 	else
 	{
-		StPWM = StPWM_middle;               //Ansonsten middle
+		pwmThr = StPWM_middle;               //Ansonsten middle
 	}
 
 }
@@ -104,7 +105,7 @@ void Driver_SetThrottle (int Throttle)  		//Gasgeben
 	}
 	if((ThPWM>=MinFPW) && (ThPWM<=MaxFPW))  		//Vorsichtsmaßnahme, damit wirklich keine falsche PWM gesetzt wird
 	{
-		TA1CCR1 = ThPWM;
+		pwmMot = ThPWM;
 	}
 
 
@@ -127,7 +128,7 @@ void Driver_SetBrake (int Brake)    //Funktiom zum Bremsen
 			BrPWM = MinRPW + res_brk_f * Brake;
 		}
 	}
-	TA1CCR1 = BrPWM;
+	pwmMot = BrPWM;
 }
 
 
@@ -145,7 +146,7 @@ void Driver_SetBack(int Backwards)         // Funktion zum Rückwärtsfahren
 	}
 	if((BackPWM>=MaxRPW) && (BackPWM<=MinRPW))  		//Vorsichtsmaßnahme, damit wirklich keine falsche PWM gesetzt wird
 	{
-		TA1CCR1 = BackPWM;
+		pwmMot = BackPWM;
 	}
 }
 
@@ -158,6 +159,6 @@ void Driver_PWMInit(int PWM, int cycle)     // Wird für Initialisierung verwende
 	initcounter=0;
 	while(initcounter<=cycle)
 	{
-		TA1CCR1=PWM;
+		pwmMot=PWM;
 	}
 }
